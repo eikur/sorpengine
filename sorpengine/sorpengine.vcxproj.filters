@@ -21,7 +21,7 @@
     <ClCompile Include="src\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\parson.c">
+    <ClCompile Include="src\Module.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,9 +36,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\MemLeaks.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parson.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Utils.h">

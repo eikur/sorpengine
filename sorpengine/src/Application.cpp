@@ -4,27 +4,26 @@
 #include "Module.h"
 #include <algorithm>
 
-
 namespace 
 {
-	const std::vector<Module*> getEnabledModules(const std::vector<std::unique_ptr<Module>>& allModules)
+	const std::vector<Module*> getActiveModules(const std::vector<std::unique_ptr<Module>>& allModules)
 	{
-		std::vector<Module*> enabledModules;
+		std::vector<Module*> activeModules;
 
 		for (auto&& module : allModules)
 		{
-			if (module->IsEnabled())
+			if (module->IsActive())
 			{
-				enabledModules.push_back(&*module);
+				activeModules.push_back(&*module);
 			}
 		}
-		return std::move(enabledModules);
+		return std::move(activeModules);
 	}
 }
 
 Application::Application()
 {
-	auto dummyModule = std::make_unique<Module>(true);
+	auto dummyModule = std::make_unique<Module>("dummy", true);
 	modules.push_back(std::move(dummyModule));
 }
 
@@ -48,7 +47,7 @@ bool Application::Init()
 	
 	for (auto&& module : modules)
 	{
-		if (module->IsEnabled())
+		if (module->IsActive())
 		{
 			ret = ret && module->Start();
 		}
@@ -61,19 +60,19 @@ UpdateStatus Application::Update()
 {
 	UpdateStatus ret = UpdateStatus::Continue;
 
-	const std::vector<Module*>& enabledModules = getEnabledModules(modules);
+	const std::vector<Module*>& activeModules = getActiveModules(modules);
 
-	for (auto&& module : enabledModules)
+	for (auto&& module : activeModules)
 	{
 		ret = (ret == UpdateStatus::Continue) ? module->PreUpdate() : ret;
 	}
 
-	for (auto&& module : enabledModules)
+	for (auto&& module : activeModules)
 	{
 		ret = (ret == UpdateStatus::Continue) ? module->Update() : ret;
 	}
 
-	for (auto&& module : enabledModules)
+	for (auto&& module : activeModules)
 	{
 		ret = (ret == UpdateStatus::Continue )? module->PostUpdate() : ret;
 	}
@@ -85,9 +84,9 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	const std::vector<Module*>& enabledModules = getEnabledModules(modules);
+	const std::vector<Module*>& activeModules = getActiveModules(modules);
 
-	for (auto& it = enabledModules.rbegin(); it != enabledModules.rend() && ret; ++it)
+	for (auto& it = activeModules.rbegin(); it != activeModules.rend() && ret; ++it)
 		ret = (*it)->CleanUp();
 
 	return ret;

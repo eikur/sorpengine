@@ -1,71 +1,27 @@
 #pragma once
+#include "Globals.h"
+#include <string>
 
 class Module
 {
-public:
+	public:
+		Module(const std::string& id, bool active = true) : _id(id),_active(active){}
+		virtual ~Module() {}
 
-	Module(bool active = true) : active(active)
-	{}
+		bool IsActive() const;
+		bool SetActive(bool active);
 
-	virtual ~Module()
-	{}
+		virtual bool Init();
+		virtual bool Start();
+		virtual UpdateStatus PreUpdate();
+		virtual UpdateStatus Update();
+		virtual UpdateStatus PostUpdate();
+		virtual bool CleanUp();
 
-	bool IsEnabled() const
-	{
-		return active;
-	}
+		const std::string& getId(); 
 
-	bool Enable()
-	{
-		if (active == false)
-			return active = Start();
+	private:
+		bool _active = true;
+		std::string _id;
 
-		return true;
-	}
-
-	bool Disable()
-	{
-		if (active == true)
-			return active = !CleanUp();
-
-		return true;
-	}
-
-	virtual bool Init()
-	{
-		return true;
-	}
-
-	virtual bool Start()
-	{
-		return true;
-	}
-
-	virtual UpdateStatus PreUpdate()
-	{
-		return UpdateStatus::Continue;
-	}
-
-	virtual UpdateStatus Update()
-	{
-		return UpdateStatus::Continue;
-	}
-
-	virtual UpdateStatus PostUpdate()
-	{
-		return UpdateStatus::Continue;
-	}
-
-	virtual bool CleanUp()
-	{
-		return true;
-	}
-
-	virtual bool LoadConfigFromFile(const char*)
-	{
-		return true;
-	}
-
-private:
-	bool active = true;
 };
