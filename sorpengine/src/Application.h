@@ -1,6 +1,8 @@
-#pragma once
+/* Application.h */
 
-#include<list>
+#pragma once
+#include <memory>
+#include<vector>
 #include "Globals.h"
 
 class Module;
@@ -16,7 +18,7 @@ public:
 	bool CleanUp();
 
 private:
-	std::list<Module*> modules;
+	 std::vector<std::unique_ptr<Module>> modules;
 };
 
 extern Application* App;

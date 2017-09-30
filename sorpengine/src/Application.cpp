@@ -1,19 +1,39 @@
+/* Application.cpp */
+
 #include "Application.h"
 #include "Module.h"
+#include <algorithm>
 
-using namespace std;
+
+namespace 
+{
+	const std::vector<Module*> getEnabledModules(const std::vector<std::unique_ptr<Module>>& allModules)
+	{
+		std::vector<Module*> enabledModules;
+
+		for (auto&& module : allModules)
+		{
+			if (module->IsEnabled())
+			{
+				enabledModules.push_back(&*module);
+			}
+		}
+		return std::move(enabledModules);
+	}
+}
 
 Application::Application()
 {
-
+	auto dummyModule = std::make_unique<Module>(true);
+	modules.push_back(std::move(dummyModule));
 }
 
 Application::~Application()
 {
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
+	for (auto& module : modules)
 	{
-		delete *it;
-		*it = nullptr;
+		delete module.get();
+		module.release();
 	}
 }
 
@@ -21,16 +41,16 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
+	for (auto&& module : modules)
 	{
-		ret = (*it)->Init();
+		ret = ret && module->Init();
 	}
-
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
+	
+	for (auto&& module : modules)
 	{
-		if ((*it)->IsEnabled())
+		if (module->IsEnabled())
 		{
-			ret = (*it)->Start();
+			ret = ret && module->Start();
 		}
 	}
 
@@ -41,17 +61,22 @@ UpdateStatus Application::Update()
 {
 	UpdateStatus ret = UpdateStatus::Continue;
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UpdateStatus::Continue; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->PreUpdate();
+	const std::vector<Module*>& enabledModules = getEnabledModules(modules);
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UpdateStatus::Continue; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->Update();
+	for (auto&& module : enabledModules)
+	{
+		ret = (ret == UpdateStatus::Continue) ? module->PreUpdate() : ret;
+	}
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UpdateStatus::Continue; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->PostUpdate();
+	for (auto&& module : enabledModules)
+	{
+		ret = (ret == UpdateStatus::Continue) ? module->Update() : ret;
+	}
+
+	for (auto&& module : enabledModules)
+	{
+		ret = (ret == UpdateStatus::Continue )? module->PostUpdate() : ret;
+	}
 
 	return ret;
 }
@@ -60,9 +85,10 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	for (list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->CleanUp();
+	const std::vector<Module*>& enabledModules = getEnabledModules(modules);
+
+	for (auto& it = enabledModules.rbegin(); it != enabledModules.rend() && ret; ++it)
+		ret = (*it)->CleanUp();
 
 	return ret;
 }
