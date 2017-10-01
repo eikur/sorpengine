@@ -9,6 +9,15 @@
 #ifdef _MSC_VER
 #	pragma comment(lib, "3rdparty/SDL/libx86/SDL2.lib")
 #	pragma comment(lib, "3rdparty/SDL/libx86/SDL2main.lib")
+#	ifdef _DEBUG
+#		pragma comment( lib, "3rdparty/glew-2.0.0/libx86/deb/glew32d.lib" )
+#		pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+#		pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
+#	else // RELEASE
+#		pragma comment( lib, "3rdparty/glew-2.0.0/libx86/rel/glew32.lib" )
+#		pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+#		pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
+#	endif
 #endif
 
 enum class MainState
