@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "Module.h"
+#include "ModuleWindow.h"
 #include <algorithm>
 
 namespace 
@@ -12,7 +13,7 @@ namespace
 
 		for (auto&& module : allModules)
 		{
-			if (module->IsActive())
+			if (module->isActive())
 			{
 				activeModules.push_back(&*module);
 			}
@@ -23,8 +24,8 @@ namespace
 
 Application::Application()
 {
-	auto dummyModule = std::make_unique<Module>("dummy", true);
-	modules.push_back(std::move(dummyModule));
+	auto moduleWindow = std::make_unique<ModuleWindow>();
+	modules.push_back(std::move(moduleWindow));
 }
 
 Application::~Application()
@@ -42,15 +43,12 @@ bool Application::Init()
 
 	for (auto&& module : modules)
 	{
-		ret = ret && module->Init();
+		ret = ret && module->init();
 	}
 	
-	for (auto&& module : modules)
+	for (auto&& module : getActiveModules(modules))
 	{
-		if (module->IsActive())
-		{
-			ret = ret && module->Start();
-		}
+		ret = ret && module->start();
 	}
 
 	return ret;
@@ -64,17 +62,17 @@ UpdateStatus Application::Update()
 
 	for (auto&& module : activeModules)
 	{
-		ret = (ret == UpdateStatus::Continue) ? module->PreUpdate() : ret;
+		ret = (ret == UpdateStatus::Continue) ? module->preUpdate() : ret;
 	}
 
 	for (auto&& module : activeModules)
 	{
-		ret = (ret == UpdateStatus::Continue) ? module->Update() : ret;
+		ret = (ret == UpdateStatus::Continue) ? module->update() : ret;
 	}
 
 	for (auto&& module : activeModules)
 	{
-		ret = (ret == UpdateStatus::Continue )? module->PostUpdate() : ret;
+		ret = (ret == UpdateStatus::Continue )? module->postUpdate() : ret;
 	}
 
 	return ret;
@@ -87,7 +85,7 @@ bool Application::CleanUp()
 	const std::vector<Module*>& activeModules = getActiveModules(modules);
 
 	for (auto& it = activeModules.rbegin(); it != activeModules.rend() && ret; ++it)
-		ret = (*it)->CleanUp();
+		ret = (*it)->cleanUp();
 
 	return ret;
 }

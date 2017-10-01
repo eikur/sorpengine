@@ -1,45 +1,45 @@
 #include "Module.h"
 
-bool Module::SetActive(bool active)
+bool Module::setActive(bool active)
 {
 	if (_active != active)
 	{
-		_active = active ? Start() : !CleanUp();
+		_active = active ? start() : !cleanUp();
 	}
 	return _active;
 }
 
-bool Module::IsActive() const
+bool Module::isActive() const
 {
 	return _active;
 }
 
-bool Module::Init() 
+bool Module::init() 
 { 
 	return true; 
 }
 
-bool Module::Start()
+bool Module::start()
 {
 	return true;
 }
 
-UpdateStatus Module::PreUpdate()
+UpdateStatus Module::preUpdate()
 {
 	return UpdateStatus::Continue;
 }
 
-UpdateStatus Module::Update()
+UpdateStatus Module::update(float)
 {
 	return UpdateStatus::Continue;
 }
 
-UpdateStatus Module::PostUpdate()
+UpdateStatus Module::postUpdate()
 {
 	return UpdateStatus::Continue;
 }
 
-bool Module::CleanUp()
+bool Module::cleanUp()
 {
 	return true;
 }

@@ -1,6 +1,15 @@
 #include "Application.h"
 #include "Utils.h"
+
+#include "MemLeaks.h"
 #include <stdlib.h>
+
+#include "SDL/include/SDL.h"
+
+#ifdef _MSC_VER
+#	pragma comment(lib, "3rdparty/SDL/libx86/SDL2.lib")
+#	pragma comment(lib, "3rdparty/SDL/libx86/SDL2main.lib")
+#endif
 
 enum class MainState
 {
@@ -13,7 +22,7 @@ enum class MainState
 
 Application* App = nullptr;
 
-int main(int argc, char ** argv)
+int main(int argc, char *argv[])
 {
 	ReportMemoryLeaks();
 

@@ -2,7 +2,7 @@
 
 #pragma once
 #include <memory>
-#include<vector>
+#include <vector>
 #include "Globals.h"
 
 class Module;
