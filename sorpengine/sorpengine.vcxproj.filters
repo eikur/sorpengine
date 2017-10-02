@@ -36,6 +36,9 @@
     <ClCompile Include="src\ModuleWindow.cpp">
       <Filter>Source Files\Core Modules</Filter>
     </ClCompile>
+    <ClCompile Include="src\ModuleInput.cpp">
+      <Filter>Source Files\Core Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Module.h">
@@ -55,6 +58,12 @@
     </ClInclude>
     <ClInclude Include="src\ModuleWindow.h">
       <Filter>Source Files\Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModuleInput.h">
+      <Filter>Source Files\Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Point.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

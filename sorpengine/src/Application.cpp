@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Module.h"
 #include "ModuleWindow.h"
+#include "ModuleInput.h"
 #include <algorithm>
 
 namespace 
@@ -24,8 +25,8 @@ namespace
 
 Application::Application()
 {
-	auto moduleWindow = std::make_unique<ModuleWindow>();
-	modules.push_back(std::move(moduleWindow));
+	modules.push_back(std::make_unique<ModuleWindow>());
+	modules.push_back(std::make_unique<ModuleInput>());
 }
 
 Application::~Application()
