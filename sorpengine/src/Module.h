@@ -9,7 +9,13 @@
 class Module
 {
 	public:
-		Module(const std::string& id, bool active = true) : _id(id),_active(active){}
+		enum class Type
+		{
+			Window,
+			Input
+		};
+
+		Module(Type type, bool active = true) : _type(type),_active(active){}
 		virtual ~Module() {}
 
 		bool isActive() const;
@@ -22,10 +28,10 @@ class Module
 		virtual UpdateStatus postUpdate();
 		virtual bool cleanUp();
 
-		const std::string& getId(); 
+		Module::Type getType() const;
 
 	private:
 		bool _active = true;
-		std::string _id;
+		Type _type;
 
 };

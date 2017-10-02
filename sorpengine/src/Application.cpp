@@ -1,7 +1,6 @@
 /* Application.cpp */
 
 #include "Application.h"
-#include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include <algorithm>
@@ -25,13 +24,13 @@ namespace
 
 Application::Application()
 {
-	modules.push_back(std::make_unique<ModuleWindow>());
-	modules.push_back(std::make_unique<ModuleInput>());
+	_modules.push_back(std::make_unique<ModuleWindow>());
+	_modules.push_back(std::make_unique<ModuleInput>());
 }
 
 Application::~Application()
 {
-	for (auto& module : modules)
+	for (auto& module : _modules)
 	{
 		delete module.get();
 		module.release();
@@ -42,12 +41,12 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	for (auto&& module : modules)
+	for (auto&& module : _modules)
 	{
 		ret = ret && module->init();
 	}
 	
-	for (auto&& module : getActiveModules(modules))
+	for (auto&& module : getActiveModules(_modules))
 	{
 		ret = ret && module->start();
 	}
@@ -59,7 +58,7 @@ UpdateStatus Application::Update()
 {
 	UpdateStatus ret = UpdateStatus::Continue;
 
-	const std::vector<Module*>& activeModules = getActiveModules(modules);
+	const std::vector<Module*>& activeModules = getActiveModules(_modules);
 
 	for (auto&& module : activeModules)
 	{
@@ -83,10 +82,29 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	const std::vector<Module*>& activeModules = getActiveModules(modules);
+	const std::vector<Module*>& activeModules = getActiveModules(_modules);
 
 	for (auto& it = activeModules.rbegin(); it != activeModules.rend() && ret; ++it)
 		ret = (*it)->cleanUp();
 
 	return ret;
+}
+
+//-----------------------
+Module* Application::findModule(Module::Type type) const
+{
+	auto it = std::find_if(_modules.begin(), _modules.end(), [type](const std::unique_ptr<Module>& uniquePtr) {return uniquePtr.get()->getType() == type; });
+	return (*it).get();
+}
+
+template <>
+ModuleWindow* Application::getModule() const
+{
+	return static_cast<ModuleWindow*>(findModule(Module::Type::Window));
+}
+
+template <>
+ModuleInput* Application::getModule() const
+{
+	return static_cast<ModuleInput*>(findModule(Module::Type::Input));
 }

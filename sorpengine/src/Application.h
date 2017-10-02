@@ -4,8 +4,7 @@
 #include <memory>
 #include <vector>
 #include "Globals.h"
-
-class Module;
+#include "Module.h"
 
 class Application
 {
@@ -17,8 +16,13 @@ public:
 	UpdateStatus Update();
 	bool CleanUp();
 
+	template <class T>
+	T* getModule() const {}
+
 private:
-	 std::vector<std::unique_ptr<Module>> modules;
+	Module* findModule(Module::Type type) const;
+
+	std::vector<std::unique_ptr<Module>> _modules;
 };
 
 extern Application* App;

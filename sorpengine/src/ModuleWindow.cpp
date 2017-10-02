@@ -3,7 +3,7 @@
 #include "Utils.h"
 #include "glew-2.0.0/include/GL/glew.h"
 
-ModuleWindow::ModuleWindow(bool active): Module("window", active) {}
+ModuleWindow::ModuleWindow(bool active): Module(Module::Type::Window, active) {}
 
 bool ModuleWindow::init()
 {

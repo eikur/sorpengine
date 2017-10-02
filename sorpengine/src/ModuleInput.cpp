@@ -1,10 +1,11 @@
 #include "ModuleInput.h"
+#include "ModuleWindow.h"
 #include "Utils.h"
 #include "Application.h"
 #include "SDL/include/SDL.h"
 
 ModuleInput::ModuleInput(bool active) 
-	: Module("input", active)
+	: Module(Module::Type::Input, active)
 {
 	_keyboard = new KeyState[numKeys];
 	_mouseButtons = new KeyState[numMouseButttons];
@@ -75,7 +76,7 @@ UpdateStatus ModuleInput::preUpdate()
 				switch (sdlEvent.window.event)
 				{
 				case SDL_WINDOWEVENT_SIZE_CHANGED:
-					//App->getModule("window")->setScreenSize(sdlEvent.window.data1, sdlEvent.window.data2);
+					App->getModule<ModuleWindow>()->setWindowSize({ static_cast<int>(sdlEvent.window.data1), static_cast<int>(sdlEvent.window.data2) });
 					break;
 				}
 				break;

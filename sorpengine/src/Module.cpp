@@ -44,8 +44,8 @@ bool Module::cleanUp()
 	return true;
 }
 
-const std::string& Module::getId()
+Module::Type Module::getType() const
 {
-	return _id;
+	return _type;
 }
 
