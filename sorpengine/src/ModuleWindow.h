@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Module.h"
+#include "Point.h"
 #include "SDL/include/SDL.h"
 
 struct SDL_Window;
@@ -10,6 +11,8 @@ struct SDL_Renderer;
 class ModuleWindow : public Module
 {
 	public:
+		using iPoint = Point<int>;
+
 		ModuleWindow(bool active = true);
 		virtual ~ModuleWindow() {}
 
@@ -18,6 +21,9 @@ class ModuleWindow : public Module
 		UpdateStatus update(float dt = 0.0f) override;
 		UpdateStatus postUpdate() override;
 		bool cleanUp() override;
+
+		void setWindowSize(const iPoint& newSize);
+		const iPoint& getWindowSize() const;
 	
 	private:
 		SDL_Window* _sdlWindow = nullptr;
@@ -28,4 +34,6 @@ class ModuleWindow : public Module
 		bool _fullScreen = false;
 		bool _resizable = true;
 		bool _vsync = true;
+
+		iPoint _windowSize = { 600, 480 };
 };

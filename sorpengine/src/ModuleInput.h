@@ -28,20 +28,20 @@ public:
 	UpdateStatus preUpdate() override;
 	bool cleanUp() override;
 
-	KeyState GetKey(int id) const;
-	KeyState GetMouseButtonDown(int id) const;
+	KeyState getKey(int id) const;
+	KeyState getMouseButtonDown(int id) const;
 
 	// Get mouse / axis position
-	const iPoint& GetMouseMotion() const;
-	const iPoint& GetMousePosition() const;
+	const iPoint& getMouseMotion() const;
+	const iPoint& getMousePosition() const;
 
 	// Get mouse wheel roll
-	const int GetMouseWheelRoll() const;
+	const Sint32 getMouseWheelRoll() const;
 
 private:
 	KeyState* _keyboard = nullptr;
 	KeyState* _mouseButtons = nullptr;
 	iPoint _mouseMotion = { 0,0 };
 	iPoint _mousePosition = { 0,0 };
-	int _mouseWheelRoll = 0;
+	Sint32 _mouseWheelRoll = 0;
 };

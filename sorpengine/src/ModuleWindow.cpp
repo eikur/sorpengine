@@ -18,7 +18,7 @@ bool ModuleWindow::init()
 	flags = _fullScreen ? flags | SDL_WINDOW_FULLSCREEN : flags;
 	flags = _resizable ? flags | SDL_WINDOW_RESIZABLE : flags;
 
-	_sdlWindow = SDL_CreateWindow("sorpengine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 480, flags);
+	_sdlWindow = SDL_CreateWindow("sorpengine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _windowSize.x, _windowSize.y, flags);
 	if (_sdlWindow == nullptr)
 	{
 		Utils::log("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -113,4 +113,14 @@ bool ModuleWindow::cleanUp()
 	SDL_Quit();
 
 	return true;
+}
+
+void ModuleWindow::setWindowSize(const iPoint& newSize)
+{
+	_windowSize = newSize;
+}
+
+const iPoint& ModuleWindow::getWindowSize() const
+{
+	return _windowSize;
 }

@@ -1,5 +1,6 @@
 #include "ModuleInput.h"
 #include "Utils.h"
+#include "Application.h"
 #include "SDL/include/SDL.h"
 
 ModuleInput::ModuleInput(bool active) 
@@ -34,6 +35,8 @@ UpdateStatus ModuleInput::preUpdate()
 {
 	UpdateStatus retVal = UpdateStatus::Continue;
 	static SDL_Event sdlEvent;
+	_mouseMotion = { 0, 0 };
+	_mouseWheelRoll = 0;
 
 	const Uint8* keys = SDL_GetKeyboardState(nullptr);
 	for (int i = 0; i < numKeys; ++i)
@@ -67,6 +70,34 @@ UpdateStatus ModuleInput::preUpdate()
 			case SDL_QUIT:
 				retVal = UpdateStatus::Stop;
 			break;
+
+			case SDL_WINDOWEVENT:
+				switch (sdlEvent.window.event)
+				{
+				case SDL_WINDOWEVENT_SIZE_CHANGED:
+					//App->getModule("window")->setScreenSize(sdlEvent.window.data1, sdlEvent.window.data2);
+					break;
+				}
+				break;
+
+			case SDL_MOUSEBUTTONDOWN:
+				_mouseButtons[sdlEvent.button.button - 1] = KeyState::Down;
+				break;
+
+			case SDL_MOUSEBUTTONUP:
+				_mouseButtons[sdlEvent.button.button - 1] = KeyState::Up;
+				break;
+
+			case SDL_MOUSEMOTION:
+				_mouseMotion.x = sdlEvent.motion.xrel;
+				_mouseMotion.y = sdlEvent.motion.yrel;
+				_mousePosition.x = sdlEvent.motion.x;
+				_mousePosition.y = sdlEvent.motion.y;
+				break;
+
+			case SDL_MOUSEWHEEL:
+				_mouseWheelRoll = sdlEvent.wheel.y;
+				break;
 		}
 	}
 
@@ -78,4 +109,29 @@ bool ModuleInput::cleanUp()
 	Utils::log("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+ModuleInput::KeyState ModuleInput::getKey(int id) const
+{
+	return _keyboard[id];
+}
+
+ModuleInput::KeyState ModuleInput::getMouseButtonDown(int id) const
+{
+	return _mouseButtons[id];
+}
+
+const iPoint& ModuleInput::getMouseMotion() const
+{
+	return _mouseMotion;
+}
+
+const iPoint& ModuleInput::getMousePosition() const
+{
+	return _mousePosition;
+}
+
+const Sint32 ModuleInput::getMouseWheelRoll() const
+{
+	return _mouseWheelRoll;
 }
