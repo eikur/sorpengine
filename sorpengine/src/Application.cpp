@@ -102,25 +102,25 @@ Module* Application::findModule(Module::Type type) const
 }
 
 template <>
-ModuleWindow* Application::getModule() const
+ModuleWindow& Application::getModule() const
 {
-	return static_cast<ModuleWindow*>(findModule(Module::Type::Window));
+	return *static_cast<ModuleWindow*>(findModule(Module::Type::Window));
 }
 
 template <>
-ModuleInput* Application::getModule() const
+ModuleInput& Application::getModule() const
 {
-	return static_cast<ModuleInput*>(findModule(Module::Type::Input));
+	return *static_cast<ModuleInput*>(findModule(Module::Type::Input));
 }
 
 template <>
-ModuleAudio* Application::getModule() const
+ModuleAudio& Application::getModule() const
 {
-	return static_cast<ModuleAudio*>(findModule(Module::Type::Audio));
+	return *static_cast<ModuleAudio*>(findModule(Module::Type::Audio));
 }
 
 template <>
-ModuleScene* Application::getModule() const
+ModuleScene& Application::getModule() const
 {
-	return static_cast<ModuleScene*>(findModule(Module::Type::Scene));
+	return *static_cast<ModuleScene*>(findModule(Module::Type::Scene));
 }

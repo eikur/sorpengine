@@ -17,7 +17,7 @@ public:
 	bool CleanUp();
 
 	template <class T>
-	T* getModule() const;
+	T& getModule() const;
 
 private:
 	Module* findModule(Module::Type type) const;

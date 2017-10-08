@@ -9,7 +9,6 @@ class ModuleInput : public Module
 public:
 	using iPoint = Point<int>;
 
-private:
 	enum KeyState
 	{
 		Idle = 0,
@@ -17,6 +16,8 @@ private:
 		Repeat,
 		Up
 	};
+
+private:
 	const int numMouseButttons = 5;
 	const int numKeys = 300;
 

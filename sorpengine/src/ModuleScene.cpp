@@ -1,4 +1,6 @@
 #include "ModuleScene.h"
+#include "Application.h"
+#include "ModuleInput.h"
 
 ModuleScene::ModuleScene(bool active) : Module(Module::Type::Scene, active) {}
 
@@ -14,6 +16,11 @@ UpdateStatus ModuleScene::preUpdate()
 
 UpdateStatus ModuleScene::update(float)
 {
+	auto& inputModule = App->getModule<ModuleInput>();
+	if (inputModule.getKey(SDL_SCANCODE_ESCAPE))
+	{
+		return UpdateStatus::Stop;
+	}
 	return UpdateStatus::Continue;
 }
 
