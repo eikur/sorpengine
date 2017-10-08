@@ -12,7 +12,9 @@ class Module
 		enum class Type
 		{
 			Window,
-			Input
+			Input,
+			Audio,
+			Scene
 		};
 
 		Module(Type type, bool active = true) : _type(type),_active(active){}

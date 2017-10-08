@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleAudio.h"
+#include "ModuleScene.h"
 #include <algorithm>
 
 namespace 
@@ -26,6 +28,8 @@ Application::Application()
 {
 	_modules.push_back(std::make_unique<ModuleWindow>());
 	_modules.push_back(std::make_unique<ModuleInput>());
+	_modules.push_back(std::make_unique<ModuleAudio>());
+	_modules.push_back(std::make_unique<ModuleScene>());
 }
 
 Application::~Application()
@@ -107,4 +111,16 @@ template <>
 ModuleInput* Application::getModule() const
 {
 	return static_cast<ModuleInput*>(findModule(Module::Type::Input));
+}
+
+template <>
+ModuleAudio* Application::getModule() const
+{
+	return static_cast<ModuleAudio*>(findModule(Module::Type::Audio));
+}
+
+template <>
+ModuleScene* Application::getModule() const
+{
+	return static_cast<ModuleScene*>(findModule(Module::Type::Scene));
 }

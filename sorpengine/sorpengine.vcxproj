@@ -74,7 +74,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)/3rdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/src;$(SolutionDir)/3rdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -116,17 +116,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Module.cpp" />
+    <ClCompile Include="src\ModuleAudio.cpp" />
     <ClCompile Include="src\ModuleInput.cpp" />
+    <ClCompile Include="src\ModuleScene.cpp" />
     <ClCompile Include="src\ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\GameObject\GameObject.h" />
     <ClInclude Include="src\Globals.h" />
     <ClInclude Include="src\MemLeaks.h" />
     <ClInclude Include="src\Module.h" />
+    <ClInclude Include="src\ModuleAudio.h" />
     <ClInclude Include="src\ModuleInput.h" />
+    <ClInclude Include="src\ModuleScene.h" />
     <ClInclude Include="src\ModuleWindow.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Utils.h" />
