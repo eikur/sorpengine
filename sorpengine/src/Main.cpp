@@ -9,6 +9,7 @@
 #ifdef _MSC_VER
 #	pragma comment(lib, "3rdparty/SDL/libx86/SDL2.lib")
 #	pragma comment(lib, "3rdparty/SDL/libx86/SDL2main.lib")
+#	pragma comment( lib, "3rdparty/SDL_mixer/libx86/SDL2_mixer.lib" )
 #	ifdef _DEBUG
 #		pragma comment( lib, "3rdparty/glew-2.0.0/libx86/deb/glew32d.lib" )
 #		pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
