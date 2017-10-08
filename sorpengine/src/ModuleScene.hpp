@@ -1,5 +1,5 @@
 #pragma once
-#include "Module.h"
+#include "Module.hpp"
 
 class ModuleScene : public Module
 {

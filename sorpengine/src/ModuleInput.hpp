@@ -1,7 +1,7 @@
 #pragma once
-#include "Module.h"
+#include "Module.hpp"
 #include "SDL/include/SDL_scancode.h"
-#include "Point.h"
+#include "Point.hpp"
 #include <map>
 
 class ModuleInput : public Module

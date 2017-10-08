@@ -118,6 +118,7 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Model\Model.cpp" />
     <ClCompile Include="src\Module.cpp" />
     <ClCompile Include="src\ModuleAudio.cpp" />
     <ClCompile Include="src\ModuleInput.cpp" />
@@ -125,17 +126,18 @@
     <ClCompile Include="src\ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\GameObject\GameObject.h" />
-    <ClInclude Include="src\Globals.h" />
+    <ClInclude Include="src\Application.hpp" />
+    <ClInclude Include="src\GameObject\GameObject.hpp" />
+    <ClInclude Include="src\Globals.hpp" />
     <ClInclude Include="src\MemLeaks.h" />
-    <ClInclude Include="src\Module.h" />
-    <ClInclude Include="src\ModuleAudio.h" />
-    <ClInclude Include="src\ModuleInput.h" />
-    <ClInclude Include="src\ModuleScene.h" />
-    <ClInclude Include="src\ModuleWindow.h" />
-    <ClInclude Include="src\Point.h" />
-    <ClInclude Include="src\Utils.h" />
+    <ClInclude Include="src\Model\Model.hpp" />
+    <ClInclude Include="src\Module.hpp" />
+    <ClInclude Include="src\ModuleAudio.hpp" />
+    <ClInclude Include="src\ModuleInput.hpp" />
+    <ClInclude Include="src\ModuleScene.hpp" />
+    <ClInclude Include="src\ModuleWindow.hpp" />
+    <ClInclude Include="src\Point.hpp" />
+    <ClInclude Include="src\Utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

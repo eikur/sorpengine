@@ -3,8 +3,8 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "Globals.h"
-#include "Module.h"
+#include "Globals.hpp"
+#include "Module.hpp"
 
 class Application
 {

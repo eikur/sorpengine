@@ -1,5 +1,5 @@
-#include "Application.h"
-#include "Utils.h"
+#include "Application.hpp"
+#include "Utils.hpp"
 
 #include "MemLeaks.h"
 #include <stdlib.h>

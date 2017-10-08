@@ -1,6 +1,6 @@
-#include "ModuleScene.h"
-#include "Application.h"
-#include "ModuleInput.h"
+#include "ModuleScene.hpp"
+#include "Application.hpp"
+#include "ModuleInput.hpp"
 
 ModuleScene::ModuleScene(bool active) : Module(Module::Type::Scene, active) {}
 

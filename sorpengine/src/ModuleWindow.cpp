@@ -1,6 +1,6 @@
-#include "ModuleWindow.h"
-#include "Globals.h"
-#include "Utils.h"
+#include "ModuleWindow.hpp"
+#include "Globals.hpp"
+#include "Utils.hpp"
 #include "glew-2.0.0/include/GL/glew.h"
 
 ModuleWindow::ModuleWindow(bool active): Module(Module::Type::Window, active) {}

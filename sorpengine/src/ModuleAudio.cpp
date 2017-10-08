@@ -1,7 +1,7 @@
-#include "ModuleAudio.h"
+#include "ModuleAudio.hpp"
 #include "SDL/include/SDL.h"
 #include "SDL_mixer/include/SDL_mixer.h"
-#include "Utils.h"
+#include "Utils.hpp"
 
 float ModuleAudio::kFadeTimeDefault = 2.0f;
 

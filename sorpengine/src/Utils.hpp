@@ -2,7 +2,7 @@
 
 #include <windows.h>
 #include <stdio.h>
-#include "Globals.h"
+#include "Globals.hpp"
 
 namespace
 {

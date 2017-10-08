@@ -1,5 +1,5 @@
 #pragma once
-#include "Globals.h"
+#include "Globals.hpp"
 #include <string>
 #include "glew-2.0.0\include\GL\glew.h"
 #include "SDL/include/SDL_opengl.h"

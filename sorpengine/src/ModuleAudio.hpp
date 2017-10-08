@@ -1,5 +1,5 @@
 #pragma once
-#include "Module.h"
+#include "Module.hpp"
 #include <vector>
 
 struct _Mix_Music;

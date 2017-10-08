@@ -1,10 +1,10 @@
 /* Application.cpp */
 
-#include "Application.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleAudio.h"
-#include "ModuleScene.h"
+#include "Application.hpp"
+#include "ModuleWindow.hpp"
+#include "ModuleInput.hpp"
+#include "ModuleAudio.hpp"
+#include "ModuleScene.hpp"
 #include <algorithm>
 
 namespace 

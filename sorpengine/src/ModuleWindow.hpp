@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Module.h"
-#include "Point.h"
+#include "Module.hpp"
+#include "Point.hpp"
 #include "SDL/include/SDL.h"
 
 struct SDL_Window;

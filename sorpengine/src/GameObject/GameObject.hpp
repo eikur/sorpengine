@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 #include <algorithm>
-#include "Globals.h"
+#include "Globals.hpp"
 
 class GameObject
 {

@@ -1,4 +1,4 @@
-#include "Module.h"
+#include "Module.hpp"
 
 bool Module::setActive(bool active)
 {

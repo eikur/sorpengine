@@ -25,6 +25,9 @@
     <Filter Include="Source Files\GameObjects">
       <UniqueIdentifier>{fcfc544e-7215-4d4e-98b3-5333a1fb4582}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Model">
+      <UniqueIdentifier>{bf9ea94a-fcde-4b93-91ec-b17ca8e83566}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Module.cpp">
@@ -51,40 +54,46 @@
     <ClCompile Include="src\ModuleScene.cpp">
       <Filter>Source Files\Core Modules</Filter>
     </ClCompile>
+    <ClCompile Include="src\Model\Model.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Module.h">
-      <Filter>Source Files\Core Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Application.h">
-      <Filter>Source Files\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Globals.h">
-      <Filter>Source Files\Main</Filter>
-    </ClInclude>
     <ClInclude Include="src\MemLeaks.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utils.h">
-      <Filter>Source Files\Utils</Filter>
+    <ClInclude Include="src\Model\Model.hpp">
+      <Filter>Source Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModuleWindow.h">
-      <Filter>Source Files\Core Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ModuleInput.h">
-      <Filter>Source Files\Core Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Point.h">
-      <Filter>Source Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\GameObject.h">
+    <ClInclude Include="src\GameObject\GameObject.hpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModuleScene.h">
+    <ClInclude Include="src\Globals.hpp">
+      <Filter>Source Files\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application.hpp">
+      <Filter>Source Files\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModuleWindow.hpp">
       <Filter>Source Files\Core Modules</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModuleAudio.h">
+    <ClInclude Include="src\ModuleScene.hpp">
       <Filter>Source Files\Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModuleInput.hpp">
+      <Filter>Source Files\Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModuleAudio.hpp">
+      <Filter>Source Files\Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Module.hpp">
+      <Filter>Source Files\Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Point.hpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils.hpp">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
-#include "ModuleInput.h"
-#include "ModuleWindow.h"
-#include "Utils.h"
-#include "Application.h"
+#include "ModuleInput.hpp"
+#include "ModuleWindow.hpp"
+#include "Utils.hpp"
+#include "Application.hpp"
 #include "SDL/include/SDL.h"
 
 ModuleInput::ModuleInput(bool active) 
