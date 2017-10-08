@@ -37,16 +37,16 @@ bool ModuleAudio::cleanUp()
 {
 	Utils::log("Cleaning up Audio Module\n");
 
-	if (music != nullptr)
+	if (_music != nullptr)
 	{
-		Mix_FreeMusic(music);
+		Mix_FreeMusic(_music);
 	}
 
-	for (std::vector<MixChunk*>::iterator it = fx.begin(); it != fx.end(); ++it)
+	for (auto it = _fx.begin(); it != _fx.end(); ++it)
 	{
 		Mix_FreeChunk(*it);
 	}
-	fx.clear();
+	_fx.clear();
 	
 	Mix_CloseAudio();
 	Mix_Quit();
@@ -55,8 +55,49 @@ bool ModuleAudio::cleanUp()
 	return true;
 }
 
-bool ModuleAudio::PlayMusic(const std::string&, float ) const
+bool ModuleAudio::PlayMusic(const std::string& path, float fadeTime)
 {
+	if (_music)
+	{
+		if (fadeTime > 0.0f)
+		{
+			Mix_FadeOutMusic(static_cast<int>(fadeTime * 1000.0f));
+		}
+		else
+		{
+			Mix_HaltMusic();
+		}
+		// this call blocks until fade out is completed. Search a workaround
+		Mix_FreeMusic(_music);
+	}
+
+	_music = Mix_LoadMUS(path.c_str());
+
+	if (_music == nullptr)
+	{
+		Utils::log("Couldn't load music track %s. Error was: %s\n", path.c_str(), Mix_GetError());
+		return false;
+	}
+
+	int loops = -1; // always loop
+	if (fadeTime > 0.0f)
+	{
+		if (Mix_FadeInMusic(_music, loops, fadeTime) < 0)
+		{
+			Utils::log("Couldn't fade in music track %s. Error was: %s\n", path.c_str(), Mix_GetError());
+			return false;
+		}
+		else
+		{
+			if (Mix_PlayMusic(_music, loops) < 0)
+			{
+				Utils::log("Couldn't start music track %s. Error was: %s\n", path.c_str(), Mix_GetError());
+				return false;
+			}
+		}
+	}
+
+	Utils::log("Successfully playing music track %s\n", path.c_str()); 
 	return true;
 }
 
