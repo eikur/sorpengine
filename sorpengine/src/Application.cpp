@@ -5,6 +5,7 @@
 #include "ModuleInput.hpp"
 #include "ModuleAudio.hpp"
 #include "ModuleScene.hpp"
+#include "Shaders\ShaderManager.hpp"
 #include <algorithm>
 
 namespace 
@@ -30,6 +31,8 @@ Application::Application()
 	_modules.push_back(std::make_unique<ModuleInput>());
 	_modules.push_back(std::make_unique<ModuleAudio>());
 	_modules.push_back(std::make_unique<ModuleScene>());
+
+	_shaderManager = std::make_unique<ShaderManager>();
 }
 
 Application::~Application()
@@ -39,6 +42,9 @@ Application::~Application()
 		delete module.get();
 		module.release();
 	}
+
+	delete _shaderManager.get();
+	_shaderManager.release();
 }
 
 bool Application::Init()
@@ -91,6 +97,8 @@ bool Application::CleanUp()
 	for (auto& it = activeModules.rbegin(); it != activeModules.rend() && ret; ++it)
 		ret = (*it)->cleanUp();
 
+	_shaderManager.get()->CleanUp();
+
 	return ret;
 }
 
@@ -123,4 +131,9 @@ template <>
 ModuleScene& Application::getModule() const
 {
 	return *static_cast<ModuleScene*>(findModule(Module::Type::Scene));
+}
+
+ShaderManager& Application::getShaderManager() const
+{
+	return *_shaderManager.get();
 }

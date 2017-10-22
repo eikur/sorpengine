@@ -6,6 +6,8 @@
 #include "Globals.hpp"
 #include "Module.hpp"
 
+class ShaderManager;
+
 class Application
 {
 public:
@@ -18,11 +20,13 @@ public:
 
 	template <class T>
 	T& getModule() const;
+	ShaderManager& getShaderManager() const;
 
 private:
 	Module* findModule(Module::Type type) const;
 
 	std::vector<std::unique_ptr<Module>> _modules;
+	std::unique_ptr<ShaderManager> _shaderManager;
 };
 
 extern Application* App;

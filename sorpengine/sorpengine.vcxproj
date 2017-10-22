@@ -124,6 +124,7 @@
     <ClCompile Include="src\ModuleInput.cpp" />
     <ClCompile Include="src\ModuleScene.cpp" />
     <ClCompile Include="src\ModuleWindow.cpp" />
+    <ClCompile Include="src\Shaders\ShaderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.hpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="src\ModuleScene.hpp" />
     <ClInclude Include="src\ModuleWindow.hpp" />
     <ClInclude Include="src\Point.hpp" />
+    <ClInclude Include="src\Shaders\ShaderManager.hpp" />
     <ClInclude Include="src\Utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
