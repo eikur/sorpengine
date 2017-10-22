@@ -11,10 +11,10 @@ class Module
 	public:
 		enum class Type
 		{
-			Window,
-			Input,
 			Audio,
-			Scene
+			Input,
+			Scene,
+			Window
 		};
 
 		Module(Type type, bool active = true) : _type(type),_active(active){}

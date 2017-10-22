@@ -20,7 +20,7 @@ public:
 	bool PlayMusic(const std::string& path, float fadeTime = kFadeTimeDefault);
 
 	int LoadFx(const std::string& path);
-	bool PlayFx(int fx, int repeatTimes = 0) const;
+	bool PlayFx(int id, int repeatTimes = 0) const;
 
 private:
 	Mix_Music* _music = nullptr;

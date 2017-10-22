@@ -101,12 +101,31 @@ bool ModuleAudio::PlayMusic(const std::string& path, float fadeTime)
 	return true;
 }
 
-int ModuleAudio::LoadFx(const std::string& )
+int ModuleAudio::LoadFx(const std::string& path)
 {
-	return 0;
+	int ret = 0;
+	Mix_Chunk* chunk = Mix_LoadWAV(path.c_str());
+
+	if (chunk == nullptr)
+	{
+		Utils::log("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
+	}
+	else
+	{
+		_fx.push_back(chunk);
+		ret = _fx.size() - 1;
+	}
+
+	return ret;
 }
 
-bool ModuleAudio::PlayFx(int, int) const
+bool ModuleAudio::PlayFx(int id, int repeatTimes) const
 {
-	return true;
+	if (id < _fx.size())
+	{
+		Mix_PlayChannel(-1, _fx.at(id), repeatTimes);
+		return true;
+	}
+
+	return false;
 }
