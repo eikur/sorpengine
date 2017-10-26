@@ -3,7 +3,14 @@
 #include "ShaderManager.hpp"
 #include "Utils.hpp"
 
-int ShaderManager::Load(const char* name, const char* vertex_shader_name, const char* fragment_shader_name)
+bool ShaderManager::init()
+{
+	// to be done when reading from config / custom shaders used
+	int program = Load("test1", "resources/shaders/test1.vsh", "resources/shaders/test1.fsh");
+	return program != 0;
+}
+
+int ShaderManager::Load(const std::string& name, const std::string& vertex_shader_name, const std::string& fragment_shader_name)
 {
 	// GLSL shader examples in www.khronos.org/opengl/wiki/Example_Code
 	std::map<std::string, int, LessString>::iterator it;
@@ -22,9 +29,9 @@ int ShaderManager::Load(const char* name, const char* vertex_shader_name, const 
 
 	GLuint program = glCreateProgram();
 
-	if (vertex_shader_name != nullptr)
+	if (!vertex_shader_name.empty())
 	{
-		fp = fopen(vertex_shader_name, "r");
+		fp = fopen(vertex_shader_name.c_str(), "r");
 		if (fp == nullptr) {
 			Utils::log("Error opening file: %s\n", strerror(errno));
 		}
@@ -65,9 +72,9 @@ int ShaderManager::Load(const char* name, const char* vertex_shader_name, const 
 		}
 	}
 
-	if (fragment_shader_name != nullptr)
+	if (!fragment_shader_name.empty())
 	{
-		fp = fopen(fragment_shader_name, "r");
+		fp = fopen(fragment_shader_name.c_str(), "r");
 		if (fp == nullptr) {
 			Utils::log("Error opening file: %s\n", strerror(errno));
 		}
@@ -135,17 +142,19 @@ int ShaderManager::Load(const char* name, const char* vertex_shader_name, const 
 
 void ShaderManager::CleanUp() {}
 
-int	ShaderManager::GetUniformLocation(const char* name, const char* uniform) 
+int	ShaderManager::GetUniformLocation(const std::string& program, const std::string& uniform) const
 {
-	//TODO
-	return 0;
+	auto it = programs.find(program.c_str());
+	if (it == programs.end())
+	{
+		return 0;
+	}
+	return glGetUniformLocation((*it).second, uniform.c_str());
 }
 
-void ShaderManager::UseProgram(const char* name) 
+void ShaderManager::UseProgram(const std::string& name) 
 {
-	std::map<std::string, int, LessString>::iterator it;
-
-	it = programs.find(name);
+	auto it = programs.find(name.c_str());
 	if (it == programs.end())
 	{
 		return;

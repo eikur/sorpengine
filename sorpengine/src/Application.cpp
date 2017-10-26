@@ -5,7 +5,7 @@
 #include "ModuleInput.hpp"
 #include "ModuleAudio.hpp"
 #include "ModuleScene.hpp"
-#include "Shaders\ShaderManager.hpp"
+#include "ShaderManager.hpp"
 #include <algorithm>
 
 namespace 
@@ -60,6 +60,8 @@ bool Application::Init()
 	{
 		ret = ret && module->start();
 	}
+
+	_shaderManager->init();
 
 	return ret;
 }

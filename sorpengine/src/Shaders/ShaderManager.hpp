@@ -26,11 +26,12 @@ public:
 	ShaderManager() {}
 	~ShaderManager() = default;
 
-	int Load(const char* name, const char* vertex_shader, const char* fragment_shader);
+	bool init();
+	int Load(const std::string& name, const std::string& vertex_shader, const std::string& fragment_shader);
 	void CleanUp();
 
-	int	GetUniformLocation(const char* name, const char* uniform);
-	void UseProgram(const char* name);
+	int	GetUniformLocation(const std::string& program, const std::string& uniform) const;
+	void UseProgram(const std::string& name);
 	void UnuseProgram();
 
 	static ShaderManager* GetInstance();
