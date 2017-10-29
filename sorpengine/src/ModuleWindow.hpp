@@ -26,6 +26,8 @@ class ModuleWindow : public Module
 		const iPoint& getWindowSize() const;
 	
 	private:
+		void updateViewport();
+
 		SDL_Window* _sdlWindow = nullptr;
 		SDL_Surface* _sdlSurface = nullptr;
 		SDL_Renderer* _sdlRenderer = nullptr;
@@ -34,6 +36,7 @@ class ModuleWindow : public Module
 		bool _fullScreen = false;
 		bool _resizable = true;
 		bool _vsync = true;
+		bool _isDirty = false;
 
 		iPoint _windowSize = { 600, 480 };
 };

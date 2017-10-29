@@ -7,7 +7,7 @@
 
 class ShaderManager
 {
-	const char* output_file = "shader_log.txt";
+	const std::string& kOutputFile = "shader_log.txt";
 
 	struct LessString
 	{
@@ -36,5 +36,5 @@ public:
 
 	static ShaderManager* GetInstance();
 
-	void PrintErrorLog(const char* header, const std::vector<GLchar> &log_to_print) const;
+	void PrintErrorLog(const std::string& header, const std::vector<GLchar> &log_to_print) const;
 };

@@ -173,12 +173,12 @@ ShaderManager* ShaderManager::GetInstance()
 	return nullptr;
 }
 
-void ShaderManager::PrintErrorLog(const char* header, const std::vector<GLchar> &log_to_print) const
+void ShaderManager::PrintErrorLog(const std::string& header, const std::vector<GLchar> &log_to_print) const
 {
 	std::ofstream output;
-	output.open(output_file, std::ios::out | std::ios::trunc);
+	output.open(kOutputFile, std::ios::out | std::ios::trunc);
 	output << "------------------------------------" << std::endl;
-	output << header << std::endl;
+	output << header.c_str() << std::endl;
 	output << "------------------------------------" << std::endl;
 	for (std::vector<GLchar>::const_iterator it = log_to_print.cbegin(); it != log_to_print.cend(); ++it)
 		output << (*it);

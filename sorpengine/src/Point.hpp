@@ -71,9 +71,22 @@ public:
 	}
 
 private:
-	bool compareValue(T a, T b) const
+	template< class T >
+	bool compareValue(T a, T b) const 
+	{ 
+		return false; 
+	}
+
+	template<>
+	bool compareValue(float a, float b) const
 	{
-		return abs(T) <= std::numeric_limits<T>::epsilon() ? true : false;
+		return (abs(T) <= std::numeric_limits<T>::epsilon()) ? true : false;
+	}
+
+	template<>
+	bool compareValue(int a, int b) const
+	{
+		return a == b;
 	}
 };
 

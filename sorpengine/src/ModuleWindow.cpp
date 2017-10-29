@@ -75,6 +75,8 @@ bool ModuleWindow::init()
 		return false;
 	}
 
+	_isDirty = true;
+
 	return true;
 }
 
@@ -88,6 +90,10 @@ UpdateStatus ModuleWindow::preUpdate()
 
 UpdateStatus ModuleWindow::update(float)
 {
+	if (_isDirty)
+	{
+		updateViewport();
+	}
 	return UpdateStatus::Continue;
 }
 
@@ -117,10 +123,21 @@ bool ModuleWindow::cleanUp()
 
 void ModuleWindow::setWindowSize(const iPoint& newSize)
 {
+	if (_windowSize == newSize)
+	{
+		return;
+	}
 	_windowSize = newSize;
+	_isDirty = true;
 }
 
 const iPoint& ModuleWindow::getWindowSize() const
 {
 	return _windowSize;
+}
+
+void ModuleWindow::updateViewport()
+{
+	glViewport(0, 0, _windowSize.x, _windowSize.y);
+	_isDirty = false;
 }
