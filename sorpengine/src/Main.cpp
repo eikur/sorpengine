@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "SDL/include/SDL.h"
+#include "MathGeoLib\include\MathGeoLib.h"
 
 #ifdef _MSC_VER
 #	pragma comment(lib, "3rdparty/SDL/libx86/SDL2.lib")
@@ -14,10 +15,12 @@
 #		pragma comment( lib, "3rdparty/glew-2.0.0/libx86/deb/glew32d.lib" )
 #		pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #		pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
+#		pragma comment( lib, "3rdparty/MathGeoLib/libx86/deb/MathGeoLib.lib" )
 #	else // RELEASE
 #		pragma comment( lib, "3rdparty/glew-2.0.0/libx86/rel/glew32.lib" )
 #		pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #		pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
+#		pragma comment( lib, "3rdparty/MathGeoLib/libx86/rel/MathGeoLib.lib" )
 #	endif
 #endif
 

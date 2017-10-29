@@ -31,7 +31,7 @@ UpdateStatus ModuleScene::update(float)
 	glVertex3f(-w, -w, -z);
 	glVertex3f(-w, w, -z);
 	glEnd();
-		
+	
 	App->getShaderManager().UseProgram("test1");
 	return UpdateStatus::Continue;
 }
