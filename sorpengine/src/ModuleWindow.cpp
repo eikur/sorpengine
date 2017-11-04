@@ -3,7 +3,9 @@
 #include "Utils.hpp"
 #include "glew-2.0.0/include/GL/glew.h"
 
-ModuleWindow::ModuleWindow(bool active): Module(Module::Type::Window, active) {}
+ModuleWindow::ModuleWindow(bool active): Module(Module::Type::Window, active) {
+	_camera = std::make_unique<Camera>();
+}
 
 bool ModuleWindow::init()
 {
@@ -75,6 +77,7 @@ bool ModuleWindow::init()
 		return false;
 	}
 
+	_camera->Init();
 	_isDirty = true;
 
 	return true;
@@ -83,6 +86,11 @@ bool ModuleWindow::init()
 
 UpdateStatus ModuleWindow::preUpdate()
 {
+	glViewport(0, 0, _windowSize.x, _windowSize.y);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(_camera->GetViewMatrix().ptr());
+
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	return UpdateStatus::Continue;
@@ -92,7 +100,7 @@ UpdateStatus ModuleWindow::update(float)
 {
 	if (_isDirty)
 	{
-		updateViewport();
+		updateWindow();
 	}
 	return UpdateStatus::Continue;
 }
@@ -136,8 +144,23 @@ const iPoint& ModuleWindow::getWindowSize() const
 	return _windowSize;
 }
 
-void ModuleWindow::updateViewport()
+void ModuleWindow::updateWindow()
 {
 	glViewport(0, 0, _windowSize.x, _windowSize.y);
+	getCamera().SetAspectRatio(getWindowAspectRatio());
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(_camera->GetProjectionMatrix().ptr());
+	glMatrixMode(GL_MODELVIEW);
+	
 	_isDirty = false;
+}
+
+float ModuleWindow::getWindowAspectRatio() const
+{
+	return (float)_windowSize.x / (float)_windowSize.y;
+}
+
+Camera& ModuleWindow::getCamera()
+{
+	return *_camera.get();
 }

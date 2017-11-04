@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Camera.hpp"
 #include "Module.hpp"
 #include "Point.hpp"
 #include "SDL/include/SDL.h"
+#include <memory>
 
 struct SDL_Window;
 struct SDL_Surface;
@@ -24,14 +26,20 @@ class ModuleWindow : public Module
 
 		void setWindowSize(const iPoint& newSize);
 		const iPoint& getWindowSize() const;
-	
+		float getWindowAspectRatio() const;
+		
+		Camera& getCamera();
+
 	private:
-		void updateViewport();
+		void updateWindow();
 
 		SDL_Window* _sdlWindow = nullptr;
 		SDL_Surface* _sdlSurface = nullptr;
 		SDL_Renderer* _sdlRenderer = nullptr;
 		SDL_GLContext _glContext;
+
+		std::unique_ptr<Camera> _camera;
+
 
 		bool _fullScreen = false;
 		bool _resizable = true;

@@ -31,8 +31,5 @@ void main()
 
 	gl_FragColor = vec4( vec3( color*0.8, color*0.8, 0), 1.0 );
 	*/
-	if (gl_FragCoord.x < 1 )
-		gl_FragColor = vec4(0,0,0,0);
-	else
-	gl_FragColor = vec4(gl_FragCoord.xyz,1.0);
+	gl_FragColor = vec4(gl_FragCoord.xy,0,1.0);
 }
