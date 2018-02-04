@@ -1,63 +1,85 @@
 #include "SceneManager.hpp"
-#include "Application.hpp"
-#include "ModuleInput.hpp"
-#include "ModuleWindow.hpp"
-#include "ShaderManager.hpp"
-#include "Utils.hpp"
-#include "Camera.hpp"
+#include "Scene.hpp"
 
-SceneManager::SceneManager(bool active) : Module(active) {}
+SceneManager::SceneManager(bool active) : Module(active) 
+{
+	_sceneTest = std::make_unique<Scene>(*this);
+}
 
 bool SceneManager::init()
 {
+	getSceneTest().start();
+	swapScene(SceneId::SceneTest);
 	return true;
 }
 
 UpdateStatus SceneManager::preUpdate()
 {
+	if (_currentScene)
+	{
+		_currentScene->preUpdate();
+	}
 	return UpdateStatus::Continue;
 }
 
-UpdateStatus SceneManager::update(float)
+UpdateStatus SceneManager::update(float dt)
 {
-	auto& inputModule = App->getInput();	 
-	if (inputModule.getKey(SDL_SCANCODE_ESCAPE))
+	if (_currentScene)
 	{
-		return UpdateStatus::Stop;
+		_currentScene->update(dt);
 	}
-	float z = 0.8f;
-	float w = 1.0f;
-
-	glBegin(GL_POLYGON);
-	glVertex3f(w/2, w/2, -z);
-	glVertex3f(w/2, -w/2, -z);
-	glVertex3f(-w/2, -w/2, -z);
-	glVertex3f(-w/2, w/2, -z);
-	glEnd();
-	
-//	App->getShaderManager().UseProgram("test1");
-
-	Camera& cam = App->getWindow().getCamera();
-	float3 pos = cam.GetPosition();
-	if (inputModule.getKey(SDL_SCANCODE_UP))
+	if (isInTransition())
 	{
-		pos -= float3::unitZ * 0.02f;
-		cam.SetPosition(pos);
-	}
-	else if (inputModule.getKey(SDL_SCANCODE_DOWN))
-	{
-		pos += float3::unitZ * 0.02f;
-		cam.SetPosition(pos);
+		updateTransition(dt);
 	}
 	return UpdateStatus::Continue;
+
+
+
+
 }
 
 UpdateStatus SceneManager::postUpdate()
 {
+	if (_currentScene)
+	{
+		_currentScene->postUpdate();
+	}
 	return UpdateStatus::Continue;
 }
 
 bool SceneManager::cleanUp()
 {
 	return true;
+}
+
+void SceneManager::swapScene(SceneId sceneId, float duration)
+{
+	if (_inTransition)
+	{
+		return;
+	}
+
+	switch (sceneId)
+	{
+	case SceneId::SceneTest:
+		_nextScene = &getSceneTest();
+		break;
+	}
+	// TODO: update Transitions
+	/*_transitionDuration = duration * 0.5f;
+	_transitionTime = _transitionDuration;
+	_inTransition = true;*/
+	_currentScene = _nextScene;
+	_nextScene = nullptr;
+}
+
+bool SceneManager::isInTransition() const
+{
+	return _inTransition;
+}
+
+void SceneManager::updateTransition(float dt)
+{
+// TODO
 }

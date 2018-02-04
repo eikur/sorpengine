@@ -63,6 +63,9 @@
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>Source Files\Core Modules</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MemLeaks.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="src\SceneManager.hpp">
       <Filter>Source Files\Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

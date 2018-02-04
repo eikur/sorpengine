@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 // Defines a unique ptr of a class member, and its getter
 #define MEMBER_DECL( _CLASS_, _NAME_, _GETTER_ )	\
@@ -38,6 +39,16 @@
 #define MEMBER_GET( _CLASS_, _NAME_, _GETTER_)	\
 		private:								\
 			_CLASS_ _NAME_;	\
+		public:									\
+			_CLASS_& _GETTER_()	\
+			{							\
+				return _NAME_;	\
+			} 
+
+// Defines a member, its const getter 
+#define MEMBER_REF_GET( _CLASS_, _NAME_, _GETTER_)	\
+		private:								\
+			_CLASS_& _NAME_;	\
 		public:									\
 			_CLASS_& _GETTER_()	\
 			{							\

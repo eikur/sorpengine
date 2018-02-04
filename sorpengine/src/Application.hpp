@@ -31,7 +31,6 @@ private:
 	MEMBER_DECL(SceneManager, _sceneManager, getSceneManager)
 
 	MEMBER_DECL(ShaderManager, _shaderManager, getShaderManager)
-
 };
 
 extern Application* App;
