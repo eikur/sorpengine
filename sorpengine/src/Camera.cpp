@@ -27,7 +27,7 @@ const float4x4& Camera::GetViewMatrix() const
 void Camera::SetFOV(float verticalFOV)
 {
 	_verticalFOV = verticalFOV;
-	SetAspectRatio(App->getModule<ModuleWindow>().getWindowAspectRatio());
+	SetAspectRatio(App->getWindow().getWindowAspectRatio());
 	_frustum.SetVerticalFovAndAspectRatio(DegToRad(verticalFOV), _aspectRatio);
 }
 

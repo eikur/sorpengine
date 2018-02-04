@@ -123,7 +123,7 @@
     <ClCompile Include="src\Module.cpp" />
     <ClCompile Include="src\ModuleAudio.cpp" />
     <ClCompile Include="src\ModuleInput.cpp" />
-    <ClCompile Include="src\ModuleScene.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\ModuleWindow.cpp" />
     <ClCompile Include="src\Shaders\ShaderManager.cpp" />
   </ItemGroup>
@@ -137,11 +137,12 @@
     <ClInclude Include="src\Module.hpp" />
     <ClInclude Include="src\ModuleAudio.hpp" />
     <ClInclude Include="src\ModuleInput.hpp" />
-    <ClInclude Include="src\ModuleScene.hpp" />
+    <ClInclude Include="src\SceneManager.hpp" />
     <ClInclude Include="src\ModuleWindow.hpp" />
     <ClInclude Include="src\Point.hpp" />
     <ClInclude Include="src\Shaders\ShaderManager.hpp" />
     <ClInclude Include="src\Utils.hpp" />
+    <ClInclude Include="src\Utils\Macros.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

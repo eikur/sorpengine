@@ -76,7 +76,7 @@ UpdateStatus ModuleInput::preUpdate()
 				switch (sdlEvent.window.event)
 				{
 				case SDL_WINDOWEVENT_SIZE_CHANGED:
-					App->getModule<ModuleWindow>().setWindowSize({ static_cast<int>(sdlEvent.window.data1), static_cast<int>(sdlEvent.window.data2) });
+					App->getWindow().setWindowSize({ static_cast<int>(sdlEvent.window.data1), static_cast<int>(sdlEvent.window.data2) });
 					break;
 				}
 				break;

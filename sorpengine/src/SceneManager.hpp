@@ -1,11 +1,11 @@
 #pragma once
 #include "Module.hpp"
 
-class ModuleScene : public Module
+class SceneManager : public Module
 {
 public:
-	ModuleScene(bool active = true);
-	virtual ~ModuleScene() {}
+	SceneManager(bool active = true);
+	virtual ~SceneManager() {}
 
 	bool init() override;
 	UpdateStatus preUpdate() override;

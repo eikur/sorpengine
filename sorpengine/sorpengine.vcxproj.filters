@@ -51,9 +51,6 @@
     <ClCompile Include="src\ModuleAudio.cpp">
       <Filter>Source Files\Core Modules</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModuleScene.cpp">
-      <Filter>Source Files\Core Modules</Filter>
-    </ClCompile>
     <ClCompile Include="src\Model\Model.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
@@ -62,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp">
+      <Filter>Source Files\Core Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +81,6 @@
       <Filter>Source Files\Main</Filter>
     </ClInclude>
     <ClInclude Include="src\ModuleWindow.hpp">
-      <Filter>Source Files\Core Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ModuleScene.hpp">
       <Filter>Source Files\Core Modules</Filter>
     </ClInclude>
     <ClInclude Include="src\ModuleInput.hpp">
@@ -106,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="src\Camera.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\Macros.hpp">
+      <Filter>Source Files\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager.hpp">
+      <Filter>Source Files\Core Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

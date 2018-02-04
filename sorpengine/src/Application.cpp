@@ -4,13 +4,13 @@
 #include "ModuleWindow.hpp"
 #include "ModuleInput.hpp"
 #include "ModuleAudio.hpp"
-#include "ModuleScene.hpp"
+#include "SceneManager.hpp"
 #include "ShaderManager.hpp"
 #include <algorithm>
 
 namespace 
 {
-	const std::vector<Module*> getActiveModules(const std::vector<std::unique_ptr<Module>>& allModules)
+	const std::vector<Module*> getActiveModules(const std::vector<Module*>& allModules)
 	{
 		std::vector<Module*> activeModules;
 
@@ -27,24 +27,23 @@ namespace
 
 Application::Application()
 {
-	_modules.push_back(std::make_unique<ModuleWindow>());
-	_modules.push_back(std::make_unique<ModuleInput>());
-	_modules.push_back(std::make_unique<ModuleAudio>());
-	_modules.push_back(std::make_unique<ModuleScene>());
+	_window = std::make_unique<ModuleWindow>();
+	_input = std::make_unique<ModuleInput>();
+	_audio = std::make_unique<ModuleAudio>();
+	_sceneManager = std::make_unique<SceneManager>();
 
+	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get() };
 	_shaderManager = std::make_unique<ShaderManager>();
 }
 
 Application::~Application()
 {
-	for (auto& module : _modules)
-	{
-		delete module.get();
-		module.release();
-	}
+	_window.reset();
+	_input.reset();
+	_audio.reset();
+	_sceneManager.reset();
 
-	delete _shaderManager.get();
-	_shaderManager.release();
+	_shaderManager.reset();
 }
 
 bool Application::Init()
@@ -102,40 +101,4 @@ bool Application::CleanUp()
 	_shaderManager.get()->CleanUp();
 
 	return ret;
-}
-
-//-----------------------
-Module* Application::findModule(Module::Type type) const
-{
-	auto it = std::find_if(_modules.begin(), _modules.end(), [type](const std::unique_ptr<Module>& uniquePtr) {return uniquePtr.get()->getType() == type; });
-	return (*it).get();
-}
-
-template <>
-ModuleWindow& Application::getModule() const
-{
-	return *static_cast<ModuleWindow*>(findModule(Module::Type::Window));
-}
-
-template <>
-ModuleInput& Application::getModule() const
-{
-	return *static_cast<ModuleInput*>(findModule(Module::Type::Input));
-}
-
-template <>
-ModuleAudio& Application::getModule() const
-{
-	return *static_cast<ModuleAudio*>(findModule(Module::Type::Audio));
-}
-
-template <>
-ModuleScene& Application::getModule() const
-{
-	return *static_cast<ModuleScene*>(findModule(Module::Type::Scene));
-}
-
-ShaderManager& Application::getShaderManager() const
-{
-	return *_shaderManager.get();
 }

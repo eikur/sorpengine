@@ -1,4 +1,4 @@
-#include "ModuleScene.hpp"
+#include "SceneManager.hpp"
 #include "Application.hpp"
 #include "ModuleInput.hpp"
 #include "ModuleWindow.hpp"
@@ -6,21 +6,21 @@
 #include "Utils.hpp"
 #include "Camera.hpp"
 
-ModuleScene::ModuleScene(bool active) : Module(Module::Type::Scene, active) {}
+SceneManager::SceneManager(bool active) : Module(Module::Type::Scene, active) {}
 
-bool ModuleScene::init()
+bool SceneManager::init()
 {
 	return true;
 }
 
-UpdateStatus ModuleScene::preUpdate()
+UpdateStatus SceneManager::preUpdate()
 {
 	return UpdateStatus::Continue;
 }
 
-UpdateStatus ModuleScene::update(float)
+UpdateStatus SceneManager::update(float)
 {
-	auto& inputModule = App->getModule<ModuleInput>();	 
+	auto& inputModule = App->getInput();	 
 	if (inputModule.getKey(SDL_SCANCODE_ESCAPE))
 	{
 		return UpdateStatus::Stop;
@@ -37,7 +37,7 @@ UpdateStatus ModuleScene::update(float)
 	
 //	App->getShaderManager().UseProgram("test1");
 
-	Camera& cam = App->getModule<ModuleWindow>().getCamera();
+	Camera& cam = App->getWindow().getCamera();
 	float3 pos = cam.GetPosition();
 	if (inputModule.getKey(SDL_SCANCODE_UP))
 	{
@@ -52,12 +52,12 @@ UpdateStatus ModuleScene::update(float)
 	return UpdateStatus::Continue;
 }
 
-UpdateStatus ModuleScene::postUpdate()
+UpdateStatus SceneManager::postUpdate()
 {
 	return UpdateStatus::Continue;
 }
 
-bool ModuleScene::cleanUp()
+bool SceneManager::cleanUp()
 {
 	return true;
 }

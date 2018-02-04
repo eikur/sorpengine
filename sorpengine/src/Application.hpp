@@ -5,7 +5,12 @@
 #include <vector>
 #include "Globals.hpp"
 #include "Module.hpp"
+#include "Utils/Macros.hpp"
 
+class ModuleWindow;
+class ModuleInput;
+class ModuleAudio;
+class SceneManager;
 class ShaderManager;
 
 class Application
@@ -18,15 +23,15 @@ public:
 	UpdateStatus Update();
 	bool CleanUp();
 
-	template <class T>
-	T& getModule() const;
-	ShaderManager& getShaderManager() const;
-
 private:
-	Module* findModule(Module::Type type) const;
+	std::vector<Module*> _modules;
+	MEMBER_DECL(ModuleWindow, _window, getWindow)
+	MEMBER_DECL(ModuleInput, _input, getInput)
+	MEMBER_DECL(ModuleAudio, _audio, getAudio)
+	MEMBER_DECL(SceneManager, _sceneManager, getSceneManager)
 
-	std::vector<std::unique_ptr<Module>> _modules;
-	std::unique_ptr<ShaderManager> _shaderManager;
+	MEMBER_DECL(ShaderManager, _shaderManager, getShaderManager)
+
 };
 
 extern Application* App;
