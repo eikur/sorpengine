@@ -95,8 +95,10 @@ bool Application::CleanUp()
 
 	const std::vector<Module*>& activeModules = getActiveModules(_modules);
 
-	for (auto& it = activeModules.rbegin(); it != activeModules.rend() && ret; ++it)
+	for (auto it = activeModules.rbegin(); it != activeModules.rend() && ret; ++it)
+	{
 		ret = (*it)->cleanUp();
+	}
 
 	_shaderManager.get()->CleanUp();
 

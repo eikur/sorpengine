@@ -5,7 +5,7 @@
 
 float ModuleAudio::kFadeTimeDefault = 2.0f;
 
-ModuleAudio::ModuleAudio(bool active) : Module(Module::Type::Audio, active) {}
+ModuleAudio::ModuleAudio(bool active) : Module(active) {}
 
 bool ModuleAudio::init() 
 {

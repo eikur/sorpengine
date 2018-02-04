@@ -44,8 +44,4 @@ bool Module::cleanUp()
 	return true;
 }
 
-Module::Type Module::getType() const
-{
-	return _type;
-}
 

@@ -6,7 +6,7 @@
 #include "Utils.hpp"
 #include "Camera.hpp"
 
-SceneManager::SceneManager(bool active) : Module(Module::Type::Scene, active) {}
+SceneManager::SceneManager(bool active) : Module(active) {}
 
 bool SceneManager::init()
 {

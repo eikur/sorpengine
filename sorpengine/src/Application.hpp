@@ -5,7 +5,7 @@
 #include <vector>
 #include "Globals.hpp"
 #include "Module.hpp"
-#include "Utils/Macros.hpp"
+#include "Macros.hpp"
 
 class ModuleWindow;
 class ModuleInput;

@@ -5,7 +5,7 @@
 #include "SDL/include/SDL.h"
 
 ModuleInput::ModuleInput(bool active) 
-	: Module(Module::Type::Input, active)
+	: Module(active)
 {
 	_keyboard = new KeyState[numKeys];
 	_mouseButtons = new KeyState[numMouseButttons];

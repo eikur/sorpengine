@@ -9,15 +9,7 @@
 class Module
 {
 	public:
-		enum class Type
-		{
-			Audio,
-			Input,
-			Scene,
-			Window
-		};
-
-		Module(Type type, bool active = true) : _type(type),_active(active){}
+		Module(bool active = true) : _active(active){}
 		virtual ~Module() {}
 
 		bool isActive() const;
@@ -30,10 +22,6 @@ class Module
 		virtual UpdateStatus postUpdate();
 		virtual bool cleanUp();
 
-		Module::Type getType() const;
-
 	private:
 		bool _active = true;
-		Type _type;
-
 };
