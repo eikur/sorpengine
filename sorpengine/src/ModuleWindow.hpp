@@ -3,7 +3,7 @@
 #include "Camera.hpp"
 #include "Module.hpp"
 #include "Point.hpp"
-#include "SDL/include/SDL.h"
+#include "SDL.h"
 #include <memory>
 
 struct SDL_Window;

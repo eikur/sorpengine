@@ -2,7 +2,6 @@
 
 #include <windows.h>
 #include <stdio.h>
-#include "Globals.hpp"
 
 namespace
 {

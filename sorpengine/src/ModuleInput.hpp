@@ -1,6 +1,6 @@
 #pragma once
 #include "Module.hpp"
-#include "SDL/include/SDL_scancode.h"
+#include "SDL_scancode.h"
 #include "Point.hpp"
 #include <map>
 

@@ -4,8 +4,8 @@
 #include "MemLeaks.h"
 #include <stdlib.h>
 
-#include "SDL/include/SDL.h"
-#include "MathGeoLib\include\MathGeoLib.h"
+#include "SDL.h"
+#include "MathGeoLib.h"
 
 #ifdef _MSC_VER
 #	pragma comment(lib, "3rdparty/SDL/libx86/SDL2.lib")

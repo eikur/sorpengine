@@ -1,7 +1,7 @@
 #include "ModuleWindow.hpp"
 #include "Globals.hpp"
 #include "Utils.hpp"
-#include "glew-2.0.0/include/GL/glew.h"
+#include "GL/glew.h"
 
 ModuleWindow::ModuleWindow(bool active): Module(active) {
 	_camera = std::make_unique<Camera>();

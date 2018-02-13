@@ -2,7 +2,7 @@
 #include "ModuleWindow.hpp"
 #include "Utils.hpp"
 #include "Application.hpp"
-#include "SDL/include/SDL.h"
+#include "SDL.h"
 
 ModuleInput::ModuleInput(bool active) 
 	: Module(active)

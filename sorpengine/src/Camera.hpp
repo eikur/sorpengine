@@ -1,5 +1,5 @@
 #pragma once
-#include "MathGeoLib\include\MathGeoLib.h"
+#include "MathGeoLib.h"
 
 class Camera
 {

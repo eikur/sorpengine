@@ -68,13 +68,15 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\MathGeoLib\libx86\rel;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\DevIL\libx86\Release;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)/src/Utils;$(SolutionDir)/src/shaders;$(SolutionDir)/resources;$(SolutionDir)/src;$(SolutionDir)/3rdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\SDL_mixer\include;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\SDL_image\include;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\SDL\include;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\DevIL\include;$(SolutionDir)/src/Utils;$(SolutionDir)/src/shaders;$(SolutionDir)/resources;$(SolutionDir)/src;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\glew-2.0.0\include;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\MathGeoLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -127,6 +129,7 @@
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\ModuleWindow.cpp" />
     <ClCompile Include="src\Shaders\ShaderManager.cpp" />
+    <ClCompile Include="src\Utils\TextureHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.hpp" />
@@ -145,6 +148,7 @@
     <ClInclude Include="src\Shaders\ShaderManager.hpp" />
     <ClInclude Include="src\Utils.hpp" />
     <ClInclude Include="src\Utils\Macros.hpp" />
+    <ClInclude Include="src\Utils\TextureHelper.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
