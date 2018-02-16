@@ -4,6 +4,7 @@
 #include "ModuleWindow.hpp"
 #include "ModuleInput.hpp"
 #include "ModuleAudio.hpp"
+#include "TextureHelper.hpp"
 #include "SceneManager.hpp"
 #include "ShaderManager.hpp"
 #include <algorithm>
@@ -34,6 +35,7 @@ Application::Application()
 
 	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get() };
 	_shaderManager = std::make_unique<ShaderManager>();
+	_textureHelper = std::make_unique<TextureHelper>();
 }
 
 Application::~Application()
@@ -61,6 +63,7 @@ bool Application::Init()
 	}
 
 	_shaderManager->init();
+	_textureHelper->init();
 
 	return ret;
 }
@@ -100,7 +103,8 @@ bool Application::CleanUp()
 		ret = (*it)->cleanUp();
 	}
 
-	_shaderManager.get()->CleanUp();
+	_shaderManager->finalize();
+	_textureHelper->finalize();
 
 	return ret;
 }

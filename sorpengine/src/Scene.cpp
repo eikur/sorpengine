@@ -3,9 +3,15 @@
 #include "Application.hpp"
 #include "ModuleInput.hpp"
 #include "ModuleWindow.hpp"
+#include "TextureHelper.hpp"
 #include "ShaderManager.hpp"
 #include "Utils.hpp"
 #include "Camera.hpp"
+
+namespace
+{
+	const std::string kTextureName = "resources/Lenna.png";
+}
 
 Scene::Scene(SceneManager& sceneManager) : _sceneManager(sceneManager)
 {}
@@ -17,6 +23,7 @@ bool Scene::init()
 
 bool Scene::start()
 {
+	_textureId = App->getTextureHelper().loadTexture(kTextureName);
 	return true;
 }
 
@@ -33,13 +40,14 @@ UpdateStatus Scene::update(float)
 		return UpdateStatus::Stop;
 	}
 	float z = 0.8f;
-	float w = 1.0f;
+	float w = 0.6f;
 
-	glBegin(GL_POLYGON);
-	glVertex3f(w / 2, w / 2, -z);
-	glVertex3f(w / 2, -w / 2, -z);
-	glVertex3f(-w / 2, -w / 2, -z);
-	glVertex3f(-w / 2, w / 2, -z);
+	App->getTextureHelper().useTexture(_textureId);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-w / 2, -w / 2, -z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(w / 2, -w / 2, -z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(w / 2, w / 2, -z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-w / 2, w / 2, -z);
 	glEnd();
 
 	//	App->getShaderManager().UseProgram("test1");

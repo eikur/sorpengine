@@ -18,4 +18,6 @@ public:
 
 private:
 	MEMBER_REF_GET(SceneManager, _sceneManager, getSceneManager)
+
+	int _textureId = 0;
 };

@@ -1,32 +1,88 @@
 #include "TextureHelper.hpp"
 
-#include "Utils.hpp"
+#include "DevIL/include/IL/devil_cpp_wrapper.hpp"
+#include "DevIL/include/IL/ilut.h"
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_opengl.h"
+#include "Utils.hpp"
 
-
-bool TextureHelper::init()
+void TextureHelper::init()
 {
-	return true;
+	ilInit();
+	iluInit();
+	ilutInit();
+	ilutRenderer(ILUT_OPENGL);
 }
 
-bool TextureHelper::cleanUp()
+void TextureHelper::finalize()
 {
+	for (const PTextureNameToId& kvp : _textures)
+	{
+		glDeleteTextures(1, &kvp.second);
+	}
 	_textures.clear();
-	return true;
 }
 
-int TextureHelper::loadTexture(const std::string& texture_path)
+int TextureHelper::loadTexture(const std::string& texturePath)
 {
-	return 0;
+	const auto& it = _textures.find(texturePath);
+	if (it != _textures.end())
+	{
+		return it->second;
+	}
+
+	ILuint imageId;
+	ilGenImages(1, &imageId);
+	ilBindImage(imageId);
+	if (ilLoadImage(texturePath.c_str()) == IL_FALSE)
+	{
+		Utils::log("ilLoadImage failed. Error: %s", iluErrorString(ilGetError()));
+		ilDeleteImages(1, &imageId);
+		return kInvalidTextureId;
+	}
+
+	GLuint textureId;
+	glGenTextures(1, &textureId);
+	_textures[texturePath] = textureId;
+
+	glBindTexture(GL_TEXTURE_2D, textureId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	ILinfo ImageInfo;
+	iluGetImageInfo(&ImageInfo);
+	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+	{
+		iluFlipImage();
+	}
+
+	int channels = ilGetInteger(IL_IMAGE_CHANNELS);
+	if (channels == 3)
+	{
+		ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+	}
+	else if (channels == 4)
+	{
+		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+	}
+
+	ILubyte* data = ilGetData();
+	int width = ilGetInteger(IL_IMAGE_WIDTH);
+	int height = ilGetInteger(IL_IMAGE_HEIGHT);
+	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width,
+		height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, data);
+	ilDeleteImages(1, &imageId);
+
+	return textureId;
+}
+
+void TextureHelper::useTexture(int textureId)
+{
+	glBindTexture(GL_TEXTURE_2D, textureId);
 }
 
 int TextureHelper::createCheckersTexture()
 {
-	return 0;
-}
-
-void TextureHelper::useTexture(GLuint textureId)
-{
-	glBindTexture(GL_TEXTURE_2D, textureId);
+	return kInvalidTextureId;
 }

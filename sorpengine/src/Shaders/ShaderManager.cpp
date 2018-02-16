@@ -6,11 +6,11 @@
 bool ShaderManager::init()
 {
 	// to be done when reading from config / custom shaders used
-	int program = Load("test1", "resources/shaders/test1.vsh", "resources/shaders/test1.fsh");
+	int program = load("test1", "resources/shaders/test1.vsh", "resources/shaders/test1.fsh");
 	return program != 0;
 }
 
-int ShaderManager::Load(const std::string& name, const std::string& vertex_shader_name, const std::string& fragment_shader_name)
+int ShaderManager::load(const std::string& name, const std::string& vertex_shader_name, const std::string& fragment_shader_name)
 {
 	// GLSL shader examples in www.khronos.org/opengl/wiki/Example_Code
 	std::map<std::string, int, LessString>::iterator it;
@@ -62,7 +62,7 @@ int ShaderManager::Load(const std::string& name, const std::string& vertex_shade
 				glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &maxLength);
 				std::vector<GLchar> errorLog(maxLength);
 				glGetShaderInfoLog(vertex_shader, maxLength, &maxLength, &errorLog[0]);
-				PrintErrorLog("Vertex Shader Compilation Failed", errorLog);
+				printErrorLog("Vertex Shader Compilation Failed", errorLog);
 			}
 			else
 			{
@@ -104,7 +104,7 @@ int ShaderManager::Load(const std::string& name, const std::string& vertex_shade
 				glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &maxLength);
 				std::vector<GLchar> errorLog(maxLength);
 				glGetShaderInfoLog(fragment_shader, maxLength, &maxLength, &errorLog[0]);
-				PrintErrorLog("Fragment Shader Compilation Failed", errorLog);
+				printErrorLog("Fragment Shader Compilation Failed", errorLog);
 			}
 			else
 			{
@@ -131,7 +131,7 @@ int ShaderManager::Load(const std::string& name, const std::string& vertex_shade
 		glDeleteProgram(program);
 
 		//Provide the infolog in whatever manner you deem best.
-		PrintErrorLog("Program link failed", infoLog);
+		printErrorLog("Program link failed", infoLog);
 		//Exit with failure.
 		return -1;
 	}
@@ -140,9 +140,9 @@ int ShaderManager::Load(const std::string& name, const std::string& vertex_shade
 	return program;
 }
 
-void ShaderManager::CleanUp() {}
+void ShaderManager::finalize() {}
 
-int	ShaderManager::GetUniformLocation(const std::string& program, const std::string& uniform) const
+int	ShaderManager::getUniformLocation(const std::string& program, const std::string& uniform) const
 {
 	auto it = programs.find(program.c_str());
 	if (it == programs.end())
@@ -152,7 +152,7 @@ int	ShaderManager::GetUniformLocation(const std::string& program, const std::str
 	return glGetUniformLocation((*it).second, uniform.c_str());
 }
 
-void ShaderManager::UseProgram(const std::string& name) 
+void ShaderManager::useProgram(const std::string& name) 
 {
 	auto it = programs.find(name.c_str());
 	if (it == programs.end())
@@ -163,17 +163,17 @@ void ShaderManager::UseProgram(const std::string& name)
 }
 
 
-void ShaderManager::UnuseProgram() 
+void ShaderManager::unuseProgram() 
 {
 	glUseProgram(0);
 }
 
-ShaderManager* ShaderManager::GetInstance()
+ShaderManager* ShaderManager::getInstance()
 {
 	return nullptr;
 }
 
-void ShaderManager::PrintErrorLog(const std::string& header, const std::vector<GLchar> &log_to_print) const
+void ShaderManager::printErrorLog(const std::string& header, const std::vector<GLchar> &log_to_print) const
 {
 	std::ofstream output;
 	output.open(kOutputFile, std::ios::out | std::ios::trunc);

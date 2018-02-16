@@ -27,14 +27,14 @@ public:
 	~ShaderManager() = default;
 
 	bool init();
-	int Load(const std::string& name, const std::string& vertex_shader, const std::string& fragment_shader);
-	void CleanUp();
+	int load(const std::string& name, const std::string& vertex_shader, const std::string& fragment_shader);
+	void finalize();
 
-	int	GetUniformLocation(const std::string& program, const std::string& uniform) const;
-	void UseProgram(const std::string& name);
-	void UnuseProgram();
+	int	getUniformLocation(const std::string& program, const std::string& uniform) const;
+	void useProgram(const std::string& name);
+	void unuseProgram();
 
-	static ShaderManager* GetInstance();
+	static ShaderManager* getInstance();
 
-	void PrintErrorLog(const std::string& header, const std::vector<GLchar> &log_to_print) const;
+	void printErrorLog(const std::string& header, const std::vector<GLchar> &log_to_print) const;
 };

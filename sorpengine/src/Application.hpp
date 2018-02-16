@@ -12,6 +12,7 @@ class ModuleInput;
 class ModuleAudio;
 class SceneManager;
 class ShaderManager;
+class TextureHelper;
 
 class Application
 {
@@ -31,6 +32,7 @@ private:
 	MEMBER_DECL(SceneManager, _sceneManager, getSceneManager)
 
 	MEMBER_DECL(ShaderManager, _shaderManager, getShaderManager)
+	MEMBER_DECL(TextureHelper, _textureHelper, getTextureHelper)
 };
 
 extern Application* App;

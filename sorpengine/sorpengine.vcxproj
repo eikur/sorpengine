@@ -69,18 +69,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\MathGeoLib\libx86\rel;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\DevIL\libx86\Release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\SDL_mixer\include;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\SDL_image\include;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\SDL\include;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\DevIL\include;$(SolutionDir)/src/Utils;$(SolutionDir)/src/shaders;$(SolutionDir)/resources;$(SolutionDir)/src;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\glew-2.0.0\include;C:\Users\jordi\Source\Repos\sorpengine\sorpengine\3rdparty\MathGeoLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3rdparty;$(SolutionDir)\3rdparty\glew-2.0.0\include;$(SolutionDir)\3rdparty\MathGeoLib\include;$(SolutionDir)\3rdparty\SDL_mixer\include;$(SolutionDir)\3rdparty\SDL_image\include;$(SolutionDir)\3rdparty\SDL\include;$(SolutionDir)/src;$(SolutionDir)/src/Utils;$(SolutionDir)/src/shaders;$(SolutionDir)/resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
