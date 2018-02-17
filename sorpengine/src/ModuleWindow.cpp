@@ -164,3 +164,8 @@ Camera& ModuleWindow::getCamera()
 {
 	return *_camera.get();
 }
+
+SDL_Window* ModuleWindow::getSDLWindow() const
+{
+	return _sdlWindow;
+}

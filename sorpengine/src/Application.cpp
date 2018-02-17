@@ -4,6 +4,7 @@
 #include "ModuleWindow.hpp"
 #include "ModuleInput.hpp"
 #include "ModuleAudio.hpp"
+#include "ModuleGUI.hpp"
 #include "TextureHelper.hpp"
 #include "SceneManager.hpp"
 #include "ShaderManager.hpp"
@@ -32,8 +33,9 @@ Application::Application()
 	_input = std::make_unique<ModuleInput>();
 	_audio = std::make_unique<ModuleAudio>();
 	_sceneManager = std::make_unique<SceneManager>();
+	_gui = std::make_unique<ModuleGUI>();
 
-	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get() };
+	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get(), _gui.get()};
 	_shaderManager = std::make_unique<ShaderManager>();
 	_textureHelper = std::make_unique<TextureHelper>();
 }
@@ -43,6 +45,7 @@ Application::~Application()
 	_window.reset();
 	_input.reset();
 	_audio.reset();
+	_gui.reset();
 	_sceneManager.reset();
 
 	_shaderManager.reset();

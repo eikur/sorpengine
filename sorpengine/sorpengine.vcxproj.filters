@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{bf9ea94a-fcde-4b93-91ec-b17ca8e83566}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{f381aac5-3228-4923-b044-f8a6afd482cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Module.cpp">
@@ -68,6 +71,21 @@
     </ClCompile>
     <ClCompile Include="src\Utils\TextureHelper.cpp">
       <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModuleGUI.cpp">
+      <Filter>Source Files\Core Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\ImGui\imgui.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\ImGui\imgui_demo.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\ImGui\imgui_draw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\ImGui\imgui_impl_sdl_gl3.cpp">
+      <Filter>Source Files\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +139,30 @@
     </ClInclude>
     <ClInclude Include="src\Utils\TextureHelper.hpp">
       <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModuleGUI.hpp">
+      <Filter>Source Files\Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\ImGui\imconfig.h">
+      <Filter>Source Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\ImGui\imgui.h">
+      <Filter>Source Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\ImGui\imgui_impl_sdl_gl3.h">
+      <Filter>Source Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\ImGui\imgui_internal.h">
+      <Filter>Source Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\ImGui\stb_rect_pack.h">
+      <Filter>Source Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\ImGui\stb_textedit.h">
+      <Filter>Source Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\ImGui\stb_truetype.h">
+      <Filter>Source Files\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
