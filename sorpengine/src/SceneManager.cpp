@@ -17,7 +17,7 @@ UpdateStatus SceneManager::preUpdate()
 {
 	if (_currentScene)
 	{
-		_currentScene->preUpdate();
+		return _currentScene->preUpdate();
 	}
 	return UpdateStatus::Continue;
 }
@@ -26,24 +26,21 @@ UpdateStatus SceneManager::update(float dt)
 {
 	if (_currentScene)
 	{
-		_currentScene->update(dt);
+		return _currentScene->update(dt);
 	}
-	if (isInTransition())
+	else if (isInTransition())
 	{
 		updateTransition(dt);
+		return UpdateStatus::Continue;
 	}
-	return UpdateStatus::Continue;
-
-
-
-
+	return UpdateStatus::Stop;
 }
 
 UpdateStatus SceneManager::postUpdate()
 {
 	if (_currentScene)
 	{
-		_currentScene->postUpdate();
+		return _currentScene->postUpdate();
 	}
 	return UpdateStatus::Continue;
 }

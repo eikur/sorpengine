@@ -2,14 +2,13 @@
 #include "Application.hpp"
 #include "ModuleWindow.hpp"
 
-Camera::Camera(Type type) : _type(type)
-{
-
-}
-
 void Camera::Init()
 {
-	SetType(_type);
+	SetFOV(_verticalFOV);
+	SetPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
+
+	_frustum.SetFrame(float3::zero, -float3::unitZ, float3::unitY);
+	_frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumHandedness::FrustumRightHanded);
 }
 
 const float4x4& Camera::GetProjectionMatrix() const
@@ -66,23 +65,4 @@ void Camera::LookAt(const float3& lookAtPosition)
 	float3 newFront = (lookAtPosition - _frustum.Pos()).Normalized();
 	float3 translation = newFront - _frustum.Front();
 	Orientate(newFront, _frustum.Up() + translation);
-}
-
-void Camera::SetType(Type type)
-{
-	_type = type;
-	switch (type)
-	{
-	case Type::Orthogonal:
-		// TODO 
-		break;
-	case Type::Perspective:
-		SetFOV(_verticalFOV);
-		SetPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
-
-		_frustum.SetFrame(float3::zero, -float3::unitZ, float3::unitY);
-		_frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumHandedness::FrustumRightHanded);
-
-		break;
-	}
 }

@@ -4,16 +4,6 @@
 class Camera
 {
 public:
-	enum class Type
-	{
-		Orthogonal,
-		Perspective
-	};
-
-public:
-	Camera(Type type = Type::Perspective);
-	virtual ~Camera() = default;
-
 	void Init();
 
 	const float4x4& GetProjectionMatrix() const;
@@ -27,11 +17,6 @@ public:
 	void LookAt(const float3& lookAtPosition);
 
 private:
-	void SetType(Type type);
-
-private:
-	Type _type = Type::Perspective;
-
 	Frustum _frustum;
 	float _nearPlaneDistance = 0.1f;
 	float _farPlaneDistance = 100.0f;
