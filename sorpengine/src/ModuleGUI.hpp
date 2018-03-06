@@ -18,10 +18,13 @@ public:
 	bool cleanUp() override;
 
 private:
+	void initStyle();
+
 	void draw();
 	bool showMainMenu();
 	void showAbout(bool *enabled) const;
 
+private:
 	Data _data;
 
 };
