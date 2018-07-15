@@ -1,4 +1,5 @@
 #include "GameObject.hpp"
+#include "Component.hpp"
 
 GameObject::GameObject(const std::string& name, GameObject* parent, bool active)
 	: _name(name), _parent(parent), _active(active)
@@ -37,6 +38,16 @@ void GameObject::removeChild(GameObject* child)
 	std::remove_if(_children.begin(), _children.end(), [child](const GameObject* obj) { return obj == child; });
 }
 
+void GameObject::addComponent(Component* component)
+{
+	_components.push_back(component);
+}
+
+void GameObject::removeComponent(Component* component)
+{
+	std::remove_if(_components.begin(), _components.end(), [component](Component* c) {return component == c; });
+}
+
 GameObject* GameObject::findChild(GameObject* child) const
 {
 	return *std::find_if(_children.begin(), _children.end(), [child](const GameObject* obj) { return obj == child; });
@@ -44,30 +55,60 @@ GameObject* GameObject::findChild(GameObject* child) const
 
 UpdateStatus GameObject::preUpdate()
 {
-	return UpdateStatus::Continue;
+	UpdateStatus status = UpdateStatus::Continue;
+	for (std::size_t i = 0; i < _components.size() && status == UpdateStatus::Continue; ++i)
+	{
+		status = _components.at(i)->preUpdate();
+	}
+	return status;
 }
 
-UpdateStatus GameObject::update(float)
+UpdateStatus GameObject::update(float dt)
 {
-	return UpdateStatus::Continue;
+	UpdateStatus status = UpdateStatus::Continue;
+	for (std::size_t i = 0; i < _components.size() && status == UpdateStatus::Continue; ++i)
+	{
+		status = _components.at(i)->update(dt);
+	}
+	return status;
 }
 
 UpdateStatus GameObject::postUpdate()
 {
-	return UpdateStatus::Continue;
+	UpdateStatus status = UpdateStatus::Continue;
+	for (std::size_t i = 0; i < _components.size() && status == UpdateStatus::Continue; ++i)
+	{
+		status = _components.at(i)->postUpdate();
+	}
+	return status;
 }
 
 bool GameObject::init()
 {
-	return true;
+	bool status = true;
+	for (std::size_t i = 0; i < _components.size() && status; ++i)
+	{
+		status = status && _components.at(i)->init();
+	}
+	return status;
 }
 
 bool GameObject::start()
 {
-	return true;
+	bool status = true;
+	for (std::size_t i = 0; i < _components.size() && status; ++i)
+	{
+		status = status && _components.at(i)->start();
+	}
+	return status;
 }
 
 bool  GameObject::cleanUp()
 {
-	return true;
+	bool status = true;
+	for (std::size_t i = 0; i < _components.size() && status; ++i)
+	{
+		status = status && _components.at(i)->cleanUp();
+	}
+	return status;
 }

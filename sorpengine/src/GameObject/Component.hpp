@@ -1,13 +1,21 @@
 #pragma once
-
+#include <algorithm>
 #include "Globals.hpp"
-#include "Macros.hpp"
-#include "SceneManager.hpp"
 
-class Scene
+class GameObject;
+
+class Component
 {
+	enum class Type
+	{
+		Transform,
+		Mesh,
+		Material
+	};
+
 public:
-	Scene(SceneManager& manager);
+	Component(Type type, bool active = true);
+	void setActive(bool value);
 
 	virtual bool init();
 	virtual bool start();
@@ -17,5 +25,5 @@ public:
 	virtual bool cleanUp();
 
 private:
-	MEMBER_REF_GET(SceneManager, _sceneManager, getSceneManager)
+	bool _active = true;
 };

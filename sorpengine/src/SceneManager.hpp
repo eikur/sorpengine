@@ -1,17 +1,28 @@
 #pragma once
 
-#include "Module.hpp"
 #include "Macros.hpp"
+#include "Module.hpp"
 #include "Globals.hpp"
 
+#define SCENE_DECL(_CLASS_, _NAME_, _GETTER_)				\
+		private:											\
+			std::shared_ptr<_CLASS_> _NAME_;				\
+		public:												\
+			Scene& _GETTER_() const							\
+			{												\
+				return *(Scene*)_NAME_.get();	\
+			}
+
 class Scene;
+class TestScene1;
 
 class SceneManager : public Module
 {
 public:
 	enum class SceneId
 	{
-		SceneTest
+		SceneTest,
+		TestScene1
 	};
 
 public:
@@ -33,7 +44,7 @@ private:
 	Scene* _currentScene = nullptr;
 	Scene* _nextScene = nullptr;
 
-	MEMBER_DECL(Scene, _sceneTest, getSceneTest)
+	SCENE_DECL(TestScene1, _testScene1, getTestScene1)
 
 	bool _inTransition = false;
 	float _transitionTime = 0.0f;

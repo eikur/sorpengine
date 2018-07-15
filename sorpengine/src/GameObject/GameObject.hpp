@@ -1,7 +1,9 @@
 #pragma once
-#include <list>
+#include <vector>
 #include <algorithm>
 #include "Globals.hpp"
+
+class Component;
 
 class GameObject
 {
@@ -13,6 +15,9 @@ public:
 	void setParent(GameObject* parent);
 	void addChild(GameObject* child);
 	void removeChild(GameObject* child);
+
+	void addComponent(Component* component);
+	void removeComponent(Component* component);
 
 	bool init();
 	bool start();
@@ -26,7 +31,9 @@ private:
 
 private:
 	GameObject* _parent = nullptr;
-	std::list<GameObject*> _children;
+	std::vector<GameObject*> _children;
+	std::vector<Component*> _components;
+
 	bool _active = true;
 	std::string _name;
 };

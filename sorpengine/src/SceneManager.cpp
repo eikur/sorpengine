@@ -1,15 +1,15 @@
 #include "SceneManager.hpp"
-#include "Scene.hpp"
+#include "TestScene1.hpp"
 
 SceneManager::SceneManager(bool active) : Module(active) 
 {
-	_sceneTest = std::make_unique<Scene>(*this);
+	_testScene1 = std::make_shared<TestScene1>(*this);
 }
 
 bool SceneManager::init()
 {
-	getSceneTest().start();
-	swapScene(SceneId::SceneTest);
+	getTestScene1().start();
+	swapScene(SceneId::TestScene1);
 	return true;
 }
 
@@ -60,7 +60,8 @@ void SceneManager::swapScene(SceneId sceneId, float duration)
 	switch (sceneId)
 	{
 	case SceneId::SceneTest:
-		_nextScene = &getSceneTest();
+	case SceneId::TestScene1:
+		_nextScene = &getTestScene1();
 		break;
 	}
 	// TODO: update Transitions
