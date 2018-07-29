@@ -6,24 +6,28 @@ class GameObject;
 
 class Component
 {
+protected:
 	enum class Type
 	{
 		Transform,
 		Mesh,
-		Material
+		Material,
+		Script
 	};
 
 public:
-	Component(Type type, bool active = true);
-	void setActive(bool value);
+	Component(GameObject& parent, Type type, bool active = true) : _parent(parent), _type(type), _active(active) {}
+	void setActive(bool value) { _active = value; };
 
-	virtual bool init();
-	virtual bool start();
-	virtual UpdateStatus preUpdate();
-	virtual UpdateStatus update(float dt = 0.0f);
-	virtual UpdateStatus postUpdate();
-	virtual bool cleanUp();
+	virtual bool init() { return true; }
+	virtual bool start() { return true; }
+	virtual UpdateStatus preUpdate() { return UpdateStatus::Continue; }
+	virtual UpdateStatus update(float dt = 0.0f) { return UpdateStatus::Continue; }
+	virtual UpdateStatus postUpdate() { return UpdateStatus::Continue; }
+	virtual bool cleanUp() { return true; }
 
 private:
+	GameObject& _parent; 
+	const Type _type;
 	bool _active = true;
 };

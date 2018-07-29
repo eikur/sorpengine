@@ -8,6 +8,8 @@
 #include "Utils.hpp"
 #include "Camera.hpp"
 
+#include "GameObject\GameObject.hpp"
+
 namespace
 {
 	const std::string kTextureName = "resources/Lenna.png";
@@ -16,43 +18,13 @@ namespace
 TestScene1::TestScene1(SceneManager& sceneManager) : Scene(sceneManager)
 {}
 
-bool TestScene1::start()
+bool TestScene1::init()
 {
-	_textureId = App->getTextureHelper().loadTexture(kTextureName);
-	return true;
+	addGameObject(new GameObject("test"));
+	return Scene::init();
 }
 
-UpdateStatus TestScene1::update(float)
+UpdateStatus TestScene1::update(float dt)
 {
-	auto& inputModule = App->getInput();
-	if (inputModule.getKey(SDL_SCANCODE_ESCAPE))
-	{
-		return UpdateStatus::Stop;
-	}
-	float z = 0.8f;
-	float w = 0.6f;
-
-	App->getTextureHelper().useTexture(_textureId);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(-w / 2, -w / 2, -z);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(w / 2, -w / 2, -z);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(w / 2, w / 2, -z);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(-w / 2, w / 2, -z);
-	glEnd();
-
-	//	App->getShaderManager().UseProgram("test1");
-
-	Camera& cam = App->getWindow().getCamera();
-	float3 pos = cam.GetPosition();
-	if (inputModule.getKey(SDL_SCANCODE_UP))
-	{
-		pos -= float3::unitZ * 0.02f;
-		cam.SetPosition(pos);
-	}
-	else if (inputModule.getKey(SDL_SCANCODE_DOWN))
-	{
-		pos += float3::unitZ * 0.02f;
-		cam.SetPosition(pos);
-	}
-	return UpdateStatus::Continue;
+	return Scene::update(dt);
 }

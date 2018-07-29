@@ -3,6 +3,7 @@
 #include "Globals.hpp"
 #include "Macros.hpp"
 #include "SceneManager.hpp"
+#include "GameObject\GameObject.hpp"
 
 class Scene
 {
@@ -16,6 +17,10 @@ public:
 	virtual UpdateStatus postUpdate();
 	virtual bool cleanUp();
 
+	void addGameObject(GameObject* gameObject);
+	void removeGameObject(GameObject* gameObject);
+
 private:
 	MEMBER_REF_GET(SceneManager, _sceneManager, getSceneManager)
+	GameObject* _sceneRoot = nullptr;
 };

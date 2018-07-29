@@ -8,7 +8,12 @@ SceneManager::SceneManager(bool active) : Module(active)
 
 bool SceneManager::init()
 {
-	getTestScene1().start();
+	getTestScene1().init();
+	return true;
+}
+
+bool SceneManager::start()
+{
 	swapScene(SceneId::TestScene1);
 	return true;
 }

@@ -1,9 +1,13 @@
 #include "GameObject.hpp"
 #include "Component.hpp"
+#include "Transform.hpp"
 
 GameObject::GameObject(const std::string& name, GameObject* parent, bool active)
 	: _name(name), _parent(parent), _active(active)
-{}
+{
+	_transform = new Transform(*this, active);
+	addComponent(_transform);
+}
 
 void GameObject::setActive(bool value)
 {
@@ -26,6 +30,15 @@ void GameObject::setParent(GameObject* parent)
 		_parent->addChild(this);
 	}
 	_parent = parent;
+}
+
+bool GameObject::removeFromParentAndCleanup()
+{
+	if (_parent != nullptr)
+	{
+		_parent->removeChild(this);
+	}
+	return cleanUp();
 }
 
 void GameObject::addChild(GameObject* child)

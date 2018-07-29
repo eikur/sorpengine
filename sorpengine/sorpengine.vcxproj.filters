@@ -90,7 +90,13 @@
     <ClCompile Include="src\TestScene1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject\Component.cpp">
+    <ClCompile Include="src\GameObject\Transform.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Material.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Mesh.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -174,6 +180,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Component.hpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Transform.hpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Material.hpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Mesh.hpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

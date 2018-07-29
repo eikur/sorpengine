@@ -29,6 +29,7 @@ public:
 	SceneManager(bool active = true);
 
 	bool init() override;
+	bool start() override;
 	UpdateStatus preUpdate() override;
 	UpdateStatus update(float dt = 0.0f) override;
 	UpdateStatus postUpdate() override;

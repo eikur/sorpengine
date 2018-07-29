@@ -1,34 +1,50 @@
 #include "Scene.hpp"
 
-Scene::Scene(SceneManager& sceneManager) : _sceneManager(sceneManager)
+namespace
+{
+	const std::string kRootNodeName = "root";
+}
+
+Scene::Scene(SceneManager& sceneManager) : _sceneManager(sceneManager), _sceneRoot(new GameObject(kRootNodeName))
 {}
 
 bool Scene::init()
 {
-	return true;
+	// load scene in children before init from base class
+	return _sceneRoot->init();
 }
 
 bool Scene::start()
 {
-	return true;
+	return _sceneRoot->start();
 }
 
 UpdateStatus Scene::preUpdate()
 {
-	return UpdateStatus::Continue;
+	return _sceneRoot->preUpdate();
 }
 
-UpdateStatus Scene::update(float)
+UpdateStatus Scene::update(float dt)
 {
-	return UpdateStatus::Continue;
+	return _sceneRoot->update(dt);
 }
 
 UpdateStatus Scene::postUpdate()
 {
-	return UpdateStatus::Continue;
+	return _sceneRoot->postUpdate();
 }
 
 bool Scene::cleanUp()
 {
-	return true;
+	return _sceneRoot->cleanUp();
+}
+
+void Scene::addGameObject(GameObject* gameObject)
+{
+	return _sceneRoot->addChild(gameObject);
+}
+
+void Scene::removeGameObject(GameObject* gameObject)
+{
+	return _sceneRoot->removeChild(gameObject);
 }

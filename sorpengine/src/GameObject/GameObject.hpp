@@ -4,6 +4,7 @@
 #include "Globals.hpp"
 
 class Component;
+class Transform;
 
 class GameObject
 {
@@ -15,6 +16,7 @@ public:
 	void setParent(GameObject* parent);
 	void addChild(GameObject* child);
 	void removeChild(GameObject* child);
+	bool removeFromParentAndCleanup();
 
 	void addComponent(Component* component);
 	void removeComponent(Component* component);
@@ -33,6 +35,7 @@ private:
 	GameObject* _parent = nullptr;
 	std::vector<GameObject*> _children;
 	std::vector<Component*> _components;
+	Transform* _transform = nullptr;
 
 	bool _active = true;
 	std::string _name;
