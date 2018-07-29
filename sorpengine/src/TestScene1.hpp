@@ -15,5 +15,4 @@ public:
 
   private:
 	int _textureId = 0;
-	GameObject* gameObject = nullptr;
 };

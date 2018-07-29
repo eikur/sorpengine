@@ -1,4 +1,6 @@
 #pragma once
+
+#include "GameObject\GameObject.hpp"
 #include "MathGeoLib.h"
 
 class Camera

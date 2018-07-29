@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include "Globals.hpp"
+#include "MathGeoLib.h"
 
 class Component;
 class Transform;
@@ -27,6 +28,10 @@ public:
 	UpdateStatus update(float dt = 0.0f);
 	UpdateStatus postUpdate();
 	bool cleanUp();
+
+	const float3 getPosition() const;
+	void setPosition(const float3 position);
+	void translate(const float3 position);
 
 private:
 	GameObject* findChild(GameObject* child) const;

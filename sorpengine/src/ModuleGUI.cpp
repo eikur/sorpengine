@@ -28,12 +28,20 @@ UpdateStatus ModuleGUI::update(float)
 	{ 
 		showAbout(&_data.showAbout);
 	}
-		
+
+	//static bool test = true;
+	//ImGui::ShowTestWindow(&test);
+	if (_data.showHierarchy)
+	{
+		showHierarchy();
+	}
+
 	if (showMainMenu())
 	{
 		draw();
 		return UpdateStatus::Continue;
 	}
+
 	return UpdateStatus::Stop;
 }
 
@@ -57,9 +65,32 @@ bool ModuleGUI::showMainMenu()
 			if (ImGui::MenuItem("About", NULL, &_data.showAbout)) {}
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Windows"))
+		{
+			if (ImGui::MenuItem("Hierarchy", NULL, &_data.showHierarchy)) {};
+			ImGui::EndMenu();
+		}
 		ImGui::EndMainMenuBar();
 	}
 	return true;
+}
+
+void ModuleGUI::showHierarchy() const
+{
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_ShowBorders;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	ImGui::SetNextWindowSize(ImVec2(240, 320), ImGuiSetCond_Appearing);
+	if (!ImGui::Begin("Hierarchy", &(bool)_data.showHierarchy, window_flags))
+	{
+		// Early out if the window is collapsed, as an optimization.
+		ImGui::End();
+		return;
+	}
+	ImGui::Text("SorpEngine");
+	ImGui::Text("Jorge Soriano");
+	ImGui::End();
+	// do stuff
 }
 
 void ModuleGUI::showAbout(bool* enabled) const

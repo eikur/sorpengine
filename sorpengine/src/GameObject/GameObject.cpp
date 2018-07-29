@@ -5,8 +5,8 @@
 GameObject::GameObject(const std::string& name, GameObject* parent, bool active)
 	: _name(name), _parent(parent), _active(active)
 {
-	_transform = new Transform(*this, active);
-	addComponent(_transform);
+	addComponent(new Transform(*this, active));
+	_transform = static_cast<Transform*>(_components.front());
 }
 
 void GameObject::setActive(bool value)
@@ -124,4 +124,19 @@ bool  GameObject::cleanUp()
 		status = status && _components.at(i)->cleanUp();
 	}
 	return status;
+}
+
+const float3 GameObject::getPosition() const
+{
+	return _transform->getPosition();
+}
+
+void GameObject::setPosition(const float3 position)
+{
+	_transform->setPosition(position);
+}
+
+void GameObject::translate(const float3 position)
+{
+	_transform->translate(position);
 }

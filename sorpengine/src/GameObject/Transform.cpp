@@ -40,6 +40,11 @@ UpdateStatus Transform::update(float dt)
 }
 
 // -- transform modification methods
+const float3 Transform::getPosition() const
+{
+	return _position;
+}
+
 void Transform::setPosition(const float3 position)
 {
 	_position = position;

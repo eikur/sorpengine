@@ -12,6 +12,7 @@ public:
 	bool init() override;	// remove me
 	UpdateStatus update(float dt = 0.0f) override;
 
+	const float3 getPosition() const;
 	void setPosition(const float3 translation);
 	void translate(const float3 translation);
 	

@@ -7,6 +7,7 @@ class ModuleGUI : public Module
 	struct Data
 	{
 		bool showAbout = false;
+		bool showHierarchy = false;
 	};
 
 
@@ -22,6 +23,7 @@ private:
 
 	void draw();
 	bool showMainMenu();
+	void showHierarchy() const;
 	void showAbout(bool *enabled) const;
 
 private:
