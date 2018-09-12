@@ -1,6 +1,7 @@
 #include "GameObject.hpp"
 #include "Component.hpp"
 #include "Transform.hpp"
+#include "ImGui/imgui.h"
 
 GameObject::GameObject(const std::string& name, GameObject* parent, bool active)
 	: _name(name), _parent(parent), _active(active)
@@ -139,4 +140,14 @@ void GameObject::setPosition(const float3 position)
 void GameObject::translate(const float3 position)
 {
 	_transform->translate(position);
+}
+
+void GameObject::onEditor()
+{
+	ImGui::Checkbox(_name.c_str(), &_active);
+
+	for (std::vector<Component*>::iterator it = _components.begin(); it != _components.end(); ++it)
+	{
+		(*it)->OnEditor();
+	}
 }

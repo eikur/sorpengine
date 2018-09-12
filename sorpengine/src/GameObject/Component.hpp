@@ -26,6 +26,8 @@ public:
 	virtual UpdateStatus postUpdate() { return UpdateStatus::Continue; }
 	virtual bool cleanUp() { return true; }
 
+	virtual void OnEditor() = 0;
+
 private:
 	GameObject& _parent; 
 	const Type _type;

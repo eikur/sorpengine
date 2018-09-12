@@ -33,6 +33,8 @@ public:
 	void setPosition(const float3 position);
 	void translate(const float3 position);
 
+	void onEditor();
+
 private:
 	GameObject* findChild(GameObject* child) const;
 
