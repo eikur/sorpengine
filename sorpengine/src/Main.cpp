@@ -34,17 +34,17 @@
 #			pragma comment( lib, "3rdparty/MathGeoLib/libx86/rel/MathGeoLib.lib" )
 #		endif
 #   else 
-#		pragma comment(lib, "3rdparty/DevIL/libx86/rel/ILU.lib")
-#		pragma comment(lib, "3rdparty/DevIL/libx86/rel/ILUT.lib")
-#		pragma comment(lib, "3rdparty/DevIL/libx86/rel/DevIL.lib")
-#		pragma comment(lib, "3rdparty/SDL/libx86/SDL2.lib")
-#		pragma comment(lib, "3rdparty/SDL/libx86/SDL2main.lib")
-#		pragma comment(lib, "3rdparty/SDL_mixer/libx86/SDL2_mixer.lib")
+#		pragma comment(lib, "3rdparty/DevIL/libx64/rel/ILU.lib")
+#		pragma comment(lib, "3rdparty/DevIL/libx64/rel/ILUT.lib")
+#		pragma comment(lib, "3rdparty/DevIL/libx64/rel/DevIL.lib")
+#		pragma comment(lib, "3rdparty/SDL/libx64/SDL2.lib")
+#		pragma comment(lib, "3rdparty/SDL/libx64/SDL2main.lib")
+#		pragma comment(lib, "3rdparty/SDL_mixer/libx64/SDL2_mixer.lib")
 #		ifdef _DEBUG
-#			pragma comment( lib, "3rdparty/glew-2.0.0/libx86/deb/glew32d.lib" )
+#			pragma comment( lib, "3rdparty/glew-2.0.0/libx64/deb/glew32d.lib" )
 #			pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #			pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
-#			pragma comment( lib, "3rdparty/MathGeoLib/libx86/deb/MathGeoLib.lib" )
+#			pragma comment( lib, "3rdparty/MathGeoLib/libx64/deb/MathGeoLib.lib" )
 #		else // RELEASE
 #			pragma comment( lib, "3rdparty/glew-2.0.0/libx86/rel/glew32.lib" )
 #			pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
