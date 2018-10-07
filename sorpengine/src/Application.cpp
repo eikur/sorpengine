@@ -49,6 +49,7 @@ Application::~Application()
 	_sceneManager.reset();
 
 	_shaderManager.reset();
+	_textureHelper.reset();
 }
 
 bool Application::Init()

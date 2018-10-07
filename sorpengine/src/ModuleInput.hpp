@@ -23,7 +23,7 @@ private:
 
 public:
 	ModuleInput(bool active = true);
-	virtual ~ModuleInput();
+	~ModuleInput() override;
 
 	bool init() override;
 	UpdateStatus preUpdate() override;

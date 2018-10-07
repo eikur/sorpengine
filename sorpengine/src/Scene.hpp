@@ -9,6 +9,7 @@ class Scene
 {
 public:
 	Scene(SceneManager& manager);
+	virtual ~Scene();
 
 	virtual bool init();
 	virtual bool start();

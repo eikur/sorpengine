@@ -1,10 +1,8 @@
 #include "TextureHelper.hpp"
 
+#include "glew-2.0.0\include\GL\glew.h"
 #include "DevIL/include/IL/devil_cpp_wrapper.hpp"
 #include "DevIL/include/IL/ilut.h"
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_opengl.h"
 #include "Utils.hpp"
 
 void TextureHelper::init()

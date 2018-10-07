@@ -6,6 +6,11 @@ SceneManager::SceneManager(bool active) : Module(active)
 	_testScene1 = std::make_shared<TestScene1>(*this);
 }
 
+SceneManager::~SceneManager()
+{
+	_testScene1.reset();
+}
+
 bool SceneManager::init()
 {
 	getTestScene1().init();
@@ -52,6 +57,8 @@ UpdateStatus SceneManager::postUpdate()
 
 bool SceneManager::cleanUp()
 {
+	//_currentScene = nullptr; // it's not a shared pointer!
+	_testScene1->cleanUp();
 	return true;
 }
 

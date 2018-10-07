@@ -10,7 +10,7 @@ class Module
 {
 	public:
 		Module(bool active = true) : _active(active){}
-		virtual ~Module() {}
+		virtual ~Module() = default;
 
 		bool isActive() const;
 		bool setActive(bool active);

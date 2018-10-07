@@ -5,8 +5,13 @@ namespace
 	const std::string kRootNodeName = "root";
 }
 
-Scene::Scene(SceneManager& sceneManager) : _sceneManager(sceneManager), _sceneRoot(new GameObject(kRootNodeName))
+Scene::Scene(SceneManager& sceneManager): _sceneManager(sceneManager), _sceneRoot(new GameObject(kRootNodeName))
 {}
+
+Scene::~Scene()
+{
+	delete _sceneRoot;
+}
 
 bool Scene::init()
 {

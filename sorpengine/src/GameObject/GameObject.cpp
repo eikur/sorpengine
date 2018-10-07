@@ -117,14 +117,20 @@ bool GameObject::start()
 	return status;
 }
 
-bool  GameObject::cleanUp()
+bool GameObject::cleanUp()
 {
-	bool status = true;
-	for (std::size_t i = 0; i < _components.size() && status; ++i)
+	for (GameObject* child : _children)
 	{
-		status = status && _components.at(i)->cleanUp();
+		child->cleanUp();
+		delete child;
 	}
-	return status;
+	for (Component* component : _components)
+	{
+		component->cleanUp();
+		delete component;
+	}
+
+	return true;
 }
 
 const float3 GameObject::getPosition() const

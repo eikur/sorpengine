@@ -27,6 +27,7 @@ public:
 
 public:
 	SceneManager(bool active = true);
+	~SceneManager() override;
 
 	bool init() override;
 	bool start() override;
