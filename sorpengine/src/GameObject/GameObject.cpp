@@ -1,7 +1,7 @@
 #include "GameObject.hpp"
 #include "Component.hpp"
 #include "Transform.hpp"
-#include "ImGui/imgui.h"
+#include "SDL_opengl.h"
 
 GameObject::GameObject(const std::string& name, GameObject* parent, bool active)
 	: _name(name), _parent(parent), _active(active)
@@ -69,31 +69,63 @@ GameObject* GameObject::findChild(GameObject* child) const
 
 UpdateStatus GameObject::preUpdate()
 {
+	if (!_active)
+	{
+		return UpdateStatus::Continue;
+	}
+
 	UpdateStatus status = UpdateStatus::Continue;
 	for (std::size_t i = 0; i < _components.size() && status == UpdateStatus::Continue; ++i)
 	{
 		status = _components.at(i)->preUpdate();
 	}
+	for (std::size_t i = 0; i < _children.size() && status == UpdateStatus::Continue; ++i)
+	{
+		status = _children.at(i)->preUpdate();
+	}
+
 	return status;
 }
 
 UpdateStatus GameObject::update(float dt)
 {
+	if (!_active)
+	{
+		return UpdateStatus::Continue;
+	}
+
+	glPushMatrix();
 	UpdateStatus status = UpdateStatus::Continue;
 	for (std::size_t i = 0; i < _components.size() && status == UpdateStatus::Continue; ++i)
 	{
 		status = _components.at(i)->update(dt);
 	}
+	for (std::size_t i = 0; i < _children.size() && status == UpdateStatus::Continue; ++i)
+	{
+		status = _children.at(i)->update(dt);	 
+	}
+	glPopMatrix();
+
 	return status;
 }
 
 UpdateStatus GameObject::postUpdate()
 {
+	if (!_active)
+	{
+		return UpdateStatus::Continue;
+	}
+
 	UpdateStatus status = UpdateStatus::Continue;
 	for (std::size_t i = 0; i < _components.size() && status == UpdateStatus::Continue; ++i)
 	{
 		status = _components.at(i)->postUpdate();
 	}
+	for (std::size_t i = 0; i < _children.size() && status == UpdateStatus::Continue; ++i)
+	{
+		status = _children.at(i)->postUpdate();
+	}
+
 	return status;
 }
 
@@ -156,4 +188,33 @@ void GameObject::onEditor()
 	{
 		(*it)->OnEditor();
 	}
+}
+
+void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject *& selectedGameObject)
+{
+	if (_children.empty())
+	{
+		ImGui::TreeNodeEx((void*)(intptr_t)index, nodeFlags | ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen, "%s", _name.c_str());
+		if (ImGui::IsItemClicked())
+		{
+			selectedGameObject = this;
+		}
+		return;
+	}
+
+	bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)index, 0, "%s", _name.c_str(), index);
+	if (ImGui::IsItemClicked())
+	{
+		selectedGameObject = this;
+	}
+
+	if (node_open)
+	{
+		for (GameObject* child : _children)
+		{
+			child->onHierarchy(++index, nodeFlags, selectedGameObject);
+		}
+		ImGui::TreePop();
+	}
+
 }

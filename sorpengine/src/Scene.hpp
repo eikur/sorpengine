@@ -21,6 +21,8 @@ public:
 	void addGameObject(GameObject* gameObject);
 	void removeGameObject(GameObject* gameObject);
 
+	GameObject* getSceneRoot() const;
+
 private:
 	MEMBER_REF_GET(SceneManager, _sceneManager, getSceneManager)
 	GameObject* _sceneRoot = nullptr;

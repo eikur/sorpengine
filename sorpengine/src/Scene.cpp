@@ -53,3 +53,8 @@ void Scene::removeGameObject(GameObject* gameObject)
 {
 	return _sceneRoot->removeChild(gameObject);
 }
+
+GameObject* Scene::getSceneRoot() const
+{
+	return _sceneRoot;
+}

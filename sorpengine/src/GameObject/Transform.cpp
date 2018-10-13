@@ -23,7 +23,7 @@ bool Transform::init()
 
 
 // -- update methods
-UpdateStatus Transform::update(float dt)
+UpdateStatus Transform::update(float dt) 
 {
 	recacheTransformIfNeeded();
 
@@ -39,11 +39,12 @@ UpdateStatus Transform::update(float dt)
 
 	App->getTextureHelper().useTexture(_textureId);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(_position.x - w / 2, _position.y - w / 2, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(_position.x + w / 2, _position.y - w / 2, 0);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(_position.x + w / 2, _position.y + w / 2, 0);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(_position.x - w / 2, _position.y + w / 2, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-w / 2, -w / 2, 0);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(+w / 2, -w / 2, 0);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(+w / 2, +w / 2, 0);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-w / 2, +w / 2, 0);
 	glEnd();
+	// end remove me
 
 	return UpdateStatus::Continue;
 }
@@ -95,9 +96,9 @@ void Transform::setScale(const float3 scale)
 //----
 void Transform::setTransform(const float3 position, const Quat rotation, const float3 scale)
 {
-	setPosition(position);
-	setRotation(rotation);
 	setScale(scale);
+	setRotation(rotation);
+	setPosition(position);
 }
 
 float4x4 Transform::getTransformMatrix() const
@@ -127,9 +128,9 @@ void Transform::OnEditor()
 		float3 tmprot = _rotation.ToEulerXYZ() * 180.0f / pi;
 		float rot[3] = { tmprot.x, tmprot.y, tmprot.z };
 
-		ImGui::DragFloat3("Position", pos, 0.1f);
+		ImGui::DragFloat3("Position", pos, 0.05f);
 		ImGui::DragFloat3("Rotation", rot, 2.0f);
-		ImGui::DragFloat3("Scale", scl, 0.1f);
+		ImGui::DragFloat3("Scale", scl, 0.05f);
 
 		_position = { pos[0], pos[1], pos[2] };
 		_scale = { scl[0], scl[1], scl[2] };

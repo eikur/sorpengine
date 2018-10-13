@@ -8,7 +8,7 @@
 #include "ImGui/imgui_impl_sdl_gl3.h"
 #include "ImGui/imgui_internal.h"
 
-ModuleGUI::ModuleGUI(bool active) : Module(active)
+ModuleGUI::ModuleGUI(SceneManager& sceneManager, bool active) : Module(active), _sceneManager(sceneManager)
 {}
 
 bool ModuleGUI::init()
@@ -34,6 +34,11 @@ UpdateStatus ModuleGUI::update(float)
 	if (_data.showHierarchy)
 	{
 		showHierarchy();
+	}
+
+	if (_data.showInspector)
+	{
+		showInspector();
 	}
 
 	if (showMainMenu())
@@ -68,6 +73,7 @@ bool ModuleGUI::showMainMenu()
 		if (ImGui::BeginMenu("Windows"))
 		{
 			if (ImGui::MenuItem("Hierarchy", NULL, &_data.showHierarchy)) {};
+			if (ImGui::MenuItem("Inspector", NULL, &_data.showInspector)) {};
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
@@ -75,7 +81,7 @@ bool ModuleGUI::showMainMenu()
 	return true;
 }
 
-void ModuleGUI::showHierarchy() const
+void ModuleGUI::showHierarchy()
 {
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_ShowBorders;
@@ -83,14 +89,42 @@ void ModuleGUI::showHierarchy() const
 	ImGui::SetNextWindowSize(ImVec2(240, 320), ImGuiSetCond_Appearing);
 	if (!ImGui::Begin("Hierarchy", &(bool)_data.showHierarchy, window_flags))
 	{
-		// Early out if the window is collapsed, as an optimization.
 		ImGui::End();
 		return;
 	}
-	ImGui::Text("SorpEngine");
-	ImGui::Text("Jorge Soriano");
+
+	ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+	if (ImGui::TreeNode(_sceneManager.getCurrentSceneName().c_str()))
+	{
+		int index = 0;
+		GameObject* sceneRoot = _sceneManager.getCurrentSceneRoot();
+		sceneRoot->onHierarchy(index, nodeFlags, _data.selectedGameObject);
+		ImGui::TreePop();
+	}
 	ImGui::End();
-	// do stuff
+}
+
+void ModuleGUI::showInspector() const
+{
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_ShowBorders;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	ImGui::SetNextWindowSize(ImVec2(240, 320), ImGuiSetCond_Appearing);
+	if (!ImGui::Begin("Inspector", &(bool)_data.showInspector, window_flags))
+	{
+		ImGui::End();
+		return;
+	}
+
+	if (!_data.selectedGameObject)
+	{
+		ImGui::End();
+		return;
+	}
+
+	_data.selectedGameObject->onEditor();
+	ImGui::End();
 }
 
 void ModuleGUI::showAbout(bool* enabled) const

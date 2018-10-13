@@ -13,6 +13,7 @@
 				return *(Scene*)_NAME_.get();	\
 			}
 
+class GameObject;
 class Scene;
 class TestScene1;
 
@@ -37,6 +38,9 @@ public:
 	bool cleanUp() override;
 
 	void swapScene(SceneId sceneId, float duration = 0.0f);
+
+	std::string getCurrentSceneName() const;
+	GameObject* getCurrentSceneRoot() const;
 
 private:
 	bool isInTransition() const;

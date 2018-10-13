@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "Globals.hpp"
 #include "MathGeoLib.h"
+#include "ImGui/imgui.h"
 
 class Component;
 class Transform;
@@ -34,6 +35,7 @@ public:
 	void translate(const float3 position);
 
 	void onEditor();
+	void onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject*& selectedGameObject);
 
 private:
 	GameObject* findChild(GameObject* child) const;

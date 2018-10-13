@@ -1,18 +1,22 @@
 #pragma once
 
 #include "Module.hpp"
+#include "SceneManager.hpp"
 
 class ModuleGUI : public Module
 {
 	struct Data
 	{
-		bool showAbout = false;
+		GameObject* selectedGameObject = nullptr;
+		bool showInspector = false;
+
 		bool showHierarchy = false;
+		bool showAbout = false;
 	};
 
 
 public: 
-	ModuleGUI(bool active = true);
+	ModuleGUI(SceneManager& sceneManager, bool active = true);
 
 	bool init() override;
 	UpdateStatus update(float dt) override;
@@ -23,10 +27,12 @@ private:
 
 	void draw();
 	bool showMainMenu();
-	void showHierarchy() const;
+	void showHierarchy();
+	void showInspector() const;
 	void showAbout(bool *enabled) const;
 
 private:
 	Data _data;
+	SceneManager& _sceneManager;
 
 };

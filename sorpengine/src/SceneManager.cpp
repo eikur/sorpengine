@@ -1,5 +1,6 @@
 #include "SceneManager.hpp"
 #include "TestScene1.hpp"
+#include "GameObject\GameObject.hpp"
 
 SceneManager::SceneManager(bool active) : Module(active) 
 {
@@ -57,7 +58,6 @@ UpdateStatus SceneManager::postUpdate()
 
 bool SceneManager::cleanUp()
 {
-	//_currentScene = nullptr; // it's not a shared pointer!
 	_testScene1->cleanUp();
 	return true;
 }
@@ -92,4 +92,14 @@ bool SceneManager::isInTransition() const
 void SceneManager::updateTransition(float dt)
 {
 // TODO
+}
+
+std::string SceneManager::getCurrentSceneName() const
+{
+	return "SceneDummyName";
+}
+
+GameObject* SceneManager::getCurrentSceneRoot() const
+{
+	return _currentScene->getSceneRoot();
 }
