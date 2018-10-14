@@ -99,6 +99,9 @@
     <ClCompile Include="src\GameObject\Mesh.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameObject\ComponentFactory.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MemLeaks.h">
@@ -189,6 +192,12 @@
       <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Mesh.hpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\ComponentFactory.hpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\TransformBuilder.hpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,7 +20,6 @@ TestScene1::TestScene1(SceneManager& sceneManager) : Scene(sceneManager)
 
 bool TestScene1::init()
 {
-	addGameObject(new GameObject("test"));
 	return Scene::init();
 }
 

@@ -1,13 +1,12 @@
 #include "GameObject.hpp"
 #include "Component.hpp"
-#include "Transform.hpp"
+#include "TransformBuilder.hpp"
 #include "SDL_opengl.h"
 
 GameObject::GameObject(const std::string& name, GameObject* parent, bool active)
 	: _name(name), _parent(parent), _active(active)
 {
-	addComponent(new Transform(*this, active));
-	_transform = static_cast<Transform*>(_components.front());
+	addTransform(TransformBuilder().withPos(float3(0.05f, 0.05f, -0.2f)).build());
 }
 
 void GameObject::setActive(bool value)
@@ -52,14 +51,16 @@ void GameObject::removeChild(GameObject* child)
 	std::remove_if(_children.begin(), _children.end(), [child](const GameObject* obj) { return obj == child; });
 }
 
-void GameObject::addComponent(Component* component)
+void GameObject::addTransform(std::shared_ptr<Transform>&& transform)
 {
-	_components.push_back(component);
+	_transform = transform;
+	addComponent(std::move(transform));
 }
 
-void GameObject::removeComponent(Component* component)
+void GameObject::addComponent(std::shared_ptr<Component>&& component)
 {
-	std::remove_if(_components.begin(), _components.end(), [component](Component* c) {return component == c; });
+	component->setParent(*this);
+	_components.push_back(std::move(component));
 }
 
 GameObject* GameObject::findChild(GameObject* child) const
@@ -156,37 +157,22 @@ bool GameObject::cleanUp()
 		child->cleanUp();
 		delete child;
 	}
-	for (Component* component : _components)
+	for (auto&& component : _components)
 	{
 		component->cleanUp();
-		delete component;
+		component.reset();
 	}
 
 	return true;
-}
-
-const float3 GameObject::getPosition() const
-{
-	return _transform->getPosition();
-}
-
-void GameObject::setPosition(const float3 position)
-{
-	_transform->setPosition(position);
-}
-
-void GameObject::translate(const float3 position)
-{
-	_transform->translate(position);
 }
 
 void GameObject::onEditor()
 {
 	ImGui::Checkbox(_name.c_str(), &_active);
 
-	for (std::vector<Component*>::iterator it = _components.begin(); it != _components.end(); ++it)
+	for (auto& component : _components)
 	{
-		(*it)->OnEditor();
+		component->OnEditor();
 	}
 }
 

@@ -10,9 +10,18 @@ namespace
 	const std::string kTextureName = "resources/Lenna.png";
 }
 
-Transform::Transform(GameObject& parent, bool active)
-	: Component(parent, Component::Type::Transform, active)
-{}
+Transform::Transform(const float3 position, const Quat rotation, const float3 scale)
+	: Component(Component::Type::Transform, true)
+	, _position(position)
+	, _rotation(rotation)
+	, _scale(scale)
+{
+}
+
+void Transform::setActive(const bool value)
+{
+	assert(false, "Transform component's setActive() should never be called");
+}
 
 bool Transform::init()
 {

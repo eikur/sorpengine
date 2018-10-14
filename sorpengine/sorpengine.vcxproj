@@ -130,6 +130,7 @@
     <ClCompile Include="3rdparty\ImGui\imgui_impl_sdl_gl3.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Material.cpp" />
     <ClCompile Include="src\GameObject\Mesh.cpp" />
@@ -158,6 +159,8 @@
     <ClInclude Include="src\Application.hpp" />
     <ClInclude Include="src\Camera.hpp" />
     <ClInclude Include="src\GameObject\Component.hpp" />
+    <ClInclude Include="src\GameObject\TransformBuilder.hpp" />
+    <ClInclude Include="src\GameObject\ComponentFactory.hpp" />
     <ClInclude Include="src\GameObject\GameObject.hpp" />
     <ClInclude Include="src\GameObject\Material.hpp" />
     <ClInclude Include="src\GameObject\Mesh.hpp" />

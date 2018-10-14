@@ -16,8 +16,7 @@ protected:
 	};
 
 public:
-	Component(GameObject& parent, Type type, bool active = true) : _parent(parent), _type(type), _active(active) {}
-	void setActive(bool value) { _active = value; };
+	Component(Type type, bool active = true) : _type(type), _active(active) {}
 
 	virtual bool init() { return true; }
 	virtual bool start() { return true; }
@@ -26,10 +25,14 @@ public:
 	virtual UpdateStatus postUpdate() { return UpdateStatus::Continue; }
 	virtual bool cleanUp() { return true; }
 
+	void setParent(GameObject& parent) { _parent = &parent; }
 	virtual void OnEditor() = 0;
 
+protected:
+	virtual void setActive(const bool value) { _active = value; };
+
 private:
-	GameObject& _parent; 
 	const Type _type;
 	bool _active = true;
+	GameObject * _parent = nullptr;
 };

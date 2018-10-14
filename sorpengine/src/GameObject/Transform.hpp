@@ -6,8 +6,7 @@
 class Transform : public Component
 {
 public:
-	Transform(GameObject& parent, bool active = true);
-	~Transform() = default;
+	Transform(const float3 position, const Quat rotation, const float3 scale);
 
 	bool init() override;	
 	UpdateStatus update(float dt = 0.0f) override;
@@ -27,10 +26,12 @@ public:
 
 	void OnEditor() override;
 
+protected:
+	void setActive(const bool value) override;
+
 private:
 	void recacheTransformIfNeeded();
 
-private:
 	float3 _position = float3::zero;
 	Quat   _rotation = Quat::identity;
 	float3 _scale = float3::one;
