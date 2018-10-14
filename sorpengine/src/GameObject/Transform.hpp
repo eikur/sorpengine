@@ -28,6 +28,7 @@ public:
 
 protected:
 	void setActive(const bool value) override;
+	void showPosGizmo() const;
 
 private:
 	void recacheTransformIfNeeded();
@@ -39,6 +40,6 @@ private:
 	float3 _cachedPosition = float3::zero;
 	Quat _cachedRotation = Quat::identity;
 	float3 _cachedScale = float3::one;
-	// remove me
-	int _textureId = 0;
+
+	bool _showPosGizmo = true;
 };

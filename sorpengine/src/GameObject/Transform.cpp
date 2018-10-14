@@ -1,14 +1,6 @@
 #include "Transform.hpp"
 #include "ImGui/imgui.h"
-// to remove
-#include "Application.hpp"
-#include "TextureHelper.hpp"
-
-namespace
-{
-	// remove me
-	const std::string kTextureName = "resources/Lenna.png";
-}
+#include "GL/glew.h"
 
 Transform::Transform(const float3 position, const Quat rotation, const float3 scale)
 	: Component(Component::Type::Transform, true)
@@ -25,7 +17,7 @@ void Transform::setActive(const bool value)
 
 bool Transform::init()
 {
-	_textureId = App->getTextureHelper().loadTexture(kTextureName);
+	//remove me
 	_position.z = -0.8f;
 	return true;
 }
@@ -41,19 +33,8 @@ UpdateStatus Transform::update(float dt)
 	glRotatef(euler_rot.x, 1, 0, 0);
 	glRotatef(euler_rot.y, 0, 1, 0);
 	glRotatef(euler_rot.z, 0, 0, 1);
+	showPosGizmo();
 	glScalef(_scale.x, _scale.y, _scale.z);
-
-	// remove me
-	float w = 0.1f;
-
-	App->getTextureHelper().useTexture(_textureId);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(-w / 2, -w / 2, 0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(+w / 2, -w / 2, 0);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(+w / 2, +w / 2, 0);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(-w / 2, +w / 2, 0);
-	glEnd();
-	// end remove me
 
 	return UpdateStatus::Continue;
 }
@@ -144,5 +125,33 @@ void Transform::OnEditor()
 		_position = { pos[0], pos[1], pos[2] };
 		_scale = { scl[0], scl[1], scl[2] };
 		_rotation = Quat::FromEulerXYZ(rot[0] * pi / 180.0f, rot[1] * pi / 180.0f, rot[2] * pi / 180.0f);
+
+		ImGui::Checkbox("Show Gizmo", &_showPosGizmo);
 	}
+}
+
+void Transform::showPosGizmo() const
+{
+	if (!_showPosGizmo)
+	{
+		return;
+	}
+	//TODO modify when having raycasting implemented
+	const float w = 0.2f;
+	glColor3f(1.f, 0.f, 0.f);
+	glBegin(GL_LINES);
+	glVertex3f(-w / 2, 0.f, 0.f);
+	glVertex3f(w / 2, 0.f, 0.f);
+	glEnd();
+	glColor3f(0.f, 1.f, 0.f);
+	glBegin(GL_LINES);
+	glVertex3f(0.f, -w / 2, 0.f);
+	glVertex3f(0.f, w / 2, 0.f);
+	glEnd();
+	glColor3f(0.f, 0.f, 1.f);
+	glBegin(GL_LINES);
+	glVertex3f(0.f, 0.f, -w / 2);
+	glVertex3f(0.f, 0.f, w / 2);
+	glEnd();
+	glColor3f(1.f, 1.f, 1.f);
 }

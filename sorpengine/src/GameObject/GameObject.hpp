@@ -20,8 +20,8 @@ public:
 	void removeChild(GameObject* child);
 	bool removeFromParentAndCleanup();
 
-	void addComponent(Component* component);
-	void removeComponent(Component* component);
+	void addTransform(std::shared_ptr<Transform>&& transform);
+	void addComponent(std::shared_ptr<Component>&& component);
 
 	bool init();
 	bool start();
@@ -29,10 +29,6 @@ public:
 	UpdateStatus update(float dt = 0.0f);
 	UpdateStatus postUpdate();
 	bool cleanUp();
-
-	const float3 getPosition() const;
-	void setPosition(const float3 position);
-	void translate(const float3 position);
 
 	void onEditor();
 	void onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject*& selectedGameObject);
@@ -43,8 +39,8 @@ private:
 private:
 	GameObject* _parent = nullptr;
 	std::vector<GameObject*> _children;
-	std::vector<Component*> _components;
-	Transform* _transform = nullptr;
+	std::vector<std::shared_ptr<Component>> _components;
+	std::weak_ptr<Transform> _transform;
 
 	bool _active = true;
 	std::string _name;
