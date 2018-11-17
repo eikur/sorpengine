@@ -45,7 +45,7 @@
 				return _NAME_;	\
 			} 
 
-// Defines a member, its const getter 
+// Defines a member reference, and its const getter 
 #define MEMBER_REF_GET( _CLASS_, _NAME_, _GETTER_)	\
 		private:								\
 			_CLASS_& _NAME_;	\
@@ -54,3 +54,14 @@
 			{							\
 				return _NAME_;	\
 			} 
+
+// Macros for builders ----------------
+#define WITH(_PROPERTY_, _TYPE_, _NAME_) \
+	private: \
+		_TYPE_ _NAME_; \
+	public: \
+		Class& with##_PROPERTY_(const _TYPE_ x) \
+		{ \
+			_NAME_ = x;\
+			return *this;\
+		}

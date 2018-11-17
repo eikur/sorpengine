@@ -1,11 +1,18 @@
 #pragma once
 
 #include "Transform.hpp"
+#include "Macros.hpp"
 
 class TransformBuilder
 {
-public:
-	TransformBuilder() : _pos(float3::zero), _rot(Quat::identity), _scale(float3::one)	{}
+	using Class = TransformBuilder;
+	
+  public:
+	WITH(Position, float3, _pos)
+	WITH(Rotation, float, _rot)
+	WITH(Scale, float2, _scale)
+
+	TransformBuilder() : _pos(float3::zero), _rot(0.f), _scale(float2::one)	{}
 
 	std::shared_ptr<Transform> build() const
 	{
@@ -15,23 +22,4 @@ public:
 	{ 
 		return *this; 
 	};
-
-	TransformBuilder& withPos(const float3 pos) { 
-		_pos = pos; 
-		return *this;
-	}
-
-	TransformBuilder& withRot(const Quat rot) { 
-		_rot = rot; 
-		return *this;
-	}
-	TransformBuilder& withScale(const float3 scale) { 
-		_scale = scale; 
-		return *this;
-	}
-
-private:
-	float3 _pos = float3::zero;
-	Quat _rot = Quat::identity;
-	float3 _scale = float3::zero;
 };

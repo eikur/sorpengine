@@ -95,13 +95,10 @@ void ModuleGUI::showHierarchy()
 
 	ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
-	if (ImGui::TreeNode(_sceneManager.getCurrentSceneName().c_str()))
-	{
-		int index = 0;
-		GameObject* sceneRoot = _sceneManager.getCurrentSceneRoot();
-		sceneRoot->onHierarchy(index, nodeFlags, _data.selectedGameObject);
-		ImGui::TreePop();
-	}
+	int index = 0;
+	GameObject* sceneRoot = _sceneManager.getCurrentSceneRoot();
+	sceneRoot->onHierarchy(index, nodeFlags, _data.selectedGameObject);
+
 	ImGui::End();
 }
 

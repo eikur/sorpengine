@@ -6,7 +6,7 @@
 GameObject::GameObject(const std::string& name, GameObject* parent, bool active)
 	: _name(name), _parent(parent), _active(active)
 {
-	addTransform(TransformBuilder().withPos(float3(0.05f, 0.05f, -0.2f)).build());
+	addTransform(TransformBuilder().withPosition(float3(0.05f, 0.05f, -0.2f)).build());
 }
 
 void GameObject::setActive(bool value)
@@ -25,10 +25,6 @@ void GameObject::setParent(GameObject* parent)
 	{
 		_parent->removeChild(this);
 	}
-	if (parent != nullptr)
-	{
-		_parent->addChild(this);
-	}
 	_parent = parent;
 }
 
@@ -43,6 +39,7 @@ bool GameObject::removeFromParentAndCleanup()
 
 void GameObject::addChild(GameObject* child)
 {
+	child->setParent(this);
 	_children.push_back(child);
 }
 
@@ -168,6 +165,11 @@ bool GameObject::cleanUp()
 
 void GameObject::onEditor()
 {
+	if (_parent == nullptr)
+	{
+		return;
+	}
+
 	ImGui::Checkbox(_name.c_str(), &_active);
 
 	for (auto& component : _components)
