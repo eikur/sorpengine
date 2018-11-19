@@ -7,6 +7,7 @@
 #include "ShaderManager.hpp"
 #include "Utils.hpp"
 #include "Camera.hpp"
+#include "GameObject\Image.hpp"
 
 #include "GameObject\GameObject.hpp"
 
@@ -20,7 +21,11 @@ TestScene1::TestScene1(SceneManager& sceneManager) : Scene(sceneManager)
 
 bool TestScene1::init()
 {
-	addGameObject(new GameObject("test"));
+	GameObject* go = new GameObject("test");
+	auto img = std::make_shared<Image>();
+	go->addComponent(std::move(img));
+	addGameObject(go);
+
 	return Scene::init();
 }
 

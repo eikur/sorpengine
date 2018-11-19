@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include "MathGeoLib.h"
 
 class TextureHelper
 {
@@ -17,6 +18,8 @@ public:
 
 	int loadTexture(const std::string& texturePath);
 	void useTexture(int textureId);
+	void stopUsingTexture();
+	void unloadTexture(int textureId);
 
 	int createCheckersTexture();
 

@@ -17,8 +17,6 @@ void Transform::setActive(const bool value)
 
 bool Transform::init()
 {
-	//remove me
-	_position.z = -0.8f;
 	return true;
 }
 

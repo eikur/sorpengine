@@ -107,7 +107,7 @@ void ModuleGUI::showInspector() const
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_ShowBorders;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
-	ImGui::SetNextWindowSize(ImVec2(240, 320), ImGuiSetCond_Appearing);
+	ImGui::SetNextWindowSize(ImVec2(240, 500), ImGuiSetCond_Appearing);
 	if (!ImGui::Begin("Inspector", &(bool)_data.showInspector, window_flags))
 	{
 		ImGui::End();

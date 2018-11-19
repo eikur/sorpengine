@@ -48,9 +48,9 @@ int TextureHelper::loadTexture(const std::string& texturePath)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	ILinfo ImageInfo;
-	iluGetImageInfo(&ImageInfo);
-	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+	ILinfo imageInfo;
+	iluGetImageInfo(&imageInfo);
+	if (imageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 	{
 		iluFlipImage();
 	}
@@ -66,8 +66,8 @@ int TextureHelper::loadTexture(const std::string& texturePath)
 	}
 
 	ILubyte* data = ilGetData();
-	int width = ilGetInteger(IL_IMAGE_WIDTH);
-	int height = ilGetInteger(IL_IMAGE_HEIGHT);
+	const int width = ilGetInteger(IL_IMAGE_WIDTH);
+	const int height = ilGetInteger(IL_IMAGE_HEIGHT);
 	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width,
 		height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, data);
 	ilDeleteImages(1, &imageId);
@@ -83,4 +83,15 @@ void TextureHelper::useTexture(int textureId)
 int TextureHelper::createCheckersTexture()
 {
 	return kInvalidTextureId;
+}
+
+void TextureHelper::unloadTexture(const int textureId)
+{
+	GLuint texId = static_cast<GLuint>(textureId);
+	glDeleteTextures(1, &texId);
+}
+
+void TextureHelper::stopUsingTexture()
+{
+	useTexture(0);
 }

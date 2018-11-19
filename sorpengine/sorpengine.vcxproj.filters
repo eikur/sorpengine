@@ -93,13 +93,10 @@
     <ClCompile Include="src\GameObject\Transform.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject\Material.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Mesh.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="src\GameObject\ComponentFactory.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Image.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,16 +185,13 @@
     <ClInclude Include="src\GameObject\Transform.hpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObject\Material.hpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Mesh.hpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="src\GameObject\ComponentFactory.hpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\TransformBuilder.hpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Image.hpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

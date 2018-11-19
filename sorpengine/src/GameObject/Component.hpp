@@ -10,8 +10,7 @@ protected:
 	enum class Type
 	{
 		Transform,
-		Mesh,
-		Material,
+		Image,
 		Script
 	};
 
@@ -30,9 +29,9 @@ public:
 
 protected:
 	virtual void setActive(const bool value) { _active = value; };
+	bool _active = true;
 
 private:
 	const Type _type;
-	bool _active = true;
 	GameObject * _parent = nullptr;
 };

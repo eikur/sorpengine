@@ -51,6 +51,8 @@ void GameObject::removeChild(GameObject* child)
 void GameObject::addTransform(std::shared_ptr<Transform>&& transform)
 {
 	_transform = transform;
+//	transform->setParent(*this);
+//	_components.push_back(std::move(transform));
 	addComponent(std::move(transform));
 }
 
@@ -133,6 +135,10 @@ bool GameObject::init()
 	for (std::size_t i = 0; i < _components.size() && status; ++i)
 	{
 		status = status && _components.at(i)->init();
+	}
+	for (std::size_t i = 0; i < _children.size() && status; ++i)
+	{
+		status = _children.at(i)->init();
 	}
 	return status;
 }

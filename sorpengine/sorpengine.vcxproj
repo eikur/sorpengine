@@ -132,8 +132,7 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
-    <ClCompile Include="src\GameObject\Material.cpp" />
-    <ClCompile Include="src\GameObject\Mesh.cpp" />
+    <ClCompile Include="src\GameObject\Image.cpp" />
     <ClCompile Include="src\GameObject\Transform.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Model\Model.cpp" />
@@ -159,11 +158,10 @@
     <ClInclude Include="src\Application.hpp" />
     <ClInclude Include="src\Camera.hpp" />
     <ClInclude Include="src\GameObject\Component.hpp" />
+    <ClInclude Include="src\GameObject\Image.hpp" />
     <ClInclude Include="src\GameObject\TransformBuilder.hpp" />
     <ClInclude Include="src\GameObject\ComponentFactory.hpp" />
     <ClInclude Include="src\GameObject\GameObject.hpp" />
-    <ClInclude Include="src\GameObject\Material.hpp" />
-    <ClInclude Include="src\GameObject\Mesh.hpp" />
     <ClInclude Include="src\GameObject\Transform.hpp" />
     <ClInclude Include="src\Globals.hpp" />
     <ClInclude Include="src\MemLeaks.h" />
