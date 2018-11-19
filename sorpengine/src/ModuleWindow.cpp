@@ -1,10 +1,15 @@
 #include "ModuleWindow.hpp"
+
 #include "Globals.hpp"
 #include "Utils.hpp"
 #include "GL/glew.h"
+// remove me
+#include "ModuleInput.hpp"
+#include "Application.hpp"
 
-ModuleWindow::ModuleWindow(bool active): Module(active) {
-	_camera = std::make_unique<Camera>();
+ModuleWindow::ModuleWindow(bool active): Module(active) 
+{
+	
 }
 
 bool ModuleWindow::init()
@@ -20,7 +25,7 @@ bool ModuleWindow::init()
 	flags = _fullScreen ? flags | SDL_WINDOW_FULLSCREEN : flags;
 	flags = _resizable ? flags | SDL_WINDOW_RESIZABLE : flags;
 
-	_sdlWindow = SDL_CreateWindow("sorpengine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _windowSize.x, _windowSize.y, flags);
+	_sdlWindow = SDL_CreateWindow("2D engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _windowSize.x, _windowSize.y, flags);
 	if (_sdlWindow == nullptr)
 	{
 		Utils::log("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -77,7 +82,7 @@ bool ModuleWindow::init()
 		return false;
 	}
 
-	_camera->Init();
+	_camera.Init();
 	_isDirty = true;
 
 	return true;
@@ -86,10 +91,11 @@ bool ModuleWindow::init()
 
 UpdateStatus ModuleWindow::preUpdate()
 {
-	glViewport(0, 0, _windowSize.x, _windowSize.y);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(_camera->GetViewMatrix().ptr());
+	if (_isDirty)
+	{
+		updateWindow();
+		_isDirty = false;
+	}
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -98,9 +104,10 @@ UpdateStatus ModuleWindow::preUpdate()
 
 UpdateStatus ModuleWindow::update(float)
 {
-	if (_isDirty)
+	if (App->getInput().getKey(SDL_SCANCODE_C) == ModuleInput::KeyState::Down)
 	{
-		updateWindow();
+		_camera.switchType();
+		_isDirty = true;
 	}
 	return UpdateStatus::Continue;
 }
@@ -147,12 +154,12 @@ const iPoint& ModuleWindow::getWindowSize() const
 void ModuleWindow::updateWindow()
 {
 	glViewport(0, 0, _windowSize.x, _windowSize.y);
-	getCamera().SetAspectRatio(getWindowAspectRatio());
+	_camera.SetAspectRatio(getWindowAspectRatio());
+
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(_camera->GetProjectionMatrix().ptr());
+	glLoadMatrixf(_camera.GetCurrentMatrix().ptr());
 	glMatrixMode(GL_MODELVIEW);
-	
-	_isDirty = false;
+	glLoadIdentity();
 }
 
 float ModuleWindow::getWindowAspectRatio() const
@@ -160,12 +167,13 @@ float ModuleWindow::getWindowAspectRatio() const
 	return (float)_windowSize.x / (float)_windowSize.y;
 }
 
-Camera& ModuleWindow::getCamera()
-{
-	return *_camera.get();
-}
-
 SDL_Window* ModuleWindow::getSDLWindow() const
 {
 	return _sdlWindow;
+}
+
+void ModuleWindow::toggleCameraMode()
+{
+	_camera.switchType();
+	_isDirty = true;
 }

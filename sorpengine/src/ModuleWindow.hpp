@@ -29,7 +29,7 @@ class ModuleWindow : public Module
 		float getWindowAspectRatio() const;
 		SDL_Window* getSDLWindow() const;
 		
-		Camera& getCamera();
+		void toggleCameraMode();
 
 	private:
 		void updateWindow();
@@ -39,7 +39,7 @@ class ModuleWindow : public Module
 		SDL_Renderer* _sdlRenderer = nullptr;
 		SDL_GLContext _glContext;
 
-		std::unique_ptr<Camera> _camera;
+		Camera _camera;
 
 
 		bool _fullScreen = false;

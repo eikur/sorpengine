@@ -4,11 +4,34 @@
 
 void Camera::Init()
 {
+	// by default perspective frustum
 	SetFOV(_verticalFOV);
 	SetPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
 
 	_frustum.SetFrame(float3::zero, -float3::unitZ, float3::unitY);
 	_frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumHandedness::FrustumRightHanded);
+
+	// calculate values for orthogonal projection
+	_orthoHeight = _nearPlaneDistance * math::Abs(_verticalFOV * 0.5f);
+	_orthoWidth = _aspectRatio * _orthoHeight;
+}
+
+const float4x4& Camera::GetCurrentMatrix() const
+{
+	return _frustum.Type() == FrustumType::PerspectiveFrustum ? GetProjectionMatrix() : GetViewMatrix();
+	//return GetProjectionMatrix();
+}
+
+void Camera::switchType()
+{
+	if (_frustum.Type() == FrustumType::PerspectiveFrustum)
+	{
+		_frustum.SetOrthographic(_orthoWidth, _orthoHeight);
+	}
+	else
+	{
+		SetFOV(_verticalFOV);
+	}
 }
 
 const float4x4& Camera::GetProjectionMatrix() const
@@ -32,9 +55,17 @@ void Camera::SetFOV(float verticalFOV)
 
 void Camera::SetAspectRatio(float aspectRatio)
 {
-	float horizontalFOV = 2.0f * atanf(tanf(_frustum.VerticalFov() / 2.0f) * aspectRatio);
-	_frustum.SetHorizontalFovAndAspectRatio(horizontalFOV, aspectRatio);
 	_aspectRatio = _aspectRatio;
+	if (_frustum.Type() == FrustumType::PerspectiveFrustum)
+	{
+		float horizontalFOV = 2.0f * atanf(tanf(_frustum.VerticalFov() / 2.0f) * aspectRatio);
+		_frustum.SetHorizontalFovAndAspectRatio(horizontalFOV, aspectRatio);
+	}
+	else
+	{
+		_orthoWidth = _aspectRatio * _orthoHeight;
+		_frustum.SetOrthographic(_orthoWidth, _orthoHeight);
+	}
 }
 
 void Camera::SetPlaneDistances(float nearPlane, float farPlane)
