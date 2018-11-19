@@ -157,7 +157,7 @@ void ModuleWindow::updateWindow()
 	_camera.SetAspectRatio(getWindowAspectRatio());
 
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(_camera.GetCurrentMatrix().ptr());
+	glLoadMatrixf(_camera.GetProjectionMatrix().ptr());
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }

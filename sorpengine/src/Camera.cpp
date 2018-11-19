@@ -16,12 +16,6 @@ void Camera::Init()
 	_orthoWidth = _aspectRatio * _orthoHeight;
 }
 
-const float4x4& Camera::GetCurrentMatrix() const
-{
-	return _frustum.Type() == FrustumType::PerspectiveFrustum ? GetProjectionMatrix() : GetViewMatrix();
-	//return GetProjectionMatrix();
-}
-
 void Camera::switchType()
 {
 	if (_frustum.Type() == FrustumType::PerspectiveFrustum)

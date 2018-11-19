@@ -8,7 +8,9 @@ class Camera
 public:
 	void Init();
 
-	const float4x4& Camera::GetCurrentMatrix() const;
+	const float4x4& GetProjectionMatrix() const;
+	void switchType();
+
 	void SetFOV(float verticalFOV);
 	void SetAspectRatio(float aspectRatio);
 	void SetPlaneDistances(float nearPlane, float farPlane);
@@ -17,10 +19,7 @@ public:
 	void Orientate(const float3& front, const float3& up);
 	void LookAt(const float3& lookAtPosition);
 
-	void switchType();
-
 private:
-	const float4x4& GetProjectionMatrix() const;
 	const float4x4& GetViewMatrix() const;
 
 	Frustum _frustum;
