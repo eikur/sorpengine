@@ -3,6 +3,9 @@
 #include "Utils.hpp"
 #include "Application.hpp"
 #include "SDL.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl_gl3.h"
+
 
 ModuleInput::ModuleInput(bool active) 
 	: Module(active)
@@ -66,6 +69,7 @@ UpdateStatus ModuleInput::preUpdate()
 
 	while (SDL_PollEvent(&sdlEvent) != 0)
 	{
+        ImGui_ImplSdlGL3_ProcessEvent(&sdlEvent);
 		switch (sdlEvent.type)
 		{
 			case SDL_QUIT:

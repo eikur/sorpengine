@@ -89,7 +89,7 @@ void Transform::scaleBy(const float2 scale)
 // ----
 void Transform::OnEditor()
 {
-	if (ImGui::CollapsingHeader("Local Transformation"))
+	if (ImGui::CollapsingHeader("Local Transform"))
 	{
 		float pos[3] = { _position.x, _position.y, _position.z };
 		float scl[2] = { _scale.x, _scale.y};

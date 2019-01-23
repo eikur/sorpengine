@@ -28,7 +28,7 @@ private:
 	void draw();
 	bool showMainMenu();
 	void showHierarchy();
-	void showInspector() const;
+	void showInspector();
 	void showAbout(bool *enabled) const;
 
 private:
