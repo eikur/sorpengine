@@ -26,7 +26,6 @@ class ModuleWindow : public Module
 
 		void setWindowSize(const iPoint& newSize);
 		const iPoint& getWindowSize() const;
-		float getWindowAspectRatio() const;
 		SDL_Window* getSDLWindow() const;
 		
 		void toggleCameraMode();

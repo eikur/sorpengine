@@ -82,7 +82,7 @@ bool ModuleWindow::init()
 		return false;
 	}
 
-	_camera.Init();
+	_camera.Init(_windowSize.x/(float)_windowSize.y);
 	_isDirty = true;
 
 	return true;
@@ -102,12 +102,11 @@ UpdateStatus ModuleWindow::preUpdate()
 	return UpdateStatus::Continue;
 }
 
-UpdateStatus ModuleWindow::update(float)
+UpdateStatus ModuleWindow::update(float /*dt*/)
 {
 	if (App->getInput().getKey(SDL_SCANCODE_C) == ModuleInput::KeyState::Down)
 	{
-		_camera.switchType();
-		_isDirty = true;
+        toggleCameraMode();
 	}
 	return UpdateStatus::Continue;
 }
@@ -143,6 +142,7 @@ void ModuleWindow::setWindowSize(const iPoint& newSize)
 		return;
 	}
 	_windowSize = newSize;
+    _camera.SetAspectRatio(_windowSize.x / (float)_windowSize.y);
 	_isDirty = true;
 }
 
@@ -154,17 +154,11 @@ const iPoint& ModuleWindow::getWindowSize() const
 void ModuleWindow::updateWindow()
 {
 	glViewport(0, 0, _windowSize.x, _windowSize.y);
-	_camera.SetAspectRatio(getWindowAspectRatio());
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(_camera.GetProjectionMatrix().ptr());
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-}
-
-float ModuleWindow::getWindowAspectRatio() const
-{
-	return (float)_windowSize.x / (float)_windowSize.y;
 }
 
 SDL_Window* ModuleWindow::getSDLWindow() const

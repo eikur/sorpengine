@@ -6,7 +6,7 @@
 class Camera
 {
 public:
-	void Init();
+    void Init(const float aspectRatio);
 
 	const float4x4& GetProjectionMatrix() const;
 	void switchType();

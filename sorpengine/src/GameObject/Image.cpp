@@ -6,7 +6,7 @@
 
 namespace
 {
-	const std::string kDefaultTextureName = "resources/Lenna.png";
+	const std::string kDefaultTextureName = "resources/buu.png";
 }
 
 Image::Image() : Component(Component::Type::Image, true), _textureName(kDefaultTextureName)
@@ -31,6 +31,7 @@ bool Image::init()
 void Image::setAnchor(const float2& newAnchor)
 {
 	_anchor = newAnchor;
+    _anchorCorrection = _anchor.Mul(_size);
 }
 
 void Image::setSize(const float2& newSize)
@@ -53,16 +54,16 @@ UpdateStatus Image::update(float)
 	TextureHelper& textures = App->getTextureHelper();
 	textures.useTexture(_textureId);
 	
-	const float2& anchorCorrection = _anchor.Mul(_size);
+	
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0);
-	glVertex2f(-anchorCorrection.x, -anchorCorrection.y);
+	glVertex2f(-_anchorCorrection.x, -_anchorCorrection.y);
 	glTexCoord2f(1, 0);
-	glVertex2f(_size.x - anchorCorrection.x, -anchorCorrection.y);
+	glVertex2f(_size.x - _anchorCorrection.x, -_anchorCorrection.y);
 	glTexCoord2f(1, 1);
-	glVertex2f(_size.x - anchorCorrection.x, _size.y - anchorCorrection.y);
+	glVertex2f(_size.x - _anchorCorrection.x, _size.y - _anchorCorrection.y);
 	glTexCoord2f(0, 1);
-	glVertex2f(- anchorCorrection.x, _size.y - anchorCorrection.y);
+	glVertex2f(- _anchorCorrection.x, _size.y - _anchorCorrection.y);
 	glEnd();
 
 	textures.stopUsingTexture();
@@ -80,8 +81,8 @@ void Image::OnEditor()
 		ImGui::DragFloat2("Size", size, 0.05f);
 		ImGui::DragFloat2("Anchor", anchor, 0.02f);
 
-		_size = { size[0], size[1] };
-		_anchor = { anchor[0], anchor[1] };
+        setSize({ size[0], size[1] });
+        setAnchor({ anchor[0], anchor[1] });
 
 		ImGui::Checkbox("Active", &_active);
 	}

@@ -23,6 +23,8 @@ class Image : public Component
 	  const std::string _textureName;
 	  int _textureId = 0;
 	  float2 _size = float2(1.f, 1.f);
-	  float2 _anchor = float2(0.5f, 0.5f);
+	  
+      float2 _anchor = float2(0.f, 0.f);
+      float2 _anchorCorrection = float2(0.f, 0.f);
 };
 

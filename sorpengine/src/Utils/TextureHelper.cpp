@@ -55,7 +55,7 @@ int TextureHelper::loadTexture(const std::string& texturePath)
 		iluFlipImage();
 	}
 
-	int channels = ilGetInteger(IL_IMAGE_CHANNELS);
+	const int channels = ilGetInteger(IL_IMAGE_CHANNELS);
 	if (channels == 3)
 	{
 		ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
@@ -65,11 +65,17 @@ int TextureHelper::loadTexture(const std::string& texturePath)
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 	}
 
-	ILubyte* data = ilGetData();
+    const GLenum target = GL_TEXTURE_2D;
+    const int level = 0;
+    const int internalFormat = ilGetInteger(IL_IMAGE_FORMAT);
 	const int width = ilGetInteger(IL_IMAGE_WIDTH);
 	const int height = ilGetInteger(IL_IMAGE_HEIGHT);
-	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width,
-		height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, data);
+    const int border = 0; // must be 0
+    const GLenum format = ilGetInteger(IL_IMAGE_FORMAT);
+    const GLenum type = ilGetInteger(IL_IMAGE_TYPE);
+    ILubyte* data = imageInfo.Data;
+
+	glTexImage2D(target, level, internalFormat, width, height, border, format, type, data);
 	ilDeleteImages(1, &imageId);
 
 	return textureId;

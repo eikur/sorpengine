@@ -2,8 +2,9 @@
 #include "Application.hpp"
 #include "ModuleWindow.hpp"
 
-void Camera::Init()
+void Camera::Init(const float aspectRatio)
 {
+    SetAspectRatio(aspectRatio);
 	// by default perspective frustum
 	SetFOV(_verticalFOV);
 	SetPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
@@ -43,13 +44,12 @@ const float4x4& Camera::GetViewMatrix() const
 void Camera::SetFOV(float verticalFOV)
 {
 	_verticalFOV = verticalFOV;
-	SetAspectRatio(App->getWindow().getWindowAspectRatio());
 	_frustum.SetVerticalFovAndAspectRatio(DegToRad(verticalFOV), _aspectRatio);
 }
 
 void Camera::SetAspectRatio(float aspectRatio)
 {
-	_aspectRatio = _aspectRatio;
+ 	_aspectRatio = aspectRatio;
 	if (_frustum.Type() == FrustumType::PerspectiveFrustum)
 	{
 		float horizontalFOV = 2.0f * atanf(tanf(_frustum.VerticalFov() / 2.0f) * aspectRatio);
