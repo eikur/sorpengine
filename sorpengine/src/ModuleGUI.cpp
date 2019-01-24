@@ -15,6 +15,10 @@ bool ModuleGUI::init()
 {
 	ImGui_ImplSdlGL3_Init(App->getWindow().getSDLWindow());
 	initStyle();
+
+    // default open windows: hierarchy and inspector
+    _data.showHierarchy = true;
+    _data.showInspector = true;
 	return true;
 }
 
@@ -65,15 +69,15 @@ bool ModuleGUI::showMainMenu()
 {
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("Documentation"))
-		{
-			if (ImGui::MenuItem("About", NULL, &_data.showAbout)) {}
-			ImGui::EndMenu();
-		}
 		if (ImGui::BeginMenu("Windows"))
 		{
 			if (ImGui::MenuItem("Hierarchy", NULL, &_data.showHierarchy)) {};
 			if (ImGui::MenuItem("Inspector", NULL, &_data.showInspector)) {};
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Documentation"))
+		{
+			if (ImGui::MenuItem("About", NULL, &_data.showAbout)) {}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();

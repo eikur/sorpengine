@@ -32,6 +32,7 @@ class ModuleWindow : public Module
 
 	private:
 		void updateWindow();
+        void translateCamera(const float3& translation);
 
 		SDL_Window* _sdlWindow = nullptr;
 		SDL_Surface* _sdlSurface = nullptr;
@@ -42,9 +43,9 @@ class ModuleWindow : public Module
 
 
 		bool _fullScreen = false;
-		bool _resizable = true;
+		bool _resizable = false; // disabled for now
 		bool _vsync = true;
 		bool _isDirty = false;
 
-		iPoint _windowSize = { 600, 480 };
+        iPoint _windowSize = { 1280, 720 };
 };

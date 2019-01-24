@@ -184,9 +184,21 @@ void GameObject::onEditor()
 	}
 }
 
-void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject *& selectedGameObject)
+void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject *& selectedGameObject) 
 {
-	if (_children.empty())
+    const bool isSceneRootNode = _parent == nullptr;
+    
+    if (isSceneRootNode)
+    {
+        for (GameObject* child : _children)
+        {
+            child->onHierarchy(++index, nodeFlags, selectedGameObject);
+        }
+        return;
+    }
+
+
+    if (_children.empty())
 	{
 		ImGui::TreeNodeEx((void*)(intptr_t)index, nodeFlags | ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen, "%s", _name.c_str());
 		if (ImGui::IsItemClicked())
@@ -196,7 +208,7 @@ void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObjec
 		return;
 	}
 
-	bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)index, 0, "%s", _name.c_str(), index);
+	const bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)index, 0, "%s", _name.c_str(), index);
 	if (ImGui::IsItemClicked())
 	{
 		selectedGameObject = this;
@@ -208,7 +220,7 @@ void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObjec
 		{
 			child->onHierarchy(++index, nodeFlags, selectedGameObject);
 		}
-		ImGui::TreePop();
+		ImGui::TreePop(); 
 	}
 
 }

@@ -97,17 +97,51 @@ UpdateStatus ModuleWindow::preUpdate()
 		_isDirty = false;
 	}
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	return UpdateStatus::Continue;
 }
 
 UpdateStatus ModuleWindow::update(float /*dt*/)
 {
+    // These are camera controls. Consider moving them when the camera is converted to a component
+    // Editor camera controls
+
 	if (App->getInput().getKey(SDL_SCANCODE_C) == ModuleInput::KeyState::Down)
 	{
         toggleCameraMode();
 	}
+
+    const float kCamMoveSpeed = 3.0f;
+    const float dt = 0.02f;
+
+    if (App->getInput().getKey(SDL_SCANCODE_W) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(_camera.front() * kCamMoveSpeed * dt );
+    }
+    else if (App->getInput().getKey(SDL_SCANCODE_S) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(-_camera.front() * kCamMoveSpeed * dt);
+    }
+
+    if (App->getInput().getKey(SDL_SCANCODE_Q) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(-_camera.up() * kCamMoveSpeed * dt);
+    }
+    else if (App->getInput().getKey(SDL_SCANCODE_E) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(_camera.up() * kCamMoveSpeed * dt);
+    }
+
+    if (App->getInput().getKey(SDL_SCANCODE_A) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(-_camera.right() * kCamMoveSpeed * dt);
+    }
+    else if (App->getInput().getKey(SDL_SCANCODE_D) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(_camera.right() * kCamMoveSpeed * dt);
+    }
+    
 	return UpdateStatus::Continue;
 }
 
@@ -142,7 +176,7 @@ void ModuleWindow::setWindowSize(const iPoint& newSize)
 		return;
 	}
 	_windowSize = newSize;
-    _camera.SetAspectRatio(_windowSize.x / (float)_windowSize.y);
+    _camera.setAspectRatio(_windowSize.x / (float)_windowSize.y);
 	_isDirty = true;
 }
 
@@ -156,9 +190,9 @@ void ModuleWindow::updateWindow()
 	glViewport(0, 0, _windowSize.x, _windowSize.y);
 
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(_camera.GetProjectionMatrix().ptr());
+	glLoadMatrixf(_camera.getProjectionMatrix().ptr());
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+    glLoadMatrixf(_camera.GetViewMatrix().ptr());
 }
 
 SDL_Window* ModuleWindow::getSDLWindow() const
@@ -170,4 +204,10 @@ void ModuleWindow::toggleCameraMode()
 {
 	_camera.switchType();
 	_isDirty = true;
+}
+
+void ModuleWindow::translateCamera(const float3& translation)
+{
+    _camera.translate(translation);
+    _isDirty = true;
 }

@@ -1,13 +1,15 @@
 #include "Camera.hpp"
+
 #include "Application.hpp"
 #include "ModuleWindow.hpp"
+#include "Utils.hpp"
 
 void Camera::Init(const float aspectRatio)
 {
-    SetAspectRatio(aspectRatio);
+    setAspectRatio(aspectRatio);
 	// by default perspective frustum
-	SetFOV(_verticalFOV);
-	SetPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
+	setFOV(_verticalFOV);
+	setPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
 
 	_frustum.SetFrame(float3::zero, -float3::unitZ, float3::unitY);
 	_frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumHandedness::FrustumRightHanded);
@@ -25,11 +27,11 @@ void Camera::switchType()
 	}
 	else
 	{
-		SetFOV(_verticalFOV);
+		setFOV(_verticalFOV);
 	}
 }
 
-const float4x4& Camera::GetProjectionMatrix() const
+const float4x4& Camera::getProjectionMatrix() const
 {
 	float4x4 rowMajorProjectionMatrix = _frustum.ProjectionMatrix();
 	return rowMajorProjectionMatrix.Transposed();
@@ -41,13 +43,13 @@ const float4x4& Camera::GetViewMatrix() const
 	return rowMajorViewMatrix.Transposed();
 }
 
-void Camera::SetFOV(float verticalFOV)
+void Camera::setFOV(float verticalFOV)
 {
 	_verticalFOV = verticalFOV;
 	_frustum.SetVerticalFovAndAspectRatio(DegToRad(verticalFOV), _aspectRatio);
 }
 
-void Camera::SetAspectRatio(float aspectRatio)
+void Camera::setAspectRatio(float aspectRatio)
 {
  	_aspectRatio = aspectRatio;
 	if (_frustum.Type() == FrustumType::PerspectiveFrustum)
@@ -62,32 +64,53 @@ void Camera::SetAspectRatio(float aspectRatio)
 	}
 }
 
-void Camera::SetPlaneDistances(float nearPlane, float farPlane)
+void Camera::setPlaneDistances(float nearPlane, float farPlane)
 {
 	_nearPlaneDistance = nearPlane;
 	_farPlaneDistance = farPlane;
 	_frustum.SetViewPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
 }
 
-const float3& Camera::GetPosition() const
+const float3& Camera::getPosition() const
 {
 	return _frustum.Pos();
 }
 
-void Camera::SetPosition(const float3& newPosition)
+void Camera::setPosition(const float3& newPosition)
 {
 	_frustum.SetPos(newPosition);
+    Utils::log("camera pos (%.2f,%.2f,%.2f)", newPosition.x, newPosition.y, newPosition.z);
 }
 
-void Camera::Orientate(const float3& front, const float3& up)
+void Camera::translate(const float3& translation)
+{
+    setPosition(getPosition() + translation);
+}
+
+void Camera::orientate(const float3& front, const float3& up)
 {
 	_frustum.SetFrame(_frustum.Pos(), front, up);
 }
 
-void Camera::LookAt(const float3& lookAtPosition)
+void Camera::lookAt(const float3& lookAtPosition)
 {
 	// check for bugs
 	float3 newFront = (lookAtPosition - _frustum.Pos()).Normalized();
 	float3 translation = newFront - _frustum.Front();
-	Orientate(newFront, _frustum.Up() + translation);
+	orientate(newFront, _frustum.Up() + translation);
+}
+
+const float3& Camera::up() const
+{
+    return _frustum.Up();
+}
+
+const float3& Camera::front() const
+{
+    return _frustum.Front();
+}
+
+const float3& Camera::right() const
+{
+    return _frustum.WorldRight();
 }

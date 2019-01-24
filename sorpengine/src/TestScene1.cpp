@@ -11,19 +11,13 @@
 
 #include "GameObject\GameObject.hpp"
 
-namespace
-{
-	const std::string kTextureName = "resources/Lenna.png";
-}
-
 TestScene1::TestScene1(SceneManager& sceneManager) : Scene(sceneManager)
 {}
 
 bool TestScene1::init()
 {
 	GameObject* go = new GameObject("test");
-	auto img = std::make_shared<Image>();
-	go->addComponent(std::move(img));
+	go->addComponent(std::make_shared<Image>());
 	addGameObject(go);
 
 	return Scene::init();

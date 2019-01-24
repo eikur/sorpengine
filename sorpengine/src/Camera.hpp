@@ -8,20 +8,26 @@ class Camera
 public:
     void Init(const float aspectRatio);
 
-	const float4x4& GetProjectionMatrix() const;
-	void switchType();
+	const float4x4& getProjectionMatrix() const;
+	const float4x4& GetViewMatrix() const;
+    void switchType();
 
-	void SetFOV(float verticalFOV);
-	void SetAspectRatio(float aspectRatio);
-	void SetPlaneDistances(float nearPlane, float farPlane);
-	const float3& GetPosition() const;
-	void SetPosition(const float3& pos);
-	void Orientate(const float3& front, const float3& up);
-	void LookAt(const float3& lookAtPosition);
+	void setFOV(float verticalFOV);
+	void setAspectRatio(float aspectRatio);
+	void setPlaneDistances(float nearPlane, float farPlane);
+
+	const float3& getPosition() const;
+	void setPosition(const float3& pos);
+    void translate(const float3& translation);
+
+	void orientate(const float3& front, const float3& up);
+	void lookAt(const float3& lookAtPosition);
+
+    const float3& up() const;
+    const float3& front() const;
+    const float3& right() const;
 
 private:
-	const float4x4& GetViewMatrix() const;
-
 	Frustum _frustum;
 
 	float _nearPlaneDistance = 0.1f;
