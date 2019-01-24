@@ -14,6 +14,7 @@ class ModuleGUI;
 class SceneManager;
 class ShaderManager;
 class TextureHelper;
+class ModelHelper;
 
 class Application
 {
@@ -35,6 +36,7 @@ private:
 
 	MEMBER_DECL(ShaderManager, _shaderManager, getShaderManager)
 	MEMBER_DECL(TextureHelper, _textureHelper, getTextureHelper)
+    MEMBER_DECL(ModelHelper, _modelHelper, getModelHelper)
 };
 
 extern Application* App;

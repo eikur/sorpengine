@@ -1,6 +1,7 @@
 /* Application.cpp */
 
 #include "Application.hpp"
+#include "ModelHelper.hpp"
 #include "ModuleWindow.hpp"
 #include "ModuleInput.hpp"
 #include "ModuleAudio.hpp"
@@ -38,6 +39,7 @@ Application::Application()
 	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get(), _gui.get()};
 	_shaderManager = std::make_unique<ShaderManager>();
 	_textureHelper = std::make_unique<TextureHelper>();
+    _modelHelper = std::make_unique<ModelHelper>();
 }
 
 Application::~Application()
@@ -50,6 +52,7 @@ Application::~Application()
 
 	_shaderManager.reset();
 	_textureHelper.reset();
+    _modelHelper.reset();
 }
 
 bool Application::Init()
@@ -68,6 +71,7 @@ bool Application::Init()
 
 	_shaderManager->init();
 	_textureHelper->init();
+    _modelHelper->init();
 
 	return ret;
 }
@@ -109,6 +113,7 @@ bool Application::CleanUp()
 
 	_shaderManager->finalize();
 	_textureHelper->finalize();
+    _modelHelper->finalize();
 
 	return ret;
 }

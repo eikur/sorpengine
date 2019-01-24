@@ -99,6 +99,9 @@
     <ClCompile Include="src\GameObject\Image.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Utils\ModelHelper.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MemLeaks.h">
@@ -193,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\Image.hpp">
       <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\ModelHelper.hpp">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
