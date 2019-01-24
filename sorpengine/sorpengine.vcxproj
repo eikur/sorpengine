@@ -78,7 +78,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty;$(SolutionDir)3rdparty\glew-2.0.0\include;$(SolutionDir)3rdparty\MathGeoLib\include;$(SolutionDir)3rdparty\SDL_mixer\include;$(SolutionDir)3rdparty\SDL_image\include;$(SolutionDir)3rdparty\SDL\include;$(SolutionDir)src;$(SolutionDir)src/Utils;$(SolutionDir)src/shaders;$(SolutionDir)resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty;$(SolutionDir)3rdparty\assimp\include;$(SolutionDir)3rdparty\glew-2.0.0\include;$(SolutionDir)3rdparty\MathGeoLib\include;$(SolutionDir)3rdparty\SDL_mixer\include;$(SolutionDir)3rdparty\SDL_image\include;$(SolutionDir)3rdparty\SDL\include;$(SolutionDir)src;$(SolutionDir)src/Utils;$(SolutionDir)src/shaders;$(SolutionDir)resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

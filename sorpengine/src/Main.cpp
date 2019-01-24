@@ -27,11 +27,13 @@
 #			pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #			pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #			pragma comment( lib, "3rdparty/MathGeoLib/libx86/deb/MathGeoLib.lib" )
+#           pragma comment (lib, "3rdparty/assimp/lib/assimp-vc140-mt.lib")
 #		else // RELEASE
 #			pragma comment( lib, "3rdparty/glew-2.0.0/libx86/rel/glew32.lib" )
 #			pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #			pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #			pragma comment( lib, "3rdparty/MathGeoLib/libx86/rel/MathGeoLib.lib" )
+#           pragma comment (lib, "3rdparty/assimp/lib/assimp-vc140-mt.lib")
 #		endif
 #   else 
 #		pragma comment(lib, "3rdparty/DevIL/libx64/rel/ILU.lib")
@@ -45,11 +47,13 @@
 #			pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #			pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #			pragma comment( lib, "3rdparty/MathGeoLib/libx64/deb/MathGeoLib.lib" )
+#           pragma comment (lib, "3rdparty/assimp/lib/assimp-vc140-mt.lib")
 #		else // RELEASE
 #			pragma comment( lib, "3rdparty/glew-2.0.0/libx86/rel/glew32.lib" )
 #			pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #			pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #			pragma comment( lib, "3rdparty/MathGeoLib/libx86/rel/MathGeoLib.lib" )
+#           pragma comment (lib, "3rdparty/assimp/lib/assimp-vc140-mt.lib")
 #		endif
 #	endif
 #endif
