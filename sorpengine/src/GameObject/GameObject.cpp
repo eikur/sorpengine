@@ -51,8 +51,6 @@ void GameObject::removeChild(GameObject* child)
 void GameObject::addTransform(std::shared_ptr<Transform>&& transform)
 {
 	_transform = transform;
-//	transform->setParent(*this);
-//	_components.push_back(std::move(transform));
 	addComponent(std::move(transform));
 }
 

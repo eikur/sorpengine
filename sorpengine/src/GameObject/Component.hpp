@@ -7,11 +7,12 @@ class GameObject;
 class Component
 {
 protected:
-	enum class Type
-	{
-		Transform,
-		Image,
-		Script
+    enum class Type
+    {
+        Script,
+        Image,
+        Mesh,
+		Transform
 	};
 
 public:
@@ -24,8 +25,10 @@ public:
 	virtual UpdateStatus postUpdate() { return UpdateStatus::Continue; }
 	virtual bool cleanUp() { return true; }
 
-	void setParent(GameObject& parent) { _parent = &parent; }
+    // pure virtual
 	virtual void OnEditor() = 0;
+
+	void setParent(GameObject& parent) { _parent = &parent; }
 
 protected:
 	virtual void setActive(const bool value) { _active = value; };

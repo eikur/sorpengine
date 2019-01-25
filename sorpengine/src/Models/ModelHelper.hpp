@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 
+class GameObject;
 struct aiScene;
 struct aiNode;
 
@@ -28,11 +29,13 @@ class ModelHelper
 
   public:
     void init();
-    void loadModel(const std::string& modelPath);
+    bool loadModel(const std::string& asset);
+    GameObject* getGameObjectFromModel(const std::string& asset);
+
     void finalize();
 
 private:
-    Node loadNode(const char* asset_path, const aiScene* scene, const aiNode* node, Node* parent);
+    Node loadNode(const aiScene* scene, const aiNode* node, Node* parent);
 
     MNameToNodeStructure _modelNodes;
     std::vector<Mesh> _modelMeshes;

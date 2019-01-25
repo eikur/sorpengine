@@ -22,7 +22,7 @@ bool TestScene1::init()
 	addGameObject(go);
 
     const std::string kModelName = "resources/magnetto2.fbx";
-    App->getModelHelper().loadModel(kModelName);
+    addGameObject(App->getModelHelper().getGameObjectFromModel(kModelName));
 
 	return Scene::init();
 }

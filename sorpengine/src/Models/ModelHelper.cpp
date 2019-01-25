@@ -1,6 +1,7 @@
 #include "ModelHelper.hpp"
 
 #include "Mesh.hpp"
+#include "GameObject/GameObject.hpp"
 #include "Utils.hpp"
 #include <assimp/include/cimport.h>
 #include <assimp/include/postprocess.h>
@@ -16,25 +17,27 @@ void ModelHelper::finalize()
 
 }
 
-void ModelHelper::loadModel(const std::string& modelPath)
+bool ModelHelper::loadModel(const std::string& asset)
 {
-    const auto it = _modelNodes.find(modelPath);
+    const auto it = _modelNodes.find(asset);
     if (it != _modelNodes.cend())
     {
-        return; // bail out if model has already been loaded
+        return true; // bail out if model has already been loaded
     }
 
-    const aiScene* loadedScene = aiImportFile(modelPath.c_str(), aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality);
+    const aiScene* loadedScene = aiImportFile(asset.c_str(), aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality);
     if (loadedScene == nullptr)
     {
-        Utils::log("Level could not be loaded. Path: %s", modelPath);
-        return;
+        Utils::log("Level could not be loaded. Path: %s", asset);
+        return false;
     }
 
-    _modelNodes[modelPath] = loadNode(modelPath.c_str(), loadedScene, loadedScene->mRootNode, nullptr);
+    _modelNodes[asset] = loadNode(loadedScene, loadedScene->mRootNode, nullptr);
+
+    return true;
 }
 
-ModelHelper::Node ModelHelper::loadNode(const char* asset_path, const aiScene* scene, const aiNode* node, ModelHelper::Node* parent)
+ModelHelper::Node ModelHelper::loadNode(const aiScene* scene, const aiNode* node, ModelHelper::Node* parent)
 {
     Node createdNode;
     
@@ -68,8 +71,25 @@ ModelHelper::Node ModelHelper::loadNode(const char* asset_path, const aiScene* s
     // Recursively process children nodes
     for (size_t i = 0; i < node->mNumChildren; ++i)
     {
-        createdNode.children.push_back(loadNode(asset_path, scene,  node->mChildren[i], &createdNode));
+        createdNode.children.push_back(loadNode(scene,  node->mChildren[i], &createdNode));
     }
 
     return createdNode;
+}
+
+GameObject* ModelHelper::getGameObjectFromModel(const std::string& asset)
+{
+    if (!loadModel(asset))
+    {
+        Utils::log("Couldn't generate game object from model %s", asset);
+        return nullptr;
+    }
+
+    GameObject* gameObject = new GameObject(asset);
+
+
+//    const Node& desiredNode = _modelNodes.at[asset];
+
+
+    return gameObject;
 }
