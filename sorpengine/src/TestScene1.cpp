@@ -11,6 +11,7 @@
 #include "GameObject\Image.hpp"
 
 #include "GameObject\GameObject.hpp"
+#include "GameObject/ComponentFactory.hpp"
 
 TestScene1::TestScene1(SceneManager& sceneManager) : Scene(sceneManager)
 {}
@@ -18,7 +19,8 @@ TestScene1::TestScene1(SceneManager& sceneManager) : Scene(sceneManager)
 bool TestScene1::init()
 {
 	GameObject* go = new GameObject("test");
-	go->addComponent(std::make_shared<Image>());
+    go->addTransform(ComponentFactory().createComponent<Transform>());
+	go->addComponent(ComponentFactory().createComponent<Image>());
 	addGameObject(go);
 
     const std::string kModelName = "resources/magnetto2.fbx";

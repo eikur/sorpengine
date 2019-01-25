@@ -2,7 +2,9 @@
 
 #include "Mesh.hpp"
 #include "GameObject/GameObject.hpp"
+#include "GameObject/ComponentFactory.hpp"
 #include "Utils.hpp"
+
 #include <assimp/include/cimport.h>
 #include <assimp/include/postprocess.h>
 #include <assimp/include/scene.h>
@@ -14,7 +16,10 @@ void ModelHelper::init()
 
 void ModelHelper::finalize()
 {
-
+    for (Mesh& mesh : _modelMeshes)
+    {
+        mesh.cleanUp();
+    }
 }
 
 bool ModelHelper::loadModel(const std::string& asset)
@@ -85,11 +90,36 @@ GameObject* ModelHelper::getGameObjectFromModel(const std::string& asset)
         return nullptr;
     }
 
-    GameObject* gameObject = new GameObject(asset);
+    const Node& node = _modelNodes.at(asset);
+    
+    return getGameObjectFromNode(node, nullptr);
+}
 
+GameObject* ModelHelper::getGameObjectFromNode(const Node& node, GameObject* parent)
+{
+    GameObject* gameObject = new GameObject(node.name);
 
-//    const Node& desiredNode = _modelNodes.at[asset];
+// TODO switch to full 3d coordinates
+    const float3 pos = node.position;
+    //const Quat rot = node.rotation;
+    //const float3 sca = node.scale;
+    const float rot = 0.f;
+    const float2 sca = float2::one;
 
+    gameObject->addTransform(ComponentFactory().createComponent<Transform>(pos, rot, sca));
+
+    if (!node.mesh_ids.empty())
+    {
+        const size_t meshId = node.mesh_ids.at(0);
+        Mesh& mesh = _modelMeshes.at(meshId);
+
+        gameObject->addComponent(ComponentFactory().createComponent<MeshComponent>(&mesh));
+    }
+
+    for (const Node& child : node.children)
+    {
+        gameObject->addChild(getGameObjectFromNode(child, gameObject));
+    }
 
     return gameObject;
 }

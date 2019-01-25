@@ -6,7 +6,6 @@
 GameObject::GameObject(const std::string& name, GameObject* parent, bool active)
 	: _name(name), _parent(parent), _active(active)
 {
-	addTransform(TransformBuilder().withPosition(float3(0.05f, 0.05f, -0.2f)).build());
 }
 
 void GameObject::setActive(bool value)

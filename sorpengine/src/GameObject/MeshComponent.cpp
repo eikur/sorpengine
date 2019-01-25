@@ -12,7 +12,7 @@ MeshComponent::MeshComponent(Mesh* mesh)
 
 UpdateStatus MeshComponent::update(float /*dt*/)
 {
-    if (_mesh)
+    if (_active && _mesh)
     {
         _mesh->draw();
     }

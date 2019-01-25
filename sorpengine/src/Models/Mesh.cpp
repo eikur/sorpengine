@@ -4,6 +4,10 @@
 #include <assimp/include/postprocess.h>
 #include <assimp/include/scene.h>
 
+// remove when doing materials
+#include "Application.hpp"
+#include "TextureHelper.hpp"
+
 Mesh::Mesh(const aiMesh* inMesh)
 {
     _numElements = inMesh->mNumFaces * 3;
@@ -83,15 +87,26 @@ Mesh::~Mesh()
 {
     delete _vertices;
     delete[] _normals;
+}
 
-	glDeleteBuffers(1, &_vertexVBO);
-	glDeleteBuffers(1, &_texCoordVBO);
-	glDeleteBuffers(1, &_normalVBO);
-	glDeleteBuffers(1, &_indexVBO);
+void Mesh::cleanUp()
+{
+    glDeleteBuffers(1, &_vertexVBO);
+    glDeleteBuffers(1, &_texCoordVBO);
+    glDeleteBuffers(1, &_normalVBO);
+    glDeleteBuffers(1, &_indexVBO);
 }
 
 void Mesh::draw() const
 {
+    // bind proper texture when drawing, this is default texture for images
+    App->getTextureHelper().useTexture(1);
+    
+    glColorMaterial(GL_FRONT, GL_AMBIENT);
+    glColor4f(1.f, 1.f, 1.f, 1.f);
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glColor4f(1.f, 0.f, 0.f, 1.f);
+
     if (_vertexVBO) {
         glBindBuffer(GL_ARRAY_BUFFER, _vertexVBO);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -110,7 +125,8 @@ void Mesh::draw() const
         glNormalPointer(GL_FLOAT, 0, 0);
     }
 
-    if (_indexVBO) {
+    if (_indexVBO) 
+    {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexVBO);
         glDrawElements(GL_TRIANGLES, _numElements, GL_UNSIGNED_INT, NULL);
     }
@@ -118,6 +134,9 @@ void Mesh::draw() const
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
+
+    // unbind texture
+    App->getTextureHelper().stopUsingTexture();
 }
 
 Mesh::Mesh(const Mesh& other)

@@ -36,6 +36,7 @@ class ModelHelper
 
 private:
     Node loadNode(const aiScene* scene, const aiNode* node, Node* parent);
+    GameObject* getGameObjectFromNode(const Node& node, GameObject* parent);
 
     MNameToNodeStructure _modelNodes;
     std::vector<Mesh> _modelMeshes;

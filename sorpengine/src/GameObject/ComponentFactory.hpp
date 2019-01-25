@@ -18,6 +18,14 @@ public:
         return createComponent<T>(args...);
     }
 
+
+    //Transform
+    template<>
+    std::shared_ptr<Transform> createComponent()
+    {
+        return TransformBuilder().build();
+    }
+
     template<>
     std::shared_ptr<Transform> createComponent(const float3 pos, const float rotation, const float2 scale)
     {
@@ -54,5 +62,10 @@ public:
     {
         return std::make_shared<MeshComponent>(mesh);
     }
+
+    const ComponentFactory& operator() ()
+    {
+        return *this;
+    };
 };
 

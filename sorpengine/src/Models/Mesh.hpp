@@ -30,6 +30,8 @@ class Mesh
     Mesh(const Mesh& other);
 
     void draw() const;
+
+    void cleanUp();
     
   private:
     GLuint _numVertices = 0;
