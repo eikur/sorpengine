@@ -1,9 +1,12 @@
 #pragma once
 
 #include "MathGeoLib\include\MathGeoLib.h"
+#include "Mesh.hpp"
+
 #include <map>
 #include <vector>
 
+struct aiScene;
 struct aiNode;
 
 class ModelHelper
@@ -18,7 +21,7 @@ class ModelHelper
         float3 scale = float3::one;
 
         std::vector<Node> children;
-        std::vector<unsigned> mesh_ids;
+        std::vector<size_t> mesh_ids;
     };
 
     using MNameToNodeStructure = std::map<std::string, Node>;
@@ -29,10 +32,9 @@ class ModelHelper
     void finalize();
 
 private:
-    Node loadNode(const char* asset_path, const aiNode* node, Node* parent);
-
+    Node loadNode(const char* asset_path, const aiScene* scene, const aiNode* node, Node* parent);
 
     MNameToNodeStructure _modelNodes;
-    //std::vector<Mesh> _modelMeshes;
+    std::vector<Mesh> _modelMeshes;
     //std::vector<Material> _modelMaterials;
 };

@@ -1,5 +1,6 @@
 #include "ModelHelper.hpp"
 
+#include "Mesh.hpp"
 #include "Utils.hpp"
 #include <assimp/include/cimport.h>
 #include <assimp/include/postprocess.h>
@@ -20,7 +21,7 @@ void ModelHelper::loadModel(const std::string& modelPath)
     const auto it = _modelNodes.find(modelPath);
     if (it != _modelNodes.cend())
     {
-        return; // model has already been loaded
+        return; // bail out if model has already been loaded
     }
 
     const aiScene* loadedScene = aiImportFile(modelPath.c_str(), aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality);
@@ -30,10 +31,10 @@ void ModelHelper::loadModel(const std::string& modelPath)
         return;
     }
 
-    _modelNodes[modelPath] = loadNode(modelPath.c_str(), loadedScene->mRootNode, nullptr);
+    _modelNodes[modelPath] = loadNode(modelPath.c_str(), loadedScene, loadedScene->mRootNode, nullptr);
 }
 
-ModelHelper::Node ModelHelper::loadNode(const char* asset_path, const aiNode* node, ModelHelper::Node* parent)
+ModelHelper::Node ModelHelper::loadNode(const char* asset_path, const aiScene* scene, const aiNode* node, ModelHelper::Node* parent)
 {
     Node createdNode;
     
@@ -54,21 +55,21 @@ ModelHelper::Node ModelHelper::loadNode(const char* asset_path, const aiNode* no
     createdNode.rotation = Quat(rotation.x, rotation.y, rotation.z, rotation.w);
     createdNode.position = float3(translation.x, translation.y, translation.z);
 
-    // load mesh data + materials
+    for (size_t i = 0; i < node->mNumMeshes; ++i)
+    {
+        // load materials + texture data here
+
+        createdNode.mesh_ids.push_back(_modelMeshes.size());
+
+        const size_t loadedNodeMeshId = node->mMeshes[i];
+        _modelMeshes.emplace_back(std::move(Mesh(scene->mMeshes[loadedNodeMeshId])));
+    }
 
     // Recursively process children nodes
     for (size_t i = 0; i < node->mNumChildren; ++i)
     {
-        createdNode.children.push_back(loadNode(asset_path, node->mChildren[i], &createdNode));
+        createdNode.children.push_back(loadNode(asset_path, scene,  node->mChildren[i], &createdNode));
     }
 
     return createdNode;
 }
-
-
-/*
-GameObject* getGameObjectFromModel(const std::string& modelPath){
-loadModel(); // maybe tryLoadModel()... we'll see 
-
-}
-*/

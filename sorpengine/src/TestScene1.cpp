@@ -1,6 +1,7 @@
 #include "TestScene1.hpp"
 
 #include "Application.hpp"
+#include "ModelHelper.hpp"
 #include "ModuleInput.hpp"
 #include "ModuleWindow.hpp"
 #include "TextureHelper.hpp"
@@ -19,6 +20,9 @@ bool TestScene1::init()
 	GameObject* go = new GameObject("test");
 	go->addComponent(std::make_shared<Image>());
 	addGameObject(go);
+
+    const std::string kModelName = "resources/magnetto2.fbx";
+    App->getModelHelper().loadModel(kModelName);
 
 	return Scene::init();
 }

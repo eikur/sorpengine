@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Utils\ImGui">
       <UniqueIdentifier>{f381aac5-3228-4923-b044-f8a6afd482cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{0d5265f5-0d19-4749-a92b-ce8da3912347}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Module.cpp">
@@ -99,8 +102,11 @@
     <ClCompile Include="src\GameObject\Image.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utils\ModelHelper.cpp">
-      <Filter>Source Files\Utils</Filter>
+    <ClCompile Include="src\Models\Mesh.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\ModelHelper.cpp">
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,8 +203,11 @@
     <ClInclude Include="src\GameObject\Image.hpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utils\ModelHelper.hpp">
-      <Filter>Source Files\Utils</Filter>
+    <ClInclude Include="src\Models\Mesh.hpp">
+      <Filter>Source Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\ModelHelper.hpp">
+      <Filter>Source Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
