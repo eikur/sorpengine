@@ -3,7 +3,7 @@
 #include "GL/glew.h"
 
 Transform::Transform(const float3 position, const float rotation, const float2 scale)
-	: Component(Component::Type::Transform, true)
+	: Component(ComponentType::Transform, true)
 	, _position(position)
 	, _rotation(rotation)
 	, _scale(scale)

@@ -9,11 +9,11 @@ namespace
 	const std::string kDefaultTextureName = "resources/buu.png";
 }
 
-Image::Image() : Component(Component::Type::Image, true), _textureName(kDefaultTextureName)
+Image::Image() : Component(ComponentType::Image, true), _textureName(kDefaultTextureName)
 {
 }
 
-Image::Image(const std::string& textureName) : Component(Component::Type::Image, true), _textureName(textureName)
+Image::Image(const std::string& textureName) : Component(ComponentType::Image, true), _textureName(textureName)
 {
 }
 

@@ -143,7 +143,6 @@
     <ClCompile Include="3rdparty\ImGui\imgui_impl_sdl_gl3.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Image.cpp" />
     <ClCompile Include="src\GameObject\MeshComponent.cpp" />

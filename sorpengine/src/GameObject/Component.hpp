@@ -4,19 +4,18 @@
 
 class GameObject;
 
+enum class ComponentType
+{
+    Script,
+    Image,
+    Mesh,
+    Transform
+};
+
 class Component
 {
-protected:
-    enum class Type
-    {
-        Script,
-        Image,
-        Mesh,
-		Transform
-	};
-
-public:
-	Component(Type type, bool active = true) : _type(type), _active(active) {}
+  public:
+	Component(ComponentType type, bool active = true) : _type(type), _active(active) {}
 
 	virtual bool init() { return true; }
 	virtual bool start() { return true; }
@@ -35,6 +34,6 @@ protected:
 	bool _active = true;
 
 private:
-	const Type _type;
+	const ComponentType _type;
 	GameObject * _parent = nullptr;
 };

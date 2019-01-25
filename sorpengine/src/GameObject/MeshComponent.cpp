@@ -4,7 +4,7 @@
 #include "Mesh.hpp"
 
 MeshComponent::MeshComponent(Mesh* mesh)
-    : Component(Component::Type::Mesh, mesh != nullptr)
+    : Component(ComponentType::Mesh, mesh != nullptr)
     , _mesh(mesh)
 {
 

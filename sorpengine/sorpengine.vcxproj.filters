@@ -96,9 +96,6 @@
     <ClCompile Include="src\GameObject\Transform.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject\ComponentFactory.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="src\GameObject\Image.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>

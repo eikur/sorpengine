@@ -7,12 +7,13 @@ class GameObject;
 
 class MeshComponent : public Component
 {
+  public:
     MeshComponent(Mesh* mesh = nullptr);
 
     UpdateStatus update(float dt = 0.0f) override;
 
     void OnEditor() override;
 
-private:
+  private:
     Mesh* _mesh = nullptr;
 };
