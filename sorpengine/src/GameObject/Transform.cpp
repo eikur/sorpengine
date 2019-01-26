@@ -7,6 +7,7 @@ Transform::Transform(const float3& position, const Quat& rotation, const float3&
 	, _position(position)
 	, _rotation(rotation)
 	, _scale(scale)
+	, _eulerRotation(rotation.ToEulerXYZ() * 180.f / pi)
 {
 }
 
@@ -26,10 +27,9 @@ UpdateStatus Transform::update(float dt)
 {
 	glTranslatef(_position.x, _position.y, _position.z);
 	
-	const float3 eulerRot = _rotation.ToEulerXYZ() * 180.0f / pi;
-	glRotatef(eulerRot.x, 1.f, 0.f, 0.f);
-	glRotatef(eulerRot.y, 0.f, 1.f, 0.f);
-	glRotatef(eulerRot.z, 0.f, 0.f, 1.f);
+	glRotatef(_eulerRotation.x, 1.f, 0.f, 0.f);
+	glRotatef(_eulerRotation.y, 0.f, 1.f, 0.f);
+	glRotatef(_eulerRotation.z, 0.f, 0.f, 1.f);
 	
 	showPosGizmo();
 	
@@ -108,14 +108,11 @@ void Transform::OnEditor()
 {
 	if (ImGui::CollapsingHeader("Local Transform"))
 	{
-		float3 eulerRot = _rotation.ToEulerXYZ() * 180.0f / pi;
-		
 		ImGui::DragFloat3("Position", (float*)&_position, 0.05f);
-		ImGui::DragFloat3("Rotation", (float*)&eulerRot, 0.2f, -180.f, 180.f);
+		ImGui::DragFloat3("Rotation", (float*)&_eulerRotation, 0.2f);
 		ImGui::DragFloat3("Scale", (float*)&_scale, 0.05f);
 
-		eulerRot *= pi / 180.f;
-		_rotation = Quat::FromEulerXYZ(eulerRot.x, eulerRot.y, eulerRot.z);
+		_rotation = Quat::FromEulerXYZ(_eulerRotation.x * pi / 180.f, _eulerRotation.y * pi / 180.f, _eulerRotation.z * pi / 180.f);
 
 		ImGui::Checkbox("Show Gizmo", &_showPosGizmo);
 	}
@@ -138,6 +135,11 @@ void Transform::showPosGizmo() const
 	glBegin(GL_LINES);
 	glVertex2f(0.f, 0.f);
 	glVertex2f(0.f, w);
+	glEnd();
+	glColor3f(0.f, 0.f, 1.f);
+	glBegin(GL_LINES);
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(0.f, 0.f,w);
 	glEnd();
 	glColor3f(1.f, 1.f, 1.f);
 }

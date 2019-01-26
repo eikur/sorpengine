@@ -39,5 +39,7 @@ private:
 	Quat  _rotation = Quat::identity;
 	float3 _scale = float3::one;
 
+	float3 _eulerRotation = float3::zero;
+
 	bool _showPosGizmo = true;
 };
