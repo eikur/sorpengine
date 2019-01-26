@@ -27,7 +27,7 @@ public:
     }
 
     template<>
-    std::shared_ptr<Transform> createComponent(const float3 pos, const float rotation, const float2 scale)
+    std::shared_ptr<Transform> createComponent(const float3 pos, const Quat rotation, const float3 scale)
     {
         return TransformBuilder().withPosition(pos).withRotation(rotation).withScale(scale).build();
     }

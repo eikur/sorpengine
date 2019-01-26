@@ -2,7 +2,7 @@
 #include "ImGui/imgui.h"
 #include "GL/glew.h"
 
-Transform::Transform(const float3 position, const float rotation, const float2 scale)
+Transform::Transform(const float3& position, const Quat& rotation, const float3& scale)
 	: Component(ComponentType::Transform, true)
 	, _position(position)
 	, _rotation(rotation)
@@ -25,26 +25,31 @@ bool Transform::init()
 UpdateStatus Transform::update(float dt) 
 {
 	glTranslatef(_position.x, _position.y, _position.z);
-	glRotatef(_rotation, 0.f, 0.f, 1.f);
+	
+	const float3 eulerRot = _rotation.ToEulerXYZ() * 180.0f / pi;
+	glRotatef(eulerRot.x, 1.f, 0.f, 0.f);
+	glRotatef(eulerRot.y, 0.f, 1.f, 0.f);
+	glRotatef(eulerRot.z, 0.f, 0.f, 1.f);
+	
 	showPosGizmo();
-	glScalef(_scale.x, _scale.y, 1.f);
+	
+	glScalef(_scale.x, _scale.y, _scale.z);
 
 	return UpdateStatus::Continue;
 }
 
 // -- Getters
-const float3 Transform::getPosition() const { return _position; }
-const float Transform::getRotation() const { return _rotation; }
-const float2 Transform::getScale() const { return _scale; }
+const float3& Transform::getPosition() const { return _position; }
+const Quat& Transform::getRotation() const { return _rotation; }
+const float3& Transform::getScale() const { return _scale; }
 
 float4x4 Transform::getTransformMatrix() const
 {
-	Quat rotationQuat = Quat::FromEulerXYX(0.f, 0.f, _rotation);
-	return float4x4::FromTRS(_position, rotationQuat, float3(_scale, 1.f));
+	return float4x4::FromTRS(_position, _rotation, _scale);
 }
 
 // -- Setters
-void Transform::setPosition(const float2 position)
+void Transform::setPosition(const float2& position)
 {
 	_position = float3(position, 0.f);
 }
@@ -54,36 +59,48 @@ void Transform::setZPosition(const float zPos)
 	_position.z = zPos;
 }
 
-void Transform::setPosition(const float3 position)
+void Transform::setPosition(const float3& position)
 {
 	_position = position;
 }
 
-void Transform::translate(const float3 translation)
+void Transform::translate(const float3& translation)
 {
 	const float3 finalPos = _position + translation;
 	setPosition(finalPos);
 }
 
-void Transform::setRotation(const float rotation)
+void Transform::setRotation(const Quat& rotation)
 {
 	_rotation = rotation;
 }
 
-void Transform::rotateBy(const float rotation)
+void Transform::rotateBy(const Quat& rotation)
 {
-	_rotation = fmod(_rotation + rotation, 360.f);
+	_rotation = _rotation.Mul(rotation);
 }
 
-void Transform::setScale(const float2 scale)
+void Transform::setScale(const float2& scale)
+{
+	_scale = float3(scale, 1.f);
+}
+
+void Transform::setScale(const float3& scale)
 {
 	_scale = scale;
 }
 
-void Transform::scaleBy(const float2 scale)
+void Transform::scaleBy(const float2& scale)
 {
 	_scale.x *= scale.x;
 	_scale.y *= scale.y;
+}
+
+void Transform::scaleBy(const float3& scale)
+{
+	_scale.x *= scale.x;
+	_scale.y *= scale.y;
+	_scale.z *= scale.z;
 }
 
 // ----
@@ -91,17 +108,14 @@ void Transform::OnEditor()
 {
 	if (ImGui::CollapsingHeader("Local Transform"))
 	{
-		float pos[3] = { _position.x, _position.y, _position.z };
-		float scl[2] = { _scale.x, _scale.y};
-		float rot = _rotation;
+		float3 eulerRot = _rotation.ToEulerXYZ() * 180.0f / pi;
 		
-		ImGui::DragFloat3("Position", pos, 0.05f);
-		ImGui::DragFloat("Rotation", &rot, 0.5f);
-		ImGui::DragFloat2("Scale", scl, 0.05f);
+		ImGui::DragFloat3("Position", (float*)&_position, 0.05f);
+		ImGui::DragFloat3("Rotation", (float*)&eulerRot, 0.2f, -180.f, 180.f);
+		ImGui::DragFloat3("Scale", (float*)&_scale, 0.05f);
 
-		_position = { pos[0], pos[1], pos[2] };
-		_scale = { scl[0], scl[1] };
-		_rotation = rot;
+		eulerRot *= pi / 180.f;
+		_rotation = Quat::FromEulerXYZ(eulerRot.x, eulerRot.y, eulerRot.z);
 
 		ImGui::Checkbox("Show Gizmo", &_showPosGizmo);
 	}

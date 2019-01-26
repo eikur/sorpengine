@@ -6,25 +6,27 @@
 class Transform : public Component
 {
 public:
-	Transform(const float3 position, const float rotation, const float2 scale);
+	Transform(const float3& position, const Quat& rotation, const float3& scale);
 
 	bool init() override;	
 	UpdateStatus update(float dt = 0.0f) override;
 
-	const float3 getPosition() const;
-	const float getRotation() const;
-	const float2 getScale() const;
+	const float3& getPosition() const;
+	const Quat& getRotation() const;
+	const float3& getScale() const;
 	float4x4 getTransformMatrix() const;
 
-	void setPosition(const float2 position);
-	void setPosition(const float3 position);
+	void setPosition(const float2& position);
+	void setPosition(const float3& position);
 	void setZPosition(const float zPos);
-	void setRotation(const float rotation);
-	void setScale(const float2 scale);
+	void setRotation(const Quat& rotation);
+	void setScale(const float2& scale);
+	void setScale(const float3& scale);
 
-	void translate(const float3 translation);
-	void rotateBy(const float rotation);
-	void scaleBy(const float2 scale);
+	void translate(const float3& translation);
+	void rotateBy(const Quat& rotation);
+	void scaleBy(const float2& scale);
+	void scaleBy(const float3& scale);
 
 	void OnEditor() override;
 
@@ -34,8 +36,8 @@ protected:
 
 private:
 	float3 _position = float3::zero;
-	float  _rotation = 0.f;
-	float2 _scale = float2::one;
+	Quat  _rotation = Quat::identity;
+	float3 _scale = float3::one;
 
 	bool _showPosGizmo = true;
 };

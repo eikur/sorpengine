@@ -7,14 +7,14 @@ class TransformBuilder
 {
 	using Class = TransformBuilder;
 	
-    const float3 kDefaultPos = float3(0.f, 0.f, -5.f);
-    const float kDefaultRot = 0.f;
-    const float2 kDefaultScale = float2::one;
+    const float3 kDefaultPos = float3(0.f, 0.f, -2.f);
+	const Quat kDefaultRot = Quat::identity;
+    const float3 kDefaultScale = float3::one;
 
   public:
 	WITH(Position, float3, _pos)
-	WITH(Rotation, float, _rot)
-	WITH(Scale, float2, _scale)
+	WITH(Rotation, Quat, _rot)
+	WITH(Scale, float3, _scale)
 
 	TransformBuilder() : _pos(kDefaultPos), _rot(kDefaultRot), _scale(kDefaultScale)	{}
 

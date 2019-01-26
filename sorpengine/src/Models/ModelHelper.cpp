@@ -99,12 +99,9 @@ GameObject* ModelHelper::getGameObjectFromNode(const Node& node, GameObject* par
 {
     GameObject* gameObject = new GameObject(node.name);
 
-// TODO switch to full 3d coordinates
     const float3 pos = node.position;
-    //const Quat rot = node.rotation;
-    //const float3 sca = node.scale;
-    const float rot = 0.f;
-    const float2 sca = float2::one;
+    const Quat rot = node.rotation;
+    const float3 sca = node.scale;
 
     gameObject->addTransform(ComponentFactory().createComponent<Transform>(pos, rot, sca));
 
