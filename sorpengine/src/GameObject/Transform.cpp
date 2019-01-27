@@ -16,12 +16,6 @@ void Transform::setActive(const bool value)
 	assert(false, "Transform component's setActive() should never be called");
 }
 
-bool Transform::init()
-{
-	return true;
-}
-
-
 // -- update methods
 UpdateStatus Transform::update(float dt) 
 {
@@ -109,7 +103,7 @@ void Transform::OnEditor()
 	if (ImGui::CollapsingHeader("Local Transform"))
 	{
 		ImGui::DragFloat3("Position", (float*)&_position, 0.05f);
-		ImGui::DragFloat3("Rotation", (float*)&_eulerRotation, 0.2f);
+		ImGui::DragFloat3("Rotation", (float*)&_eulerRotation, 1.f);
 		ImGui::DragFloat3("Scale", (float*)&_scale, 0.05f);
 
 		_rotation = Quat::FromEulerXYZ(_eulerRotation.x * pi / 180.f, _eulerRotation.y * pi / 180.f, _eulerRotation.z * pi / 180.f);

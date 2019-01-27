@@ -66,7 +66,10 @@ bool Application::Init()
 	
 	for (auto&& module : getActiveModules(_modules))
 	{
-		ret = ret && module->start();
+		if (module->isActive())
+		{
+			ret = ret && module->start();
+		}
 	}
 
 	_shaderManager->init();

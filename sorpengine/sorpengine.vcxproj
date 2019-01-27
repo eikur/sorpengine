@@ -148,6 +148,7 @@
     <ClCompile Include="src\GameObject\MeshComponent.cpp" />
     <ClCompile Include="src\GameObject\Transform.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Models\Material.cpp" />
     <ClCompile Include="src\Models\Mesh.cpp" />
     <ClCompile Include="src\Models\ModelHelper.cpp" />
     <ClCompile Include="src\Model\Model.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="src\GameObject\Transform.hpp" />
     <ClInclude Include="src\Globals.hpp" />
     <ClInclude Include="src\MemLeaks.h" />
+    <ClInclude Include="src\Models\Material.hpp" />
     <ClInclude Include="src\Models\Mesh.hpp" />
     <ClInclude Include="src\Models\ModelHelper.hpp" />
     <ClInclude Include="src\Model\Model.hpp" />

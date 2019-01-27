@@ -108,6 +108,9 @@
     <ClCompile Include="src\GameObject\MeshComponent.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Models\Material.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MemLeaks.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\MeshComponent.hpp">
       <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Material.hpp">
+      <Filter>Source Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

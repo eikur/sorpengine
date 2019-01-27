@@ -8,7 +8,6 @@ class Transform : public Component
 public:
 	Transform(const float3& position, const Quat& rotation, const float3& scale);
 
-	bool init() override;	
 	UpdateStatus update(float dt = 0.0f) override;
 
 	const float3& getPosition() const;
