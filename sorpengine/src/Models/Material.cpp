@@ -1,6 +1,6 @@
 #include "Material.hpp"
 
-Material::Material(const GLuint textureId)
+Material::Material(const int textureId)
 	: _textureId(textureId)
 {}
 
@@ -14,7 +14,12 @@ GLfloat* Material::getColor(const ColorComponent component) const
 	return (GLfloat*)&_color[component];
 }
 
-const GLuint Material::getTextureId() const
+int Material::getTextureId() const
 {
 	return _textureId;
+}
+
+void Material::setTextureId(const int textureId)
+{
+	_textureId = textureId;
 }

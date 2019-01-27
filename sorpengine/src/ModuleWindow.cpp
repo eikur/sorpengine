@@ -85,16 +85,9 @@ bool ModuleWindow::init()
     glEnable(GL_DEPTH_TEST);
     //glEnable(GL_CULL_FACE);
 
-    glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat light_diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    GLfloat light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    GLfloat light_position[] = { 0.25f, 1.0f, 1.0f, 1.0f };
-    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
 	_camera.Init(_windowSize.x/(float)_windowSize.y);
 	_isDirty = true;

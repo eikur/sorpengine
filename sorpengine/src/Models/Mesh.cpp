@@ -100,8 +100,15 @@ void Mesh::cleanUp()
 
 void Mesh::draw() const
 {
+	const GLboolean lightingWasEnabled = glIsEnabled(GL_LIGHTING);
+
 	if (_material != nullptr)
 	{
+		if (!lightingWasEnabled)
+		{
+			glEnable(GL_LIGHTING);
+		}
+
 		App->getTextureHelper().useTexture(_material->getTextureId());
 
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, _material->getColor(Material::ColorComponent::Ambient));
@@ -141,6 +148,11 @@ void Mesh::draw() const
 
     // unbind texture from the material
     App->getTextureHelper().stopUsingTexture();
+
+	if (!lightingWasEnabled)
+	{
+		glDisable(GL_LIGHTING);
+	}
 }
 
 Mesh::Mesh(const Mesh& other)

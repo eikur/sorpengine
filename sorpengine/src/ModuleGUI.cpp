@@ -90,7 +90,7 @@ void ModuleGUI::showHierarchy()
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoResize;
-	ImGui::SetNextWindowSize(ImVec2(240, 320), ImGuiSetCond_Appearing);
+	ImGui::SetNextWindowSize(ImVec2(260, 320), ImGuiSetCond_Appearing);
 	if (!ImGui::Begin("Hierarchy", &(bool)_data.showHierarchy, window_flags))
 	{
 		ImGui::End();
@@ -111,7 +111,7 @@ void ModuleGUI::showInspector()
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoResize;
-    ImGui::SetNextWindowSize(ImVec2(240, 500), ImGuiSetCond_Appearing);
+    ImGui::SetNextWindowSize(ImVec2(280, 500), ImGuiSetCond_Appearing);
 	if (!ImGui::Begin("Inspector", &(bool)_data.showInspector, window_flags))
 	{
 		ImGui::End();

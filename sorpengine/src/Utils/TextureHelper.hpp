@@ -21,8 +21,6 @@ public:
 	void stopUsingTexture();
 	void unloadTexture(int textureId);
 
-	int createCheckersTexture();
-
 private:
 	MTextureNameToId _textures;
 };

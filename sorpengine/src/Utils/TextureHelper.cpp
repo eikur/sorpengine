@@ -86,11 +86,6 @@ void TextureHelper::useTexture(int textureId)
 	glBindTexture(GL_TEXTURE_2D, textureId);
 }
 
-int TextureHelper::createCheckersTexture()
-{
-	return kInvalidTextureId;
-}
-
 void TextureHelper::unloadTexture(const int textureId)
 {
 	GLuint texId = static_cast<GLuint>(textureId);
