@@ -39,7 +39,7 @@ Application::Application()
 	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get(), _gui.get()};
 	_shaderManager = std::make_unique<ShaderManager>();
 	_textureHelper = std::make_unique<TextureHelper>();
-    _modelHelper = std::make_unique<ModelHelper>();
+    _modelHelper = std::make_unique<ModelHelper>(*_textureHelper.get());
 }
 
 Application::~Application()

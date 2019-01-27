@@ -5,9 +5,12 @@
 // Component files
 #include "Component.hpp"
 #include "Image.hpp"
-#include "Mesh.hpp"
+#include "MaterialComponent.hpp"
 #include "MeshComponent.hpp"
 #include "TransformBuilder.hpp"
+
+class Material;
+class Mesh;
 
 class ComponentFactory
 {
@@ -62,6 +65,19 @@ public:
     {
         return std::make_shared<MeshComponent>(mesh);
     }
+
+	// MaterialComponent
+	std::shared_ptr<MaterialComponent> createComponent()
+	{
+		return std::make_shared<MaterialComponent>(nullptr);
+	}
+
+	template<>
+	std::shared_ptr<MaterialComponent> createComponent(Material* material)
+	{
+		return std::make_shared<MaterialComponent>(material);
+	}
+
 
     const ComponentFactory& operator() ()
     {

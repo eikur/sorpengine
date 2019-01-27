@@ -18,7 +18,7 @@ class Material
 	Material(const GLuint textureId);
 
 	void setColor(const float4& color, const ColorComponent component);
-	const GLfloat* getColor(const ColorComponent component) const;
+	GLfloat* getColor(const ColorComponent component) const;
 
 	const GLuint getTextureId() const;
 

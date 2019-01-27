@@ -16,12 +16,13 @@ UpdateStatus MeshComponent::update(float /*dt*/)
     {
         _mesh->draw();
     }
+
     return UpdateStatus::Continue;
 }
 
 void MeshComponent::OnEditor()
 {
-    if (ImGui::CollapsingHeader("Mesh Component"))
+    if (ImGui::CollapsingHeader("Mesh"))
     {
         ImGui::Checkbox("Enabled", &_active);
         // do something else! :P

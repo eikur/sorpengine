@@ -5,6 +5,8 @@
 #include "MathGeoLib/include/MathGeoLib.h"
 
 class GameObject;
+class Material;
+
 struct aiMesh;
 
 struct Weight
@@ -29,6 +31,7 @@ class Mesh
     ~Mesh();
     Mesh(const Mesh& other);
 
+	void setMaterial(Material* material);
     void draw() const;
 
     void cleanUp();
@@ -44,6 +47,8 @@ class Mesh
     GLuint _texCoordVBO = 0;
     GLuint _normalVBO = 0;
     GLuint _indexVBO = 0;
+
+	Material* _material = nullptr;
 
     // not used yet
     std::vector<float3> _skinnedVertices;

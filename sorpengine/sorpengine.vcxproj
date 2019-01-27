@@ -145,6 +145,7 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Image.cpp" />
+    <ClCompile Include="src\GameObject\MaterialComponent.cpp" />
     <ClCompile Include="src\GameObject\MeshComponent.cpp" />
     <ClCompile Include="src\GameObject\Transform.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="src\Camera.hpp" />
     <ClInclude Include="src\GameObject\Component.hpp" />
     <ClInclude Include="src\GameObject\Image.hpp" />
+    <ClInclude Include="src\GameObject\MaterialComponent.hpp" />
     <ClInclude Include="src\GameObject\MeshComponent.hpp" />
     <ClInclude Include="src\GameObject\TransformBuilder.hpp" />
     <ClInclude Include="src\GameObject\ComponentFactory.hpp" />

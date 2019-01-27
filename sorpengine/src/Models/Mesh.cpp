@@ -4,9 +4,10 @@
 #include <assimp/include/postprocess.h>
 #include <assimp/include/scene.h>
 
-// remove when doing materials
+// Material related. Cnsider injecting textureHelper
 #include "Application.hpp"
 #include "TextureHelper.hpp"
+#include "Material.hpp"
 
 Mesh::Mesh(const aiMesh* inMesh)
 {
@@ -99,13 +100,16 @@ void Mesh::cleanUp()
 
 void Mesh::draw() const
 {
-    // bind proper texture when drawing, this is default texture for images
-    App->getTextureHelper().useTexture(1);
-    
-    glColorMaterial(GL_FRONT, GL_AMBIENT);
-    glColor4f(1.f, 1.f, 1.f, 1.f);
-    glColorMaterial(GL_FRONT, GL_DIFFUSE);
-    glColor4f(1.f, 0.f, 0.f, 1.f);
+	if (_material != nullptr)
+	{
+		App->getTextureHelper().useTexture(_material->getTextureId());
+
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, _material->getColor(Material::ColorComponent::Ambient));
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, _material->getColor(Material::ColorComponent::Diffuse));
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, _material->getColor(Material::ColorComponent::Specular));
+		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, _material->getColor(Material::ColorComponent::Emissive));
+		//glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, _material->getShininess); //TODO add the shininess param
+	}
 
     if (_vertexVBO) {
         glBindBuffer(GL_ARRAY_BUFFER, _vertexVBO);
@@ -135,7 +139,7 @@ void Mesh::draw() const
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
 
-    // unbind texture
+    // unbind texture from the material
     App->getTextureHelper().stopUsingTexture();
 }
 
@@ -157,9 +161,18 @@ Mesh::Mesh(const Mesh& other)
     }
 
     delete[] _normals;
-    _normals = new float3[_numVertices];
-    for (size_t i = 0; i < _numVertices; ++i)
-    {
-        _normals[i] = other._normals[i];
-    }
+	if (other._normals != nullptr)
+	{
+		_normals = new float3[_numVertices];
+
+		for (size_t i = 0; i < _numVertices; ++i)
+		{
+			_normals[i] = other._normals[i];
+		}
+	}
+}
+
+void Mesh::setMaterial(Material* material)
+{
+	_material = material;
 }

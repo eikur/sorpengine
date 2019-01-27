@@ -8,6 +8,7 @@ enum class ComponentType
 {
     Script,
     Image,
+	Material,
     Mesh,
     Transform
 };

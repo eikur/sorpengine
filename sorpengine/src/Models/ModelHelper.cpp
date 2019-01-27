@@ -9,10 +9,10 @@
 #include <assimp/include/postprocess.h>
 #include <assimp/include/scene.h>
 
-void ModelHelper::init()
+ModelHelper::ModelHelper(TextureHelper& textureHelper) : _textureHelper(textureHelper)
 {
-
 }
+
 
 void ModelHelper::finalize()
 {
@@ -34,15 +34,18 @@ bool ModelHelper::loadModel(const std::string& asset)
     if (loadedScene == nullptr)
     {
         Utils::log("Level could not be loaded. Path: %s", asset);
+		Utils::log("Error: %s", aiGetErrorString());
         return false;
     }
 
-    _modelNodes[asset] = loadNode(loadedScene, loadedScene->mRootNode, nullptr);
+	const size_t pathEndPos = asset.find_last_of('/');
+	const std::string path = asset.substr(0, pathEndPos + 1);
+    _modelNodes[asset] = loadNode(path, loadedScene, loadedScene->mRootNode, nullptr);
 
     return true;
 }
 
-ModelHelper::Node ModelHelper::loadNode(const aiScene* scene, const aiNode* node, ModelHelper::Node* parent)
+ModelHelper::Node ModelHelper::loadNode(const std::string& assetPath, const aiScene* scene, const aiNode* node, ModelHelper::Node* parent)
 {
     Node createdNode;
     
@@ -63,20 +66,63 @@ ModelHelper::Node ModelHelper::loadNode(const aiScene* scene, const aiNode* node
     createdNode.rotation = Quat(rotation.x, rotation.y, rotation.z, rotation.w);
     createdNode.position = float3(translation.x, translation.y, translation.z);
 
-    for (size_t i = 0; i < node->mNumMeshes; ++i)
-    {
-        // load materials + texture data here
+	for (size_t i = 0; i < node->mNumMeshes; ++i)
+	{
+		const size_t meshId = node->mMeshes[i];
+		const aiMesh* mesh = scene->mMeshes[meshId];
 
-        createdNode.mesh_ids.push_back(_modelMeshes.size());
+		const size_t materialId = mesh->mMaterialIndex;
+		const aiMaterial* material = scene->mMaterials[materialId];
 
-        const size_t loadedNodeMeshId = node->mMeshes[i];
-        _modelMeshes.emplace_back(std::move(Mesh(scene->mMeshes[loadedNodeMeshId])));
+		// get material texture
+		GLuint materialTextureId = 0;
+		const bool materialHasTexture = material->GetTextureCount(aiTextureType_DIFFUSE);
+		if (materialHasTexture)
+		{
+			aiString textureFile;
+			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFile) == AI_SUCCESS)
+			{
+				materialTextureId = _textureHelper.loadTexture(assetPath + textureFile.C_Str());
+			}
+		}
+
+		createdNode.materialIds.push_back(_modelMaterials.size());
+		_modelMaterials.emplace_back(Material(materialTextureId));
+
+		// load material colors
+		Material& loadedMaterial = _modelMaterials.back();
+		aiColor4D color;
+
+		if (material->Get(AI_MATKEY_COLOR_AMBIENT, color) == AI_SUCCESS)
+		{
+			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Ambient);
+		}
+		if (material->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS)
+		{
+			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Diffuse);
+		}
+		if (material->Get(AI_MATKEY_COLOR_EMISSIVE, color) == AI_SUCCESS)
+		{
+			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Emissive);
+		}
+		if (material->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS)
+		{
+			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Specular);
+		}
+		if (material->Get(AI_MATKEY_COLOR_TRANSPARENT, color) == AI_SUCCESS)
+		{
+			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Transparent);
+		}
+
+        createdNode.meshIds.push_back(_modelMeshes.size());
+
+        _modelMeshes.emplace_back(Mesh(mesh));
     }
 
     // Recursively process children nodes
     for (size_t i = 0; i < node->mNumChildren; ++i)
     {
-        createdNode.children.push_back(loadNode(scene,  node->mChildren[i], &createdNode));
+        createdNode.children.push_back(loadNode(assetPath, scene,  node->mChildren[i], &createdNode));
     }
 
     return createdNode;
@@ -105,12 +151,24 @@ GameObject* ModelHelper::getGameObjectFromNode(const Node& node, GameObject* par
 
     gameObject->addTransform(ComponentFactory().createComponent<Transform>(pos, rot, sca));
 
-    if (!node.mesh_ids.empty())
+    if (!node.meshIds.empty())
     {
-        const size_t meshId = node.mesh_ids.at(0);
+		// currently only supporting 1 mesh per node
+        const size_t meshId = node.meshIds.front();
         Mesh& mesh = _modelMeshes.at(meshId);
 
         gameObject->addComponent(ComponentFactory().createComponent<MeshComponent>(&mesh));
+
+		if (!node.materialIds.empty())
+		{
+			// currently only supporting 1 material per mesh & node
+			const size_t materialId = node.materialIds.front();
+			Material& material = _modelMaterials.at(materialId);
+
+			mesh.setMaterial(&material);
+
+			gameObject->addComponent(ComponentFactory().createComponent<MaterialComponent>(&material));
+		}
     }
 
     for (const Node& child : node.children)
