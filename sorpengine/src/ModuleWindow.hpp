@@ -28,11 +28,12 @@ class ModuleWindow : public Module
 		const iPoint& getWindowSize() const;
 		SDL_Window* getSDLWindow() const;
 		
-		void toggleCameraMode();
+        void showCameraProperties();
 
 	private:
 		void updateWindow();
         void translateCamera(const float3& translation);
+		void toggleCameraMode();
 
 		SDL_Window* _sdlWindow = nullptr;
 		SDL_Surface* _sdlSurface = nullptr;

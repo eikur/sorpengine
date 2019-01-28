@@ -15,7 +15,7 @@ class Image : public Component
 	UpdateStatus update(float dt = 0.0f) override;
 
 	void setAnchor(const float2& newAnchor);
-	void OnEditor() override;
+	void onEditor() override;
 
   private:
 	  const std::string _textureName;

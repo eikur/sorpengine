@@ -30,7 +30,7 @@ public:
     const float3& front() const;
     const float3& right() const;
 
-    void OnEditor() override;
+    void onEditor() override;
 
 private:
 	Frustum _frustum;

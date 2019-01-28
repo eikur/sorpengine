@@ -8,7 +8,7 @@ MaterialComponent::MaterialComponent(Material* material)
 	, _material(material)
 {}
 
-void MaterialComponent::OnEditor()
+void MaterialComponent::onEditor()
 {
 	if (ImGui::CollapsingHeader("Material"))
 	{

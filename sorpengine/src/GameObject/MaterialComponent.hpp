@@ -9,7 +9,7 @@ class MaterialComponent : public Component
 public:
 	MaterialComponent(Material* material);
 
-	void OnEditor() override;
+	void onEditor() override;
 
 private:
 	Material * _material = nullptr;

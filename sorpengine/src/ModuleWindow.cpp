@@ -217,3 +217,9 @@ void ModuleWindow::translateCamera(const float3& translation)
     _camera.translate(translation);
     _isDirty = true;
 }
+
+void ModuleWindow::showCameraProperties()
+{
+    _camera.onEditor();
+    _isDirty = true;
+}

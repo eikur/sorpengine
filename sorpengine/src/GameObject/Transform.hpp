@@ -27,7 +27,7 @@ public:
 	void scaleBy(const float2& scale);
 	void scaleBy(const float3& scale);
 
-	void OnEditor() override;
+	void onEditor() override;
 
 protected:
 	void setActive(const bool value) override;

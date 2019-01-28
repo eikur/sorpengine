@@ -34,7 +34,7 @@ Application::Application()
 	_input = std::make_unique<ModuleInput>();
 	_audio = std::make_unique<ModuleAudio>();
 	_sceneManager = std::make_unique<SceneManager>();
-	_gui = std::make_unique<ModuleGUI>(*_sceneManager);
+	_gui = std::make_unique<ModuleGUI>(*_sceneManager, *_window);
 
 	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get(), _gui.get()};
 	_shaderManager = std::make_unique<ShaderManager>();

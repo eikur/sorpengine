@@ -20,7 +20,7 @@ UpdateStatus MeshComponent::update(float /*dt*/)
     return UpdateStatus::Continue;
 }
 
-void MeshComponent::OnEditor()
+void MeshComponent::onEditor()
 {
     if (ImGui::CollapsingHeader("Mesh"))
     {

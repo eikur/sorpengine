@@ -98,7 +98,7 @@ void Transform::scaleBy(const float3& scale)
 }
 
 // ----
-void Transform::OnEditor()
+void Transform::onEditor()
 {
 	if (ImGui::CollapsingHeader("Local Transform"))
 	{

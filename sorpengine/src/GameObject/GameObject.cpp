@@ -177,7 +177,7 @@ void GameObject::onEditor()
 
 	for (auto& component : _components)
 	{
-		component->OnEditor();
+		component->onEditor();
 	}
 }
 

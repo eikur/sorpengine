@@ -127,7 +127,7 @@ const float3& Camera::right() const
     return _frustum.WorldRight();
 }
 
-void Camera::OnEditor()
+void Camera::onEditor()
 {
     if (ImGui::CollapsingHeader("Camera"))
     {

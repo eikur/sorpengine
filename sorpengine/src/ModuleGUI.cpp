@@ -9,7 +9,10 @@
 #include "ImGui/imgui_impl_sdl_gl3.h"
 #include "ImGui/imgui_internal.h"
 
-ModuleGUI::ModuleGUI(SceneManager& sceneManager, bool active) : Module(active), _sceneManager(sceneManager)
+ModuleGUI::ModuleGUI(SceneManager& sceneManager, ModuleWindow& moduleWindow, bool active) 
+    : Module(active)
+    , _sceneManager(sceneManager)
+    , _moduleWindow(moduleWindow)
 {}
 
 bool ModuleGUI::init()
@@ -46,6 +49,11 @@ UpdateStatus ModuleGUI::update(float)
 		showInspector();
 	}
 
+    if (_data.showEditorCameraProperties)
+    {
+        showEditorCameraProperties();
+    }
+
 	if (showMainMenu())
 	{
 		draw();
@@ -74,6 +82,7 @@ bool ModuleGUI::showMainMenu()
 		{
 			if (ImGui::MenuItem("Hierarchy", nullptr, &_data.showHierarchy)) {};
 			if (ImGui::MenuItem("Inspector", nullptr, &_data.showInspector)) {};
+            if (ImGui::MenuItem("Editor Camera", nullptr, &_data.showEditorCameraProperties)) {};
 			ImGui::EndMenu();
 		}
         if (ImGui::BeginMenu("GameObject"))
@@ -222,4 +231,21 @@ void ModuleGUI::addNewGameObjectToScene()
 void ModuleGUI::addComponentToSelectedGameObject(ComponentType type)
 {
     _sceneManager.addComponentToGameObject(_data.selectedGameObject, type);
+}
+
+void ModuleGUI::showEditorCameraProperties()
+{
+    ImGuiWindowFlags window_flags = 0;
+    window_flags |= ImGuiWindowFlags_NoCollapse;
+    window_flags |= ImGuiWindowFlags_NoResize;
+    ImGui::SetNextWindowSize(ImVec2(260, 320), ImGuiSetCond_Appearing);
+    if (!ImGui::Begin("Editor Camera", &(bool)_data.showEditorCameraProperties, window_flags))
+    {
+        ImGui::End();
+        return;
+    }
+    
+    _moduleWindow.showCameraProperties();
+
+    ImGui::End();
 }

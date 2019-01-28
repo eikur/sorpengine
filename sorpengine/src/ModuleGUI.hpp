@@ -2,6 +2,7 @@
 
 #include "Module.hpp"
 #include "SceneManager.hpp"
+#include "ModuleWindow.hpp"
 
 class ModuleGUI : public Module
 {
@@ -12,11 +13,13 @@ class ModuleGUI : public Module
 
 		bool showHierarchy = false;
 		bool showAbout = false;
+
+        bool showEditorCameraProperties = false;
 	};
 
 
 public: 
-	ModuleGUI(SceneManager& sceneManager, bool active = true);
+	ModuleGUI(SceneManager& sceneManager, ModuleWindow& moduleWindow, bool active = true);
 
 	bool init() override;
 	UpdateStatus update(float dt) override;
@@ -34,8 +37,11 @@ private:
     void addNewGameObjectToScene();
     void addComponentToSelectedGameObject(ComponentType type);
 
+    void showEditorCameraProperties();
+
 private:
 	Data _data;
 	SceneManager& _sceneManager;
+    ModuleWindow& _moduleWindow;
 
 };

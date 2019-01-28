@@ -60,7 +60,7 @@ UpdateStatus Image::update(float)
 	return UpdateStatus::Continue;
 }
 
-void Image::OnEditor()
+void Image::onEditor()
 {
 	if (ImGui::CollapsingHeader("Image"))
 	{

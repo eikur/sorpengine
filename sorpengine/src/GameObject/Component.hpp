@@ -26,8 +26,7 @@ class Component
 	virtual UpdateStatus postUpdate() { return UpdateStatus::Continue; }
 	virtual bool cleanUp() { return true; }
 
-    // pure virtual
-	virtual void OnEditor() = 0;
+    virtual void onEditor() = 0;
 
 	void setParent(GameObject& parent) { _parent = &parent; }
 

@@ -12,7 +12,7 @@ class MeshComponent : public Component
 
     UpdateStatus update(float dt = 0.0f) override;
 
-    void OnEditor() override;
+    void onEditor() override;
 
   private:
     Mesh* _mesh = nullptr;
