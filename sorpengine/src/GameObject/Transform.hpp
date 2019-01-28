@@ -40,5 +40,5 @@ private:
 
 	float3 _eulerRotation = float3::zero;
 
-	bool _showPosGizmo = true;
+	bool _showPosGizmo = false;
 };

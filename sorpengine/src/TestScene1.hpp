@@ -12,7 +12,4 @@ public:
 
 	bool init() override;
 	UpdateStatus update(float dt = 0.0f) override;
-
-  private:
-	int _textureId = 0;
 };

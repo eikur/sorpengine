@@ -118,7 +118,8 @@ void Transform::showPosGizmo() const
 	{
 		return;
 	}
-	//TODO modify depending on distance to the camera
+    
+    //TODO modify depending on distance to the camera
 	const float w = 0.1f;
 	glColor3f(1.f, 0.f, 0.f);
 	glBegin(GL_LINES);

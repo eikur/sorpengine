@@ -153,22 +153,32 @@ GameObject* ModelHelper::getGameObjectFromNode(const Node& node, GameObject* par
 
     if (!node.meshIds.empty())
     {
-		// currently only supporting 1 mesh per node
-        const size_t meshId = node.meshIds.front();
-        Mesh& mesh = _modelMeshes.at(meshId);
+        for (size_t i = 0; i < node.meshIds.size(); ++i)
+        {
+            const bool addMeshToChildrenGameObject = i > 0;
+            GameObject* targetGameObject = gameObject;
+            if (addMeshToChildrenGameObject)
+            {
+                targetGameObject = new GameObject(gameObject->getName() + std::to_string(i), gameObject);
+                targetGameObject->addTransform(ComponentFactory().createComponent<Transform>());
+                gameObject->addChild(targetGameObject);
+            }
 
-        gameObject->addComponent(ComponentFactory().createComponent<MeshComponent>(&mesh));
+            const size_t meshId = node.meshIds.at(i);
+            Mesh& mesh = _modelMeshes.at(meshId);
 
-		if (!node.materialIds.empty())
-		{
-			// currently only supporting 1 material per mesh & node
-			const size_t materialId = node.materialIds.front();
-			Material& material = _modelMaterials.at(materialId);
+            targetGameObject->addComponent(ComponentFactory().createComponent<MeshComponent>(&mesh));
 
-			mesh.setMaterial(&material);
+		    if (!node.materialIds.empty())
+		    {
+			    const size_t materialId = node.materialIds.at(i);
+			    Material& material = _modelMaterials.at(materialId);
 
-			gameObject->addComponent(ComponentFactory().createComponent<MaterialComponent>(&material));
-		}
+			    mesh.setMaterial(&material);
+
+			    targetGameObject->addComponent(ComponentFactory().createComponent<MaterialComponent>(&material));
+		    }
+        }
     }
 
     for (const Node& child : node.children)
