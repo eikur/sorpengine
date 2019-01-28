@@ -1,6 +1,7 @@
 #include "ModuleGUI.hpp"
 
 #include "Application.hpp"
+#include "GameObject/GameObject.hpp"
 #include "ModuleWindow.hpp"
 #include <Windows.h>
 
@@ -71,16 +72,28 @@ bool ModuleGUI::showMainMenu()
 	{
 		if (ImGui::BeginMenu("Windows"))
 		{
-			if (ImGui::MenuItem("Hierarchy", NULL, &_data.showHierarchy)) {};
-			if (ImGui::MenuItem("Inspector", NULL, &_data.showInspector)) {};
+			if (ImGui::MenuItem("Hierarchy", nullptr, &_data.showHierarchy)) {};
+			if (ImGui::MenuItem("Inspector", nullptr, &_data.showInspector)) {};
 			ImGui::EndMenu();
 		}
+        if (ImGui::BeginMenu("GameObject"))
+        {
+            if (ImGui::MenuItem("Add new", nullptr, nullptr)) { addNewGameObjectToScene(); };
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Component"))
+        {
+            if (ImGui::MenuItem("Add Image", nullptr, nullptr)) { addComponentToSelectedGameObject(ComponentType::Image); };
+            if (ImGui::MenuItem("Add Camera", nullptr, nullptr)) { addComponentToSelectedGameObject(ComponentType::Camera); };
+            ImGui::EndMenu();
+        }
+
 		if (ImGui::BeginMenu("Documentation"))
 		{
-			if (ImGui::MenuItem("About", NULL, &_data.showAbout)) {}
+			if (ImGui::MenuItem("About", nullptr, &_data.showAbout)) {}
 			ImGui::EndMenu();
 		}
-		ImGui::EndMainMenuBar();
+        ImGui::EndMainMenuBar();
 	}
 	return true;
 }
@@ -199,4 +212,14 @@ void ModuleGUI::initStyle()
 	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
+}
+
+void ModuleGUI::addNewGameObjectToScene()
+{
+    _sceneManager.addNewGameObject();
+}
+
+void ModuleGUI::addComponentToSelectedGameObject(ComponentType type)
+{
+    _sceneManager.addComponentToGameObject(_data.selectedGameObject, type);
 }

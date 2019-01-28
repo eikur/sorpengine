@@ -1,6 +1,7 @@
 #include "SceneManager.hpp"
 #include "TestScene1.hpp"
 #include "GameObject\GameObject.hpp"
+#include "GameObject/ComponentFactory.hpp"
 
 SceneManager::SceneManager(bool active) : Module(active) 
 {
@@ -102,4 +103,53 @@ std::string SceneManager::getCurrentSceneName() const
 GameObject* SceneManager::getCurrentSceneRoot() const
 {
 	return _currentScene->getSceneRoot();
+}
+
+
+//-- GameObject related stuff
+void SceneManager::addNewGameObject()
+{
+    const std::string kDefaultGameObjectName = "GameObject";
+    GameObject* go = new GameObject(kDefaultGameObjectName);
+    go->addTransform(ComponentFactory().createComponent<Transform>());
+    getCurrentSceneRoot()->addChild(go);
+}
+
+void SceneManager::addComponentToGameObject(GameObject* target, ComponentType type)
+{
+    if (target == nullptr)
+    {
+        return;
+    }
+    
+    if (type == ComponentType::Transform || type == ComponentType::Script)
+    {
+        return;
+    }
+    
+    std::shared_ptr<Component> componentToAdd;
+
+    switch (type)
+    {
+        case ComponentType::Camera:
+            componentToAdd = ComponentFactory().createComponent<Camera>();
+            break;
+        case ComponentType::Image:
+            componentToAdd = ComponentFactory().createComponent<Image>();
+            break;
+        case ComponentType::Material:
+            componentToAdd = ComponentFactory().createComponent<MaterialComponent>();
+            break;
+        case ComponentType::Mesh:
+            componentToAdd = ComponentFactory().createComponent<MeshComponent>();
+            break;
+        default:
+            break;
+    }
+    
+    if (componentToAdd)
+    {
+        componentToAdd->init();
+        target->addComponent(std::move(componentToAdd));
+    }
 }

@@ -6,11 +6,12 @@ class GameObject;
 
 enum class ComponentType
 {
-    Script,
+    Camera,
     Image,
 	Material,
     Mesh,
-    Transform
+    Transform,
+    Script
 };
 
 class Component

@@ -31,6 +31,9 @@ private:
 	void showInspector();
 	void showAbout(bool *enabled) const;
 
+    void addNewGameObjectToScene();
+    void addComponentToSelectedGameObject(ComponentType type);
+
 private:
 	Data _data;
 	SceneManager& _sceneManager;

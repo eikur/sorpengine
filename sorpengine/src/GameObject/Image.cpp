@@ -64,6 +64,12 @@ void Image::OnEditor()
 {
 	if (ImGui::CollapsingHeader("Image"))
 	{
+        ImGui::InputInt("Texture", &_textureId, 1, 1);
+        if (ImGui::CollapsingHeader("Texture Viewer", ImGuiTreeNodeFlags_Bullet || ImGuiTreeNodeFlags_AllowOverlapMode))
+        {
+            ImGui::Image((void*)_textureId, ImVec2(192.f, 192.f));
+        }
+
 		ImGui::DragFloat2("Anchor", (float*)&_anchor, 0.02f);
 		ImGui::Checkbox("Visible", &_active);
 	}

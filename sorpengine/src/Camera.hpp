@@ -1,11 +1,14 @@
 #pragma once
 
-#include "GameObject\GameObject.hpp"
+#include "GameObject\Component.hpp"
 #include "MathGeoLib.h"
 
-class Camera
+class Camera : public Component
 {
 public:
+    Camera(const bool active = true);
+
+    bool init() override; // override from Component
     void Init(const float aspectRatio);
 
 	const float4x4& getProjectionMatrix() const;
@@ -26,6 +29,8 @@ public:
     const float3& up() const;
     const float3& front() const;
     const float3& right() const;
+
+    void OnEditor() override;
 
 private:
 	Frustum _frustum;

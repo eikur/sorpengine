@@ -9,7 +9,6 @@
 
 ModuleWindow::ModuleWindow(bool active): Module(active) 
 {
-	
 }
 
 bool ModuleWindow::init()

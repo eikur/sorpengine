@@ -7,11 +7,6 @@
 #include "TextureHelper.hpp"
 #include "ShaderManager.hpp"
 #include "Utils.hpp"
-#include "Camera.hpp"
-#include "GameObject\Image.hpp"
-
-#include "GameObject\GameObject.hpp"
-#include "GameObject/ComponentFactory.hpp"
 
 TestScene1::TestScene1(SceneManager& sceneManager) : Scene(sceneManager)
 {}

@@ -1,8 +1,20 @@
 #include "Camera.hpp"
 
 #include "Application.hpp"
+#include "ImGui/imgui.h"
 #include "ModuleWindow.hpp"
 #include "Utils.hpp"
+
+Camera::Camera(const bool active) : Component(ComponentType::Camera, active)
+{
+
+}
+
+bool Camera::init()
+{
+    Init(_aspectRatio);
+    return true;
+}
 
 void Camera::Init(const float aspectRatio)
 {
@@ -113,4 +125,58 @@ const float3& Camera::front() const
 const float3& Camera::right() const
 {
     return _frustum.WorldRight();
+}
+
+void Camera::OnEditor()
+{
+    if (ImGui::CollapsingHeader("Camera"))
+    {
+        ImGui::Checkbox("Enabled", &_active);
+
+        const bool isPerspective = _frustum.Type() == FrustumType::PerspectiveFrustum;
+
+        const std::string modeText = isPerspective ? "Perspective mode" : "Ortographic mode";
+        ImGui::Text(modeText.c_str());
+
+        ImGui::SameLine();
+        if (ImGui::Button("Switch"))
+        {
+            switchType();
+        }
+
+        float aspectRatio = _aspectRatio;
+        if (ImGui::DragFloat("Aspect Ratio", &aspectRatio, 0.01f, 0.5f, 3.f))
+        {
+            setAspectRatio(aspectRatio);
+        }
+        
+        if (isPerspective)
+        {
+            if (ImGui::DragFloat("Vertical FOV", &_verticalFOV, 0.2f))
+            {
+                setFOV(_verticalFOV);
+            }
+        }
+        else
+        {
+            if (ImGui::DragFloat("Height", &_orthoHeight, 0.2f))
+            {
+                setAspectRatio(_aspectRatio);
+            }
+        }
+
+        bool planeDistancesChanged = false;
+        if (ImGui::DragFloat("near", &_nearPlaneDistance)) 
+        {
+            planeDistancesChanged = true;
+        }
+        if (ImGui::DragFloat("far", &_farPlaneDistance))
+        {
+            planeDistancesChanged = true; 
+        }
+        if (planeDistancesChanged)
+        {
+            setPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
+        }
+    }
 }

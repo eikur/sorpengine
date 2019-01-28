@@ -39,7 +39,7 @@ class ModuleWindow : public Module
 		SDL_Renderer* _sdlRenderer = nullptr;
 		SDL_GLContext _glContext;
 
-		Camera _camera;
+        Camera _camera;
 
 
 		bool _fullScreen = false;

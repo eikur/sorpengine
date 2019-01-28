@@ -4,7 +4,7 @@
 #include "ImGui/imgui.h"
 
 MaterialComponent::MaterialComponent(Material* material)
-	: Component(ComponentType::Material, material != nullptr)
+	: Component(ComponentType::Material, true)
 	, _material(material)
 {}
 

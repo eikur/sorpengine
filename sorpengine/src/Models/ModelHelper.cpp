@@ -11,6 +11,10 @@
 
 ModelHelper::ModelHelper(TextureHelper& textureHelper) : _textureHelper(textureHelper)
 {
+    // this prevents reallocations of the vectors
+    // TODO change the container 
+    _modelMeshes.reserve(1024);
+    _modelMaterials.reserve(1024);
 }
 
 

@@ -17,6 +17,8 @@ class GameObject;
 class Scene;
 class TestScene1;
 
+enum class ComponentType;
+
 class SceneManager : public Module
 {
 public:
@@ -41,6 +43,10 @@ public:
 
 	std::string getCurrentSceneName() const;
 	GameObject* getCurrentSceneRoot() const;
+
+    void addNewGameObject();
+    void addComponentToGameObject(GameObject* target, ComponentType type);
+
 
 private:
 	bool isInTransition() const;

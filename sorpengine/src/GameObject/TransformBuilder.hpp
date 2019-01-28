@@ -7,7 +7,7 @@ class TransformBuilder
 {
 	using Class = TransformBuilder;
 	
-    const float3 kDefaultPos = float3(0.f, 0.f, -2.f);
+    const float3 kDefaultPos = float3::zero;
 	const Quat kDefaultRot = Quat::identity;
     const float3 kDefaultScale = float3::one;
 

@@ -4,6 +4,7 @@
 
 // Component files
 #include "Component.hpp"
+#include "Camera.hpp"
 #include "Image.hpp"
 #include "MaterialComponent.hpp"
 #include "MeshComponent.hpp"
@@ -67,17 +68,18 @@ public:
     }
 
 	// MaterialComponent
-	std::shared_ptr<MaterialComponent> createComponent()
-	{
-		return std::make_shared<MaterialComponent>(nullptr);
-	}
-
 	template<>
 	std::shared_ptr<MaterialComponent> createComponent(Material* material)
 	{
 		return std::make_shared<MaterialComponent>(material);
 	}
 
+    // Camera Component
+    template<>
+    std::shared_ptr<Camera> createComponent()
+    {
+        return std::make_shared<Camera>();
+    }
 
     const ComponentFactory& operator() ()
     {
