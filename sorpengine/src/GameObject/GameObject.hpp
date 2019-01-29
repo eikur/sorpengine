@@ -33,6 +33,9 @@ public:
 	void onEditor();
 	void onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject*& selectedGameObject);
 
+    GameObject* findChildRecursivelyByName(const std::string& name);
+    void updateTransform(const float3& position, const Quat& rotation);
+
 private:
 	GameObject* findChild(GameObject* child) const;
 

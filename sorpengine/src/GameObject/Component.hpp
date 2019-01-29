@@ -33,9 +33,10 @@ class Component
 
 protected:
 	virtual void setActive(const bool value) { _active = value; };
+	
+    GameObject* _parent = nullptr;
 	bool _active = true;
 
 private:
 	const ComponentType _type;
-	GameObject * _parent = nullptr;
 };

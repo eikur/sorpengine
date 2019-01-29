@@ -64,6 +64,26 @@ GameObject* GameObject::findChild(GameObject* child) const
 	return *std::find_if(_children.begin(), _children.end(), [child](const GameObject* obj) { return obj == child; });
 }
 
+GameObject* GameObject::findChildRecursivelyByName(const std::string& name)
+{
+    GameObject* found = nullptr;
+
+    auto it = std::find_if(_children.begin(), _children.end(), [name](const GameObject* obj) { return obj->getName() == name; });
+    if (it != _children.end())
+    {
+        found = *it;
+    }
+
+    auto childrenIt = _children.begin();
+    while (!found && childrenIt != _children.end())
+    {
+        found = (*childrenIt)->findChildRecursivelyByName(name);
+        ++childrenIt;
+    }
+
+    return found;
+}
+
 UpdateStatus GameObject::preUpdate()
 {
 	if (!_active)
@@ -220,4 +240,11 @@ void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObjec
 		ImGui::TreePop(); 
 	}
 
+}
+
+void GameObject::updateTransform(const float3& position, const Quat& rotation)
+{
+    Transform& t = *_transform.lock();
+    t.setPosition(position);
+    t.setRotation(rotation);
 }

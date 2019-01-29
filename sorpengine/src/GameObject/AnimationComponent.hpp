@@ -1,8 +1,10 @@
 #pragma once
 
+#include "MathGeoLibFwd.h"
 #include "Component.hpp"
 
 struct Animation;
+struct AnimationChannel;
 
 class AnimationComponent : public Component
 {
@@ -14,6 +16,12 @@ class AnimationComponent : public Component
     void onEditor() override;
 
   private:
+      void updateChannelGameObject(const AnimationChannel& channel, GameObject& gameObject);
+      
+      float3 interpolateFloat3(float3 start, float3 finish, float lambda);
+      Quat interpolateQuat(const Quat& start, const Quat& finish, const float lambda);
+
+
       Animation* _currentAnimation = nullptr;
       float _elapsedTimeCurrent = 0.f;
       bool _loopCurrent = true;

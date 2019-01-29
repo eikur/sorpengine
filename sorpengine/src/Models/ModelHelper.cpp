@@ -122,7 +122,9 @@ void ModelHelper::loadAnimationsForModel(const std::string& model, const std::st
 
         createdAnimation.name = animationName;
 
-        const float ticksPerSecond = animation->mTicksPerSecond <= 0 ? 16.6f : animation->mTicksPerSecond;
+        //const float ticksPerSecond = animation->mTicksPerSecond <= 0 ? 16.6f : animation->mTicksPerSecond;
+        // restore this
+        const float ticksPerSecond = 16.6f;
         createdAnimation.duration = animation->mDuration * ticksPerSecond;
         
         const size_t channelCount = animation->mNumChannels;
