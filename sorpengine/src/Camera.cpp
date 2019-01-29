@@ -144,15 +144,9 @@ void Camera::onEditor()
             switchType();
         }
 
-        float aspectRatio = _aspectRatio;
-        if (ImGui::DragFloat("Aspect Ratio", &aspectRatio, 0.01f, 0.5f, 3.f))
-        {
-            setAspectRatio(aspectRatio);
-        }
-        
         if (isPerspective)
         {
-            if (ImGui::DragFloat("Vertical FOV", &_verticalFOV, 0.2f))
+            if (ImGui::DragFloat("FOV", &_verticalFOV, 0.2f))
             {
                 setFOV(_verticalFOV);
             }
@@ -166,11 +160,11 @@ void Camera::onEditor()
         }
 
         bool planeDistancesChanged = false;
-        if (ImGui::DragFloat("near", &_nearPlaneDistance)) 
+        if (ImGui::DragFloat("near", &_nearPlaneDistance, 0.1f, 0.1f, 10.f)) 
         {
             planeDistancesChanged = true;
         }
-        if (ImGui::DragFloat("far", &_farPlaneDistance))
+        if (ImGui::DragFloat("far", &_farPlaneDistance, 10.f, 10.f, 10000.f))
         {
             planeDistancesChanged = true; 
         }

@@ -8,6 +8,7 @@ class Camera : public Component
 public:
     Camera(const bool active = true);
 
+    // TODO unify this a bit :)
     bool init() override; // override from Component
     void Init(const float aspectRatio);
 
