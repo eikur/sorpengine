@@ -114,6 +114,9 @@
     <ClCompile Include="src\GameObject\MaterialComponent.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameObject\AnimationComponent.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MemLeaks.h">
@@ -222,6 +225,12 @@
       <Filter>Source Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\MaterialComponent.hpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\ModelHelper.fwd.hpp">
+      <Filter>Source Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\AnimationComponent.hpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -143,6 +143,7 @@
     <ClCompile Include="3rdparty\ImGui\imgui_impl_sdl_gl3.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\GameObject\AnimationComponent.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Image.cpp" />
     <ClCompile Include="src\GameObject\MaterialComponent.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="3rdparty\ImGui\stb_truetype.h" />
     <ClInclude Include="src\Application.hpp" />
     <ClInclude Include="src\Camera.hpp" />
+    <ClInclude Include="src\GameObject\AnimationComponent.hpp" />
     <ClInclude Include="src\GameObject\Component.hpp" />
     <ClInclude Include="src\GameObject\Image.hpp" />
     <ClInclude Include="src\GameObject\MaterialComponent.hpp" />
@@ -186,6 +188,7 @@
     <ClInclude Include="src\MemLeaks.h" />
     <ClInclude Include="src\Models\Material.hpp" />
     <ClInclude Include="src\Models\Mesh.hpp" />
+    <ClInclude Include="src\Models\ModelHelper.fwd.hpp" />
     <ClInclude Include="src\Models\ModelHelper.hpp" />
     <ClInclude Include="src\Model\Model.hpp" />
     <ClInclude Include="src\Module.hpp" />

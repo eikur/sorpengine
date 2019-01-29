@@ -3,6 +3,7 @@
 #include <memory>
 
 // Component files
+#include "AnimationComponent.hpp"
 #include "Component.hpp"
 #include "Camera.hpp"
 #include "Image.hpp"
@@ -12,6 +13,8 @@
 
 class Material;
 class Mesh;
+
+struct Animation;
 
 class ComponentFactory
 {
@@ -79,6 +82,19 @@ public:
     std::shared_ptr<Camera> createComponent()
     {
         return std::make_shared<Camera>();
+    }
+
+    // Animation Component
+    template<>
+    std::shared_ptr<AnimationComponent> createComponent()
+    {
+        return std::make_shared<AnimationComponent>(nullptr);
+    }
+
+    template<>
+    std::shared_ptr<AnimationComponent> createComponent(Animation* animation)
+    {
+        return std::make_shared<AnimationComponent>(animation);
     }
 
     const ComponentFactory& operator() ()

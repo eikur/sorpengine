@@ -6,6 +6,7 @@ class GameObject;
 
 enum class ComponentType
 {
+    Animation,
     Camera,
     Image,
 	Material,

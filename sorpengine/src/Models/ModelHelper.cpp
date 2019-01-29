@@ -11,18 +11,14 @@
 
 ModelHelper::ModelHelper(TextureHelper& textureHelper) : _textureHelper(textureHelper)
 {
-    // this prevents reallocations of the vectors
-    // TODO change the container 
-    _modelMeshes.reserve(1024);
-    _modelMaterials.reserve(1024);
 }
 
 
 void ModelHelper::finalize()
 {
-    for (Mesh& mesh : _modelMeshes)
+    for (auto& kvp: _modelMeshes)
     {
-        mesh.cleanUp();
+        kvp.second.cleanUp();
     }
 }
 
@@ -37,7 +33,7 @@ bool ModelHelper::loadModel(const std::string& asset)
     const aiScene* loadedScene = aiImportFile(asset.c_str(), aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality);
     if (loadedScene == nullptr)
     {
-        Utils::log("Level could not be loaded. Path: %s", asset);
+        Utils::log("Model file could not be loaded. Path: %s", asset);
 		Utils::log("Error: %s", aiGetErrorString());
         return false;
     }
@@ -49,7 +45,7 @@ bool ModelHelper::loadModel(const std::string& asset)
     return true;
 }
 
-ModelHelper::Node ModelHelper::loadNode(const std::string& assetPath, const aiScene* scene, const aiNode* node, ModelHelper::Node* parent)
+Node ModelHelper::loadNode(const std::string& assetPath, const aiScene* scene, const aiNode* node, Node* parent)
 {
     Node createdNode;
     
@@ -75,52 +71,11 @@ ModelHelper::Node ModelHelper::loadNode(const std::string& assetPath, const aiSc
 		const size_t meshId = node->mMeshes[i];
 		const aiMesh* mesh = scene->mMeshes[meshId];
 
-		const size_t materialId = mesh->mMaterialIndex;
-		const aiMaterial* material = scene->mMaterials[materialId];
-
-		// get material texture
-		GLuint materialTextureId = 0;
-		const bool materialHasTexture = material->GetTextureCount(aiTextureType_DIFFUSE);
-		if (materialHasTexture)
-		{
-			aiString textureFile;
-			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFile) == AI_SUCCESS)
-			{
-				materialTextureId = _textureHelper.loadTexture(assetPath + textureFile.C_Str());
-			}
-		}
-
-		createdNode.materialIds.push_back(_modelMaterials.size());
-		_modelMaterials.emplace_back(Material(materialTextureId));
-
-		// load material colors
-		Material& loadedMaterial = _modelMaterials.back();
-		aiColor4D color;
-
-		if (material->Get(AI_MATKEY_COLOR_AMBIENT, color) == AI_SUCCESS)
-		{
-			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Ambient);
-		}
-		if (material->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS)
-		{
-			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Diffuse);
-		}
-		if (material->Get(AI_MATKEY_COLOR_EMISSIVE, color) == AI_SUCCESS)
-		{
-			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Emissive);
-		}
-		if (material->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS)
-		{
-			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Specular);
-		}
-		if (material->Get(AI_MATKEY_COLOR_TRANSPARENT, color) == AI_SUCCESS)
-		{
-			loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Transparent);
-		}
+        loadMaterial(assetPath, scene, mesh, createdNode);
 
         createdNode.meshIds.push_back(_modelMeshes.size());
 
-        _modelMeshes.emplace_back(Mesh(mesh));
+        _modelMeshes.insert(std::pair<int, Mesh>(createdNode.meshIds.back(), Mesh(mesh)));
     }
 
     // Recursively process children nodes
@@ -131,6 +86,122 @@ ModelHelper::Node ModelHelper::loadNode(const std::string& assetPath, const aiSc
 
     return createdNode;
 }
+
+void ModelHelper::loadAnimationsForModel(const std::string& model, const std::string& animationPath)
+{
+    const aiScene* loadedScene = aiImportFile(animationPath.c_str(), aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality);
+    if (loadedScene == nullptr)
+    {
+        Utils::log("Animation file could not be loaded. Path: %s", animationPath);
+        Utils::log("Error: %s", aiGetErrorString());
+        return;
+    }
+
+    Node* modelNode = nullptr;
+    const auto it = _modelNodes.find(model);
+    if (it != _modelNodes.cend())
+    {
+        modelNode = &(it->second);
+    }
+
+    const size_t animationIdBaseline = _animations.size();
+    const size_t animationCount = loadedScene->mNumAnimations;
+
+    for (size_t animIdx = 0; animIdx < animationCount; ++animIdx)
+    {
+        const aiAnimation* animation = loadedScene->mAnimations[animIdx];
+        const std::string& animationName = animation->mName.C_Str();
+
+        Animation createdAnimation;
+        
+        createdAnimation.id = animationIdBaseline + animIdx;
+        if (modelNode)
+        {
+            modelNode->animationIds.push_back(createdAnimation.id);
+        }
+
+        createdAnimation.name = animationName;
+
+        const float ticksPerSecond = animation->mTicksPerSecond <= 0 ? 16.6f : animation->mTicksPerSecond;
+        createdAnimation.duration = animation->mDuration * ticksPerSecond;
+        
+        const size_t channelCount = animation->mNumChannels;
+        for (size_t channelIdx = 0; channelIdx < channelCount; ++channelIdx)
+        {
+            const aiNodeAnim* channel = animation->mChannels[channelIdx];
+
+            AnimationChannel createdChannel;
+            createdChannel.name = channel->mNodeName.C_Str();
+            
+            // store positions
+            const size_t positionCount = channel->mNumPositionKeys;
+            for (size_t posIdx = 0; posIdx < positionCount; ++posIdx)
+            {
+                const aiVectorKey posKey = channel->mPositionKeys[posIdx];
+                createdChannel.positions.push_back(float3(posKey.mValue.x, posKey.mValue.y, posKey.mValue.z));
+            }
+
+            // store rotations
+            const size_t rotationCount = channel->mNumRotationKeys;
+            for (size_t rotIdx = 0; rotIdx < rotationCount; ++rotIdx)
+            {
+                const aiQuatKey rotKey = channel->mRotationKeys[rotIdx];
+                createdChannel.rotations.push_back(Quat(rotKey.mValue.x, rotKey.mValue.y, rotKey.mValue.z, rotKey.mValue.w));
+            }
+
+            createdAnimation.channels.push_back(createdChannel);
+        }
+        _animations[createdAnimation.id] = createdAnimation;
+    }
+}
+
+
+void ModelHelper::loadMaterial(const std::string& assetPath, const aiScene* scene, const aiMesh* mesh, Node& targetNode)
+{
+    const size_t materialId = mesh->mMaterialIndex;
+    const aiMaterial* material = scene->mMaterials[materialId];
+
+    GLuint materialTextureId = 0;
+    const bool materialHasTexture = material->GetTextureCount(aiTextureType_DIFFUSE);
+    if (materialHasTexture)
+    {
+        aiString textureFile;
+        if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFile) == AI_SUCCESS)
+        {
+            materialTextureId = _textureHelper.loadTexture(assetPath + textureFile.C_Str());
+        }
+    }
+
+    const size_t newMaterialId = _modelMaterials.size();
+    targetNode.materialIds.push_back(newMaterialId);
+    _modelMaterials.insert(std::pair<int,Material>(newMaterialId, Material(materialTextureId)));
+
+    // load material colors
+    Material& loadedMaterial = _modelMaterials.at(newMaterialId);
+    aiColor4D color;
+
+    if (material->Get(AI_MATKEY_COLOR_AMBIENT, color) == AI_SUCCESS)
+    {
+        loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Ambient);
+    }
+    if (material->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS)
+    {
+        loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Diffuse);
+    }
+    if (material->Get(AI_MATKEY_COLOR_EMISSIVE, color) == AI_SUCCESS)
+    {
+        loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Emissive);
+    }
+    if (material->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS)
+    {
+        loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Specular);
+    }
+    if (material->Get(AI_MATKEY_COLOR_TRANSPARENT, color) == AI_SUCCESS)
+    {
+        loadedMaterial.setColor({ color.r, color.g, color.b, 1.0f }, Material::ColorComponent::Transparent);
+    }
+}
+
 
 GameObject* ModelHelper::getGameObjectFromModel(const std::string& asset)
 {
@@ -154,6 +225,15 @@ GameObject* ModelHelper::getGameObjectFromNode(const Node& node, GameObject* par
     const float3 sca = node.scale;
 
     gameObject->addTransform(ComponentFactory().createComponent<Transform>(pos, rot, sca));
+
+    // add animator here if it's the parent one
+    const bool isRootGameObject = parent == nullptr;
+    if (isRootGameObject && !node.animationIds.empty())
+    {
+        // load by default the first one
+        size_t animationId = node.animationIds.front();
+        gameObject->addComponent(ComponentFactory().createComponent<AnimationComponent>(&_animations.at(animationId)));
+    }
 
     if (!node.meshIds.empty())
     {
