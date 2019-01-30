@@ -107,12 +107,14 @@ GameObject* SceneManager::getCurrentSceneRoot() const
 
 
 //-- GameObject related stuff
-void SceneManager::addNewGameObject()
+GameObject* SceneManager::addNewGameObject()
 {
     const std::string kDefaultGameObjectName = "GameObject";
     GameObject* go = new GameObject(kDefaultGameObjectName);
     go->addTransform(ComponentFactory().createComponent<Transform>());
     getCurrentSceneRoot()->addChild(go);
+
+    return go;
 }
 
 void SceneManager::addComponentToGameObject(GameObject* target, ComponentType type)

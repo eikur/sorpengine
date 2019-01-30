@@ -20,6 +20,8 @@ class Image : public Component
   private:
 	  const std::string _textureName;
 	  int _textureId = 0;
+
       float2 _anchor = float2(0.5f, 0.5f);
+      float2 _skew = float2::zero;
 };
 

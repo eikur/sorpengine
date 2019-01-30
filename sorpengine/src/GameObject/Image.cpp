@@ -48,11 +48,11 @@ UpdateStatus Image::update(float)
 	glTexCoord2f(0, 0);
 	glVertex2f(-_anchor.x, -_anchor.y);
 	glTexCoord2f(1, 0);
-	glVertex2f(1.f - _anchor.x, -_anchor.y);
+    glVertex2f(1.f - _anchor.x, -_anchor.y + _skew.y);
 	glTexCoord2f(1, 1);
-	glVertex2f(1.f - _anchor.x, 1.f - _anchor.y);
+    glVertex2f(1.f - _anchor.x + _skew.x, 1.f - _anchor.y + _skew.y);
 	glTexCoord2f(0, 1);
-	glVertex2f(-_anchor.x, 1.f - _anchor.y);
+    glVertex2f(-_anchor.x + _skew.x, 1.f - _anchor.y);
 	glEnd();
 
 	textures.stopUsingTexture();
@@ -71,6 +71,7 @@ void Image::onEditor()
         }
 
 		ImGui::DragFloat2("Anchor", (float*)&_anchor, 0.02f);
+        ImGui::DragFloat2("Skew", (float*)&_skew, 0.02f);
 		ImGui::Checkbox("Visible", &_active);
 	}
 }

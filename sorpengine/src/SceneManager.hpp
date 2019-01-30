@@ -44,7 +44,7 @@ public:
 	std::string getCurrentSceneName() const;
 	GameObject* getCurrentSceneRoot() const;
 
-    void addNewGameObject();
+    GameObject* addNewGameObject();
     void addComponentToGameObject(GameObject* target, ComponentType type);
 
 

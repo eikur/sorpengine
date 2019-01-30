@@ -225,7 +225,7 @@ void ModuleGUI::initStyle()
 
 void ModuleGUI::addNewGameObjectToScene()
 {
-    _sceneManager.addNewGameObject();
+    _data.selectedGameObject =  _sceneManager.addNewGameObject();
 }
 
 void ModuleGUI::addComponentToSelectedGameObject(ComponentType type)
