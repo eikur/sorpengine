@@ -230,11 +230,15 @@ GameObject* ModelHelper::getGameObjectFromNode(const Node& node, GameObject* par
 
     // add animator here if it's the parent one
     const bool isRootGameObject = parent == nullptr;
-    if (isRootGameObject && !node.animationIds.empty())
+    if (isRootGameObject)
+        gameObject->markAsModelRoot();
     {
-        // load by default the first one
-        size_t animationId = node.animationIds.front();
-        gameObject->addComponent(ComponentFactory().createComponent<AnimationComponent>(&_animations.at(animationId)));
+        if (!node.animationIds.empty())
+        {
+            // load by default the first one
+            size_t animationId = node.animationIds.front();
+            gameObject->addComponent(ComponentFactory().createComponent<AnimationComponent>(&_animations.at(animationId)));
+        }
     }
 
     if (!node.meshIds.empty())

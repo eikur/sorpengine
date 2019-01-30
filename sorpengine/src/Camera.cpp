@@ -3,7 +3,6 @@
 #include "Application.hpp"
 #include "ImGui/imgui.h"
 #include "ModuleWindow.hpp"
-#include "Utils.hpp"
 
 Camera::Camera(const bool active) : Component(ComponentType::Camera, active)
 {
@@ -91,7 +90,6 @@ const float3& Camera::getPosition() const
 void Camera::setPosition(const float3& newPosition)
 {
 	_frustum.SetPos(newPosition);
-    Utils::log("camera pos (%.2f,%.2f,%.2f)", newPosition.x, newPosition.y, newPosition.z);
 }
 
 void Camera::translate(const float3& translation)

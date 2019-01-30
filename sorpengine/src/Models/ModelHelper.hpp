@@ -44,5 +44,4 @@ private:
     MaterialRepository _modelMaterials;
 
     AnimationRepository _animations;
-//    std::vector<AnimationInstance> _animationInstances; // this will be passed to the GO 
 };

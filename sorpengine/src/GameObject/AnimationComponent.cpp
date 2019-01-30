@@ -10,10 +10,34 @@ AnimationComponent::AnimationComponent(Animation* animation)
 {
 }
 
+bool AnimationComponent::init()
+{
+    // assign channels to gameObjects
+    if (!_currentAnimation)
+    {
+        return true;
+    }
+
+    for(size_t channelId = 0; channelId < _currentAnimation->channels.size(); ++channelId)
+    {
+        const AnimationChannel& channel = _currentAnimation->channels.at(channelId);
+        GameObject* go = _parent->findChildRecursivelyByName(channel.name);
+        if (go == nullptr)
+        {
+            continue;
+        }
+
+        _channelGameObjects[channelId] = go;
+    }
+
+    return true;
+}
+
 void AnimationComponent::onEditor()
 {
     if (ImGui::CollapsingHeader("Animation"))
     {
+        ImGui::Checkbox("Enabled", &_active);
         if (_currentAnimation)
         {
             ImGui::Text("%s animation assigned", _currentAnimation->name.c_str());
@@ -32,23 +56,20 @@ UpdateStatus AnimationComponent::update(float dt)
         return UpdateStatus::Continue;
     }
 
-    _elapsedTimeCurrent += dt;
-    //remove me when passing dt from outside 
-    _elapsedTimeCurrent += 0.02f;
+    // important: elapsed time is stored as Msec. Should straighten this up.
+    //_elapsedTimeCurrent += dt * 1000.f;
+    // uncomment me when passing dt from outside 
+    _elapsedTimeCurrent += 0.02f * 1000.f;
+
     if (_elapsedTimeCurrent >= _currentAnimation->duration)
     {
         _elapsedTimeCurrent -= _currentAnimation->duration;
     }
 
-    for (const AnimationChannel& channel : _currentAnimation->channels)
+    for (auto& kvp : _channelGameObjects)
     {
-        GameObject* go = _parent->findChildRecursivelyByName(channel.name);
-        if (go == nullptr)
-        {
-            continue;
-        }
-
-        updateChannelGameObject(channel, *go);
+        const AnimationChannel& channel = _currentAnimation->channels.at(kvp.first);
+        updateChannelGameObject(channel, *kvp.second);
     }
 
     return UpdateStatus::Continue;

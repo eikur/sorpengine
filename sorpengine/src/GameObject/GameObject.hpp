@@ -16,6 +16,8 @@ public:
 	const std::string& getName() const;
 
 	void setParent(GameObject* parent);
+    const GameObject* getParent() const;
+
 	void addChild(GameObject* child);
 	void removeChild(GameObject* child);
 	bool removeFromParentAndCleanup();
@@ -33,8 +35,16 @@ public:
 	void onEditor();
 	void onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject*& selectedGameObject);
 
-    GameObject* findChildRecursivelyByName(const std::string& name);
+    float4x4 GetWorldTransformMatrix() const;
+    float4x4 GetModelSpaceTransformMatrix() const;
+    float4x4 GetLocalTransformMatrix() const;
+
+    GameObject* findChildRecursivelyByName(const std::string& name) const;
     void updateTransform(const float3& position, const Quat& rotation);
+
+    void markAsModelRoot();
+    bool isModelRoot() const;
+    const GameObject* findModelRoot() const;
 
 private:
 	GameObject* findChild(GameObject* child) const;
@@ -47,4 +57,6 @@ private:
 
 	bool _active = true;
 	std::string _name;
+
+    bool _modelRoot = false;
 };

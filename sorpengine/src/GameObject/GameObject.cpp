@@ -27,6 +27,11 @@ void GameObject::setParent(GameObject* parent)
 	_parent = parent;
 }
 
+const GameObject* GameObject::getParent() const
+{
+    return _parent;
+}
+
 bool GameObject::removeFromParentAndCleanup()
 {
 	if (_parent != nullptr)
@@ -64,7 +69,7 @@ GameObject* GameObject::findChild(GameObject* child) const
 	return *std::find_if(_children.begin(), _children.end(), [child](const GameObject* obj) { return obj == child; });
 }
 
-GameObject* GameObject::findChildRecursivelyByName(const std::string& name)
+GameObject* GameObject::findChildRecursivelyByName(const std::string& name) const
 {
     GameObject* found = nullptr;
 
@@ -194,6 +199,7 @@ void GameObject::onEditor()
 	}
 
 	ImGui::Checkbox(_name.c_str(), &_active);
+    ImGui::Checkbox("Model Root", &_modelRoot);
 
 	for (auto& component : _components)
 	{
@@ -242,9 +248,54 @@ void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObjec
 
 }
 
+float4x4 GameObject::GetWorldTransformMatrix() const
+{
+    if (_parent == nullptr)
+    {
+        return GetLocalTransformMatrix(); 
+    }
+
+    return _parent->GetWorldTransformMatrix() * GetLocalTransformMatrix();
+}
+
+float4x4 GameObject::GetModelSpaceTransformMatrix() const
+{
+    if (_parent == nullptr || isModelRoot())
+    {
+        return float4x4::identity; 
+    }
+
+    return _parent->GetModelSpaceTransformMatrix() * GetLocalTransformMatrix();
+}
+
+float4x4 GameObject::GetLocalTransformMatrix() const
+{
+    return _transform.lock()->getTransformMatrix();
+}
+
+
 void GameObject::updateTransform(const float3& position, const Quat& rotation)
 {
     Transform& t = *_transform.lock();
     t.setPosition(position);
     t.setRotation(rotation);
+}
+
+void GameObject::markAsModelRoot()
+{
+    _modelRoot = true;
+}
+
+bool GameObject::isModelRoot() const
+{
+    return _modelRoot;
+}
+
+const GameObject* GameObject::findModelRoot() const
+{
+    if (_parent == nullptr)
+    {
+        return this;
+    }
+    return _modelRoot ? this : _parent->findModelRoot();
 }
