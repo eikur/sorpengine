@@ -24,7 +24,7 @@ bool ModuleWindow::init()
 	flags = _fullScreen ? flags | SDL_WINDOW_FULLSCREEN : flags;
 	flags = _resizable ? flags | SDL_WINDOW_RESIZABLE : flags;
 
-	_sdlWindow = SDL_CreateWindow("2D engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _windowSize.x, _windowSize.y, flags);
+	_sdlWindow = SDL_CreateWindow("Engine Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _windowSize.x, _windowSize.y, flags);
 	if (_sdlWindow == nullptr)
 	{
 		Utils::log("Window could not be created! SDL_Error: %s\n", SDL_GetError());

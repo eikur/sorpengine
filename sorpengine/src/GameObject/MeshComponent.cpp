@@ -18,11 +18,20 @@ bool MeshComponent::init()
     return true;
 }
 
-UpdateStatus MeshComponent::update(float /*dt*/)
+UpdateStatus MeshComponent::update(float dt)
 {
-    if (_active && _mesh)
+    if (!_active)
     {
-        _mesh->updateSkin();
+        return UpdateStatus::Continue;
+    }
+
+    if (_mesh)
+    {
+        const bool gameTimeIsRunning = dt > 0.f;
+        if (gameTimeIsRunning)
+        {
+            _mesh->updateSkin();
+        }
         _mesh->draw();
     }
 

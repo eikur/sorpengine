@@ -7,6 +7,7 @@
 #include "ModuleAudio.hpp"
 #include "ModuleGUI.hpp"
 #include "TextureHelper.hpp"
+#include "TimeManager.hpp"
 #include "SceneManager.hpp"
 #include "ShaderManager.hpp"
 #include <algorithm>
@@ -30,11 +31,13 @@ namespace
 
 Application::Application()
 {
+    _timeManager = std::make_unique<TimeManager>();
+
 	_window = std::make_unique<ModuleWindow>();
 	_input = std::make_unique<ModuleInput>();
 	_audio = std::make_unique<ModuleAudio>();
 	_sceneManager = std::make_unique<SceneManager>();
-	_gui = std::make_unique<ModuleGUI>(*_sceneManager, *_window);
+	_gui = std::make_unique<ModuleGUI>(*_sceneManager, *_window, *_timeManager);
 
 	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get(), _gui.get()};
 	_shaderManager = std::make_unique<ShaderManager>();
@@ -53,6 +56,8 @@ Application::~Application()
 	_shaderManager.reset();
 	_textureHelper.reset();
     _modelHelper.reset();
+
+    _timeManager.reset();
 }
 
 bool Application::Init()
@@ -81,6 +86,8 @@ bool Application::Init()
 
 UpdateStatus Application::Update()
 {
+    _timeManager->frameWasCompleted();
+
 	UpdateStatus ret = UpdateStatus::Continue;
 
 	const std::vector<Module*>& activeModules = getActiveModules(_modules);
@@ -92,7 +99,7 @@ UpdateStatus Application::Update()
 
 	for (auto&& module : activeModules)
 	{
-		ret = (ret == UpdateStatus::Continue) ? module->update() : ret;
+		ret = (ret == UpdateStatus::Continue) ? module->update(_timeManager->getGameDelta()) : ret;
 	}
 
 	for (auto&& module : activeModules)

@@ -2,17 +2,17 @@
 
 #include "Application.hpp"
 #include "GameObject/GameObject.hpp"
-#include "ModuleWindow.hpp"
 #include <Windows.h>
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl_gl3.h"
 #include "ImGui/imgui_internal.h"
 
-ModuleGUI::ModuleGUI(SceneManager& sceneManager, ModuleWindow& moduleWindow, bool active) 
+ModuleGUI::ModuleGUI(SceneManager& sceneManager, ModuleWindow& moduleWindow, TimeManager& timeManager, bool active) 
     : Module(active)
     , _sceneManager(sceneManager)
     , _moduleWindow(moduleWindow)
+    , _timeManager(timeManager)
 {}
 
 bool ModuleGUI::init()
@@ -20,9 +20,10 @@ bool ModuleGUI::init()
 	ImGui_ImplSdlGL3_Init(App->getWindow().getSDLWindow());
 	initStyle();
 
-    // default open windows: hierarchy and inspector
+    // default open windows
     _data.showHierarchy = true;
     _data.showInspector = true;
+
 	return true;
 }
 
@@ -53,6 +54,9 @@ UpdateStatus ModuleGUI::update(float)
     {
         showEditorCameraProperties();
     }
+
+    // do always show it
+    showEditorPlaybackControls();
 
 	if (showMainMenu())
 	{
@@ -102,6 +106,9 @@ bool ModuleGUI::showMainMenu()
 			if (ImGui::MenuItem("About", nullptr, &_data.showAbout)) {}
 			ImGui::EndMenu();
 		}
+
+        ImGui::Text("FPS %.1f", _timeManager.getAppFrameRate());
+
         ImGui::EndMainMenuBar();
 	}
 	return true;
@@ -246,6 +253,58 @@ void ModuleGUI::showEditorCameraProperties()
     }
     
     _moduleWindow.showCameraProperties();
+
+    ImGui::End();
+}
+
+void ModuleGUI::showEditorPlaybackControls()
+{
+    ImGuiWindowFlags windowFlags = 0;
+    windowFlags |= ImGuiWindowFlags_NoTitleBar;
+    windowFlags |= ImGuiWindowFlags_NoResize;
+    windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+    windowFlags |= ImGuiWindowFlags_NoMove;
+
+    const ImVec2 size(180, 50);
+    ImGui::SetNextWindowPos(ImVec2(_moduleWindow.getWindowSize().x * 0.5f - size.x * 0.5f, 25));
+    ImGui::SetNextWindowSize(size);
+
+    if (!ImGui::Begin("Player", &_data.showEditorPlaybackControls, windowFlags))
+    {
+        ImGui::End();
+        return;
+    }
+
+    const bool useBorder = false;
+    ImGui::Columns(2, 0, useBorder); 
+    ImVec2 buttonSize(60, 20);
+
+    const bool gameRunning = _timeManager.isGameRunning();
+    const bool gamePaused = _timeManager.isGamePaused();
+
+    if (gameRunning || gamePaused)
+    {
+        if (ImGui::Button("Stop", buttonSize))
+        {
+            _timeManager.stopGame();
+        }
+    }
+    else 
+    {
+        if (ImGui::Button("Play", buttonSize))
+        {
+            _timeManager.startGame();
+        }
+    }
+
+    ImGui::NextColumn();
+
+    const std::string pauseLabel = gamePaused ? "Resume" : "Pause";
+
+    if (ImGui::Button(pauseLabel.c_str(), buttonSize))
+    {
+        _timeManager.togglePauseGame();
+    }
 
     ImGui::End();
 }

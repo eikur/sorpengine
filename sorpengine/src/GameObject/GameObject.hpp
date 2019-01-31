@@ -16,7 +16,7 @@ public:
 	const std::string& getName() const;
 
 	void setParent(GameObject* parent);
-    const GameObject* getParent() const;
+    GameObject* getParent() const;
 
 	void addChild(GameObject* child);
 	void removeChild(GameObject* child);

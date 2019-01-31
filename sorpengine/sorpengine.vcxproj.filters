@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Core Modules">
-      <UniqueIdentifier>{6592cc57-78da-487b-af61-474bf87dfbb4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Main">
       <UniqueIdentifier>{306cc0d0-9c06-4d7e-9754-1714e60456a1}</UniqueIdentifier>
     </Filter>
@@ -34,10 +31,13 @@
     <Filter Include="Source Files\Models">
       <UniqueIdentifier>{0d5265f5-0d19-4749-a92b-ce8da3912347}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{6592cc57-78da-487b-af61-474bf87dfbb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Module.cpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Application.cpp">
       <Filter>Source Files\Main</Filter>
@@ -46,16 +46,16 @@
       <Filter>Source Files\Main</Filter>
     </ClCompile>
     <ClCompile Include="src\ModuleWindow.cpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\ModuleInput.cpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\GameObject.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="src\ModuleAudio.cpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Model\Model.cpp">
       <Filter>Source Files\Model</Filter>
@@ -67,7 +67,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SceneManager.cpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene.cpp">
       <Filter>Source Files</Filter>
@@ -76,7 +76,7 @@
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\ModuleGUI.cpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="3rdparty\ImGui\imgui.cpp">
       <Filter>Source Files\Utils\ImGui</Filter>
@@ -117,6 +117,12 @@
     <ClCompile Include="src\GameObject\AnimationComponent.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Utils\Timer.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TimeManager.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MemLeaks.h">
@@ -135,16 +141,16 @@
       <Filter>Source Files\Main</Filter>
     </ClInclude>
     <ClInclude Include="src\ModuleWindow.hpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\ModuleInput.hpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\ModuleAudio.hpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Module.hpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Point.hpp">
       <Filter>Source Files\Utils</Filter>
@@ -162,7 +168,7 @@
       <Filter>Source Files\Main</Filter>
     </ClInclude>
     <ClInclude Include="src\SceneManager.hpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene.hpp">
       <Filter>Source Files</Filter>
@@ -171,7 +177,7 @@
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\ModuleGUI.hpp">
-      <Filter>Source Files\Core Modules</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="3rdparty\ImGui\imconfig.h">
       <Filter>Source Files\Utils\ImGui</Filter>
@@ -232,6 +238,12 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\AnimationComponent.hpp">
       <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\Timer.hpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TimeManager.hpp">
+      <Filter>Source Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

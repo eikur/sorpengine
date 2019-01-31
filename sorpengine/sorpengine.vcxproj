@@ -163,7 +163,9 @@
     <ClCompile Include="src\ModuleWindow.cpp" />
     <ClCompile Include="src\Shaders\ShaderManager.cpp" />
     <ClCompile Include="src\TestScene1.cpp" />
+    <ClCompile Include="src\TimeManager.cpp" />
     <ClCompile Include="src\Utils\TextureHelper.cpp" />
+    <ClCompile Include="src\Utils\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rdparty\ImGui\imconfig.h" />
@@ -201,9 +203,11 @@
     <ClInclude Include="src\Point.hpp" />
     <ClInclude Include="src\Shaders\ShaderManager.hpp" />
     <ClInclude Include="src\TestScene1.hpp" />
+    <ClInclude Include="src\TimeManager.hpp" />
     <ClInclude Include="src\Utils.hpp" />
     <ClInclude Include="src\Utils\Macros.hpp" />
     <ClInclude Include="src\Utils\TextureHelper.hpp" />
+    <ClInclude Include="src\Utils\Timer.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

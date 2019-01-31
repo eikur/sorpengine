@@ -27,7 +27,7 @@ void GameObject::setParent(GameObject* parent)
 	_parent = parent;
 }
 
-const GameObject* GameObject::getParent() const
+GameObject* GameObject::getParent() const
 {
     return _parent;
 }
@@ -199,6 +199,7 @@ void GameObject::onEditor()
 	}
 
 	ImGui::Checkbox(_name.c_str(), &_active);
+    ImGui::SameLine();
     ImGui::Checkbox("Model Root", &_modelRoot);
 
 	for (auto& component : _components)

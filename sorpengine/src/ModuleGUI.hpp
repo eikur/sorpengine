@@ -3,6 +3,7 @@
 #include "Module.hpp"
 #include "SceneManager.hpp"
 #include "ModuleWindow.hpp"
+#include "TimeManager.hpp"
 
 class ModuleGUI : public Module
 {
@@ -15,11 +16,14 @@ class ModuleGUI : public Module
 		bool showAbout = false;
 
         bool showEditorCameraProperties = false;
+
+        // always enabled, ImGui doesn't allow for const bool though
+        bool showEditorPlaybackControls = true;
 	};
 
 
 public: 
-	ModuleGUI(SceneManager& sceneManager, ModuleWindow& moduleWindow, bool active = true);
+	ModuleGUI(SceneManager& sceneManager, ModuleWindow& moduleWindow, TimeManager& timeManager, bool active = true);
 
 	bool init() override;
 	UpdateStatus update(float dt) override;
@@ -38,10 +42,11 @@ private:
     void addComponentToSelectedGameObject(ComponentType type);
 
     void showEditorCameraProperties();
+    void showEditorPlaybackControls();
 
 private:
 	Data _data;
 	SceneManager& _sceneManager;
     ModuleWindow& _moduleWindow;
-
+    TimeManager& _timeManager;
 };

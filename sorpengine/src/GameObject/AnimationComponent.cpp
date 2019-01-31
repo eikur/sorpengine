@@ -51,15 +51,18 @@ void AnimationComponent::onEditor()
 
 UpdateStatus AnimationComponent::update(float dt)
 {
-    if (!_active || !_currentAnimation)
+    if (!_active)
     {
         return UpdateStatus::Continue;
     }
 
-    // important: elapsed time is stored as Msec. Should straighten this up.
-    //_elapsedTimeCurrent += dt * 1000.f;
-    // uncomment me when passing dt from outside 
-    _elapsedTimeCurrent += 0.02f * 1000.f;
+    const bool isGameRunning = dt > 0.f;
+    if (!_currentAnimation || !isGameRunning)
+    {
+        return UpdateStatus::Continue;
+    }
+    
+    _elapsedTimeCurrent += dt;
 
     if (_elapsedTimeCurrent >= _currentAnimation->duration)
     {
