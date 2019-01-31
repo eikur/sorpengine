@@ -38,7 +38,7 @@ private:
 	void showInspector();
 	void showAbout(bool *enabled) const;
 
-    void addNewGameObjectToScene();
+    void addNewGameObjectToScene(GameObject* parent = nullptr);
     void addComponentToSelectedGameObject(ComponentType type);
 
     void showEditorCameraProperties();

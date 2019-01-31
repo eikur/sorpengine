@@ -88,23 +88,35 @@ bool ModuleWindow::init()
     GLfloat light_diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 
-	_camera.Init(_windowSize.x/(float)_windowSize.y);
+    _sceneViewSize = { _windowSize.x - 2 * _sceneViewMargin.x, _windowSize.y - _sceneViewMargin.y };
+    _editorCamera.Init(_sceneViewSize.x / (float)_sceneViewSize.y);
+    _currentCamera = &_editorCamera;
 	_isDirty = true;
 
-	return true;
+    return true;
 }
 
 
 UpdateStatus ModuleWindow::preUpdate()
 {
-	if (_isDirty)
-	{
-		updateWindow();
-		_isDirty = false;
-	}
+    if (_isDirty)
+    {
+        updateCameraWindow();
+        _isDirty = false;
+    }
+    
+    glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport(_sceneViewMargin.x, _sceneViewMargin.y, _sceneViewSize.x, _sceneViewSize.y);
+
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(_sceneViewMargin.x, _sceneViewMargin.y, _sceneViewSize.x, _sceneViewSize.y);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.f);
+    // glClearColor(_currentCamera->getClearColor()); // move clear color to camera
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_SCISSOR_TEST);
+
 	return UpdateStatus::Continue;
 }
 
@@ -123,29 +135,29 @@ UpdateStatus ModuleWindow::update(float /*dt*/)
 
     if (App->getInput().getKey(SDL_SCANCODE_W) == ModuleInput::KeyState::Repeat)
     {
-        translateCamera(_camera.front() * kCamMoveSpeed * dt );
+        translateCamera(_editorCamera.front() * kCamMoveSpeed * dt );
     }
     else if (App->getInput().getKey(SDL_SCANCODE_S) == ModuleInput::KeyState::Repeat)
     {
-        translateCamera(-_camera.front() * kCamMoveSpeed * dt);
+        translateCamera(-_editorCamera.front() * kCamMoveSpeed * dt);
     }
 
     if (App->getInput().getKey(SDL_SCANCODE_Q) == ModuleInput::KeyState::Repeat)
     {
-        translateCamera(-_camera.up() * kCamMoveSpeed * dt);
+        translateCamera(-_editorCamera.up() * kCamMoveSpeed * dt);
     }
     else if (App->getInput().getKey(SDL_SCANCODE_E) == ModuleInput::KeyState::Repeat)
     {
-        translateCamera(_camera.up() * kCamMoveSpeed * dt);
+        translateCamera(_editorCamera.up() * kCamMoveSpeed * dt);
     }
 
     if (App->getInput().getKey(SDL_SCANCODE_A) == ModuleInput::KeyState::Repeat)
     {
-        translateCamera(-_camera.right() * kCamMoveSpeed * dt);
+        translateCamera(-_editorCamera.right() * kCamMoveSpeed * dt);
     }
     else if (App->getInput().getKey(SDL_SCANCODE_D) == ModuleInput::KeyState::Repeat)
     {
-        translateCamera(_camera.right() * kCamMoveSpeed * dt);
+        translateCamera(_editorCamera.right() * kCamMoveSpeed * dt);
     }
     
 	return UpdateStatus::Continue;
@@ -182,7 +194,7 @@ void ModuleWindow::setWindowSize(const iPoint& newSize)
 		return;
 	}
 	_windowSize = newSize;
-    _camera.setAspectRatio(_windowSize.x / (float)_windowSize.y);
+    _editorCamera.setAspectRatio(_windowSize.x / (float)_windowSize.y);
 	_isDirty = true;
 }
 
@@ -191,14 +203,12 @@ const iPoint& ModuleWindow::getWindowSize() const
 	return _windowSize;
 }
 
-void ModuleWindow::updateWindow()
+void ModuleWindow::updateCameraWindow()
 {
-	glViewport(0, 0, _windowSize.x, _windowSize.y);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(_camera.getProjectionMatrix().ptr());
-	glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(_camera.GetViewMatrix().ptr());
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixf(_currentCamera->getProjectionMatrix().ptr());
+    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(_currentCamera->GetViewMatrix().ptr());
 }
 
 SDL_Window* ModuleWindow::getSDLWindow() const
@@ -208,18 +218,18 @@ SDL_Window* ModuleWindow::getSDLWindow() const
 
 void ModuleWindow::toggleCameraMode()
 {
-	_camera.switchType();
+	_editorCamera.switchType();
 	_isDirty = true;
 }
 
 void ModuleWindow::translateCamera(const float3& translation)
 {
-    _camera.translate(translation);
+    _editorCamera.translate(translation);
     _isDirty = true;
 }
 
 void ModuleWindow::showCameraProperties()
 {
-    _camera.onEditor();
+    _editorCamera.onEditor();
     _isDirty = true;
 }

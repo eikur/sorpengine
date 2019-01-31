@@ -31,7 +31,7 @@ class ModuleWindow : public Module
         void showCameraProperties();
 
 	private:
-		void updateWindow();
+		void updateCameraWindow();
         void translateCamera(const float3& translation);
 		void toggleCameraMode();
 
@@ -40,7 +40,8 @@ class ModuleWindow : public Module
 		SDL_Renderer* _sdlRenderer = nullptr;
 		SDL_GLContext _glContext;
 
-        Camera _camera;
+        Camera _editorCamera;
+        Camera* _currentCamera = nullptr;
 
 
 		bool _fullScreen = false;
@@ -48,5 +49,8 @@ class ModuleWindow : public Module
 		bool _vsync = true;
 		bool _isDirty = false;
 
-        iPoint _windowSize = { 1280, 720 };
+        iPoint _windowSize = { 1800, 900 };
+        
+        iPoint _sceneViewMargin = { 280, 0 };
+        iPoint _sceneViewSize;
 };

@@ -24,7 +24,7 @@ class SceneManager : public Module
 public:
 	enum class SceneId
 	{
-		SceneTest,
+        SceneTest,
 		TestScene1
 	};
 
@@ -44,7 +44,7 @@ public:
 	std::string getCurrentSceneName() const;
 	GameObject* getCurrentSceneRoot() const;
 
-    GameObject* addNewGameObject();
+    GameObject* addNewGameObject(GameObject* parent = nullptr);
     void addComponentToGameObject(GameObject* target, ComponentType type);
 
 
@@ -57,6 +57,7 @@ private:
 	Scene* _nextScene = nullptr;
 
 	SCENE_DECL(TestScene1, _testScene1, getTestScene1)
+
 
 	bool _inTransition = false;
 	float _transitionTime = 0.0f;

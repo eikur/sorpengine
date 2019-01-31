@@ -91,7 +91,8 @@ bool ModuleGUI::showMainMenu()
 		}
         if (ImGui::BeginMenu("GameObject"))
         {
-            if (ImGui::MenuItem("Add new", nullptr, nullptr)) { addNewGameObjectToScene(); };
+            if (ImGui::MenuItem("Add new empty", nullptr, nullptr)) { addNewGameObjectToScene(); };
+            if (ImGui::MenuItem("Add new empty child", nullptr, nullptr)) { addNewGameObjectToScene(_data.selectedGameObject); };
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Component"))
@@ -118,13 +119,14 @@ void ModuleGUI::showHierarchy()
 {
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
-	window_flags |= ImGuiWindowFlags_NoResize;
-	ImGui::SetNextWindowSize(ImVec2(260, 320), ImGuiSetCond_Appearing);
+    window_flags |= ImGuiWindowFlags_NoTitleBar;
+	ImGui::SetNextWindowSize(ImVec2(280, 500), ImGuiSetCond_Appearing);
 	if (!ImGui::Begin("Hierarchy", &(bool)_data.showHierarchy, window_flags))
 	{
 		ImGui::End();
 		return;
 	}
+    ImGui::TextColored(ImVec4(0.f, 1.f, 0.5f, 1.f), "Scene");
 
 	ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
@@ -139,13 +141,15 @@ void ModuleGUI::showInspector()
 {
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
-	window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoTitleBar;
     ImGui::SetNextWindowSize(ImVec2(280, 500), ImGuiSetCond_Appearing);
 	if (!ImGui::Begin("Inspector", &(bool)_data.showInspector, window_flags))
 	{
 		ImGui::End();
 		return;
 	}
+
+    ImGui::TextColored(ImVec4(0.f, 1.f, 0.5f, 1.f), "Inspector");
 
 	if (!_data.selectedGameObject)
 	{
@@ -230,9 +234,14 @@ void ModuleGUI::initStyle()
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 }
 
-void ModuleGUI::addNewGameObjectToScene()
+void ModuleGUI::addNewGameObjectToScene(GameObject* parent)
 {
-    _data.selectedGameObject =  _sceneManager.addNewGameObject();
+    GameObject* go = _sceneManager.addNewGameObject(parent);
+    if (parent == nullptr)
+    {
+        _data.selectedGameObject = go;
+    }
+
 }
 
 void ModuleGUI::addComponentToSelectedGameObject(ComponentType type)
