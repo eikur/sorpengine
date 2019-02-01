@@ -100,7 +100,7 @@ std::string SceneManager::getCurrentSceneName() const
 	return "SceneDummyName";
 }
 
-GameObject* SceneManager::getCurrentSceneRoot() const
+GameObject& SceneManager::getCurrentSceneRoot() const
 {
 	return _currentScene->getSceneRoot();
 }
@@ -110,19 +110,21 @@ GameObject* SceneManager::getCurrentSceneRoot() const
 GameObject* SceneManager::addNewGameObject(GameObject* parent)
 {
     const std::string kDefaultGameObjectName = "GameObject";
-    GameObject* go = new GameObject(kDefaultGameObjectName);
-    go->addTransform(ComponentFactory().createComponent<Transform>());
+    std::unique_ptr<GameObject> go = std::make_unique<GameObject>(kDefaultGameObjectName);
+    go->addComponent(ComponentFactory().createComponent<Transform>());
+
+    GameObject* retVal = go.get();
 
     if (parent == nullptr)
     {
-        getCurrentSceneRoot()->addChild(go);
+        getCurrentSceneRoot().addChild(std::move(go));
     }
     else
     {
-        parent->addChild(go);
+        parent->addChild(std::move(go));
     }
 
-    return go;
+    return retVal;
 }
 
 void SceneManager::addComponentToGameObject(GameObject* target, ComponentType type)
@@ -137,7 +139,7 @@ void SceneManager::addComponentToGameObject(GameObject* target, ComponentType ty
         return;
     }
     
-    std::shared_ptr<Component> componentToAdd;
+    std::unique_ptr<Component> componentToAdd;
 
     switch (type)
     {

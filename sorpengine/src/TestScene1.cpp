@@ -8,18 +8,28 @@
 #include "ShaderManager.hpp"
 #include "Utils.hpp"
 
+#include "GameObject/ComponentFactory.hpp"
+#include "GameObject/GameObject.hpp"
+
 TestScene1::TestScene1(SceneManager& sceneManager) : Scene(sceneManager)
 {}
 
 bool TestScene1::init()
 {
-	GameObject* go = new GameObject("test");
-    go->addTransform(ComponentFactory().createComponent<Transform>());
-	go->addComponent(ComponentFactory().createComponent<Image>());
-	addGameObject(go);
+    // Consider creating a gameobject builder
+    std::unique_ptr<GameObject> cameraGO = std::make_unique<GameObject>("MainCamera");
+    cameraGO->addComponent(ComponentFactory().createComponent<Transform>());
+    cameraGO->addComponent(ComponentFactory().createComponent<Camera>());
+    addGameObject(std::move(cameraGO));
 
-    const std::string kModelName = "resources/magnetto2.fbx";
-    addGameObject(App->getModelHelper().getGameObjectFromModel(kModelName));
+    ModelHelper& modelHelper = App->getModelHelper();
+
+    const std::string kModelName3 = "resources/ArmyPilot/ArmyPilot.dae";
+    const std::string kAnimName = "resources/ArmyPilot/Animations/ArmyPilot_Run_Forwards.fbx";
+
+    modelHelper.loadModel(kModelName3);
+    modelHelper.loadAnimationsForModel(kModelName3, kAnimName);
+    addGameObject(modelHelper.getGameObjectFromModel(kModelName3));
 
 	return Scene::init();
 }

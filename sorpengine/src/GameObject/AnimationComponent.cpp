@@ -13,7 +13,7 @@ AnimationComponent::AnimationComponent(Animation* animation)
 bool AnimationComponent::init()
 {
     // assign channels to gameObjects
-    if (!_currentAnimation)
+    if (!_currentAnimation || _parent == nullptr)
     {
         return true;
     }

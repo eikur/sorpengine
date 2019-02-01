@@ -20,7 +20,7 @@ class ComponentFactory
 {
 public: 
     template<class T, typename... Args>
-    std::shared_ptr<T> createComponent(Args... args)
+    std::unique_ptr<T> createComponent(Args... args)
     {
         return createComponent<T>(args...);
     }
@@ -28,73 +28,73 @@ public:
 
     //Transform
     template<>
-    std::shared_ptr<Transform> createComponent()
+    std::unique_ptr<Transform> createComponent()
     {
         return TransformBuilder().build();
     }
 
     template<>
-    std::shared_ptr<Transform> createComponent(const float3 pos, const Quat rotation, const float3 scale)
+    std::unique_ptr<Transform> createComponent(const float3 pos, const Quat rotation, const float3 scale)
     {
         return TransformBuilder().withPosition(pos).withRotation(rotation).withScale(scale).build();
     }
 
     // Image
     template<>
-    std::shared_ptr<Image> createComponent()
+    std::unique_ptr<Image> createComponent()
     {
-        return std::make_shared<Image>();
+        return std::make_unique<Image>();
     }
 
     template<>
-    std::shared_ptr<Image> createComponent(const std::string assetName)
+    std::unique_ptr<Image> createComponent(const std::string assetName)
     {
         if (assetName.empty())
         {
             return createComponent<Image>();
         }
 
-        return std::make_shared<Image>(assetName);
+        return std::make_unique<Image>(assetName);
     }
 
     // MeshComponent
     template<>
-    std::shared_ptr<MeshComponent> createComponent()
+    std::unique_ptr<MeshComponent> createComponent()
     {
-        return std::make_shared<MeshComponent>(nullptr);
+        return std::make_unique<MeshComponent>(nullptr);
     }
 
     template<>
-    std::shared_ptr<MeshComponent> createComponent(Mesh* mesh)
+    std::unique_ptr<MeshComponent> createComponent(Mesh* mesh)
     {
-        return std::make_shared<MeshComponent>(mesh);
+        return std::make_unique<MeshComponent>(mesh);
     }
 
 	// MaterialComponent
 	template<>
-	std::shared_ptr<MaterialComponent> createComponent(Material* material)
+	std::unique_ptr<MaterialComponent> createComponent(Material* material)
 	{
-		return std::make_shared<MaterialComponent>(material);
+		return std::make_unique<MaterialComponent>(material);
 	}
 
     // Camera Component
     template<>
-    std::shared_ptr<Camera> createComponent()
+    std::unique_ptr<Camera> createComponent()
     {
-        return std::make_shared<Camera>();
+        return std::make_unique<Camera>();
     }
 
     // Animation Component
     template<>
-    std::shared_ptr<AnimationComponent> createComponent()
+    std::unique_ptr<AnimationComponent> createComponent()
     {
-        return std::make_shared<AnimationComponent>(nullptr);
+        return std::make_unique<AnimationComponent>(nullptr);
     }
 
     template<>
-    std::shared_ptr<AnimationComponent> createComponent(Animation* animation)
+    std::unique_ptr<AnimationComponent> createComponent(Animation* animation)
     {
-        return std::make_shared<AnimationComponent>(animation);
+        return std::make_unique<AnimationComponent>(animation);
     }
 
     const ComponentFactory& operator() ()

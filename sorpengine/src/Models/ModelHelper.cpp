@@ -205,7 +205,7 @@ void ModelHelper::loadMaterial(const std::string& assetPath, const aiScene* scen
 }
 
 
-GameObject* ModelHelper::getGameObjectFromModel(const std::string& asset)
+std::unique_ptr<GameObject> ModelHelper::getGameObjectFromModel(const std::string& asset)
 {
     if (!loadModel(asset))
     {
@@ -218,15 +218,15 @@ GameObject* ModelHelper::getGameObjectFromModel(const std::string& asset)
     return getGameObjectFromNode(node, nullptr);
 }
 
-GameObject* ModelHelper::getGameObjectFromNode(const Node& node, GameObject* parent)
+std::unique_ptr<GameObject> ModelHelper::getGameObjectFromNode(const Node& node, GameObject* parent)
 {
-    GameObject* gameObject = new GameObject(node.name);
+    std::unique_ptr<GameObject> gameObject = std::make_unique<GameObject>(node.name);
 
     const float3 pos = node.position;
     const Quat rot = node.rotation;
     const float3 sca = node.scale;
 
-    gameObject->addTransform(ComponentFactory().createComponent<Transform>(pos, rot, sca));
+    gameObject->addComponent(ComponentFactory().createComponent<Transform>(pos, rot, sca));
 
     // add animator here if it's the parent one
     const bool isRootGameObject = parent == nullptr;
@@ -246,12 +246,14 @@ GameObject* ModelHelper::getGameObjectFromNode(const Node& node, GameObject* par
         for (size_t i = 0; i < node.meshIds.size(); ++i)
         {
             const bool addMeshToChildrenGameObject = i > 0;
-            GameObject* targetGameObject = gameObject;
+            GameObject* targetGameObject = gameObject.get();
             if (addMeshToChildrenGameObject)
             {
-                targetGameObject = new GameObject(gameObject->getName() + std::to_string(i), gameObject);
-                targetGameObject->addTransform(ComponentFactory().createComponent<Transform>());
-                gameObject->addChild(targetGameObject);
+                std::unique_ptr<GameObject> additionalGameObject = std::make_unique<GameObject>(gameObject->getName() + std::to_string(i), gameObject.get());
+                additionalGameObject->addComponent(ComponentFactory().createComponent<Transform>());
+
+                targetGameObject = additionalGameObject.get();
+                gameObject->addChild(std::move(additionalGameObject));
             }
 
             const size_t meshId = node.meshIds.at(i);
@@ -273,7 +275,7 @@ GameObject* ModelHelper::getGameObjectFromNode(const Node& node, GameObject* par
 
     for (const Node& child : node.children)
     {
-        gameObject->addChild(getGameObjectFromNode(child, gameObject));
+        gameObject->addChild(getGameObjectFromNode(child, gameObject.get()));
     }
 
     return gameObject;

@@ -5,12 +5,12 @@ namespace
 	const std::string kRootNodeName = "root";
 }
 
-Scene::Scene(SceneManager& sceneManager): _sceneManager(sceneManager), _sceneRoot(new GameObject(kRootNodeName))
+Scene::Scene(SceneManager& sceneManager): _sceneManager(sceneManager), _sceneRoot(std::make_unique<GameObject>(kRootNodeName))
 {}
 
 Scene::~Scene()
 {
-	delete _sceneRoot;
+    _sceneRoot.reset();
 }
 
 bool Scene::init()
@@ -44,9 +44,9 @@ bool Scene::cleanUp()
 	return _sceneRoot->cleanUp();
 }
 
-void Scene::addGameObject(GameObject* gameObject)
+void Scene::addGameObject(std::unique_ptr<GameObject>&& gameObject)
 {
-	return _sceneRoot->addChild(gameObject);
+    return _sceneRoot->addChild(std::move(gameObject));
 }
 
 void Scene::removeGameObject(GameObject* gameObject)
@@ -54,7 +54,7 @@ void Scene::removeGameObject(GameObject* gameObject)
 	return _sceneRoot->removeChild(gameObject);
 }
 
-GameObject* Scene::getSceneRoot() const
+GameObject& Scene::getSceneRoot() const
 {
-	return _sceneRoot;
+    return *_sceneRoot.get();
 }

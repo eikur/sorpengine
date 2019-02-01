@@ -131,8 +131,8 @@ void ModuleGUI::showHierarchy()
 	ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
 	int index = 0;
-	GameObject* sceneRoot = _sceneManager.getCurrentSceneRoot();
-	sceneRoot->onHierarchy(index, nodeFlags, _data.selectedGameObject);
+	GameObject& sceneRoot = _sceneManager.getCurrentSceneRoot();
+	sceneRoot.onHierarchy(index, nodeFlags, _data.selectedGameObject);
 
 	ImGui::End();
 }

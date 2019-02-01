@@ -1,11 +1,12 @@
 #pragma once
 #include <vector>
 #include <algorithm>
+#include "Component.hpp"
 #include "Globals.hpp"
 #include "MathGeoLib.h"
 #include "ImGui/imgui.h"
 
-class Component;
+
 class Transform;
 
 class GameObject
@@ -18,12 +19,11 @@ public:
 	void setParent(GameObject* parent);
     GameObject* getParent() const;
 
-	void addChild(GameObject* child);
+    void addChild(std::unique_ptr<GameObject>&& child);
 	void removeChild(GameObject* child);
 	bool removeFromParentAndCleanup();
 
-	void addTransform(std::shared_ptr<Transform>&& transform);
-	void addComponent(std::shared_ptr<Component>&& component);
+	void addComponent(std::unique_ptr<Component>&& component);
 
 	bool init();
 	bool start();
@@ -50,10 +50,11 @@ private:
 	GameObject* findChild(GameObject* child) const;
 
 private:
-	GameObject* _parent = nullptr;
-	std::vector<GameObject*> _children;
-	std::vector<std::shared_ptr<Component>> _components;
-	std::weak_ptr<Transform> _transform;
+	std::vector<std::unique_ptr<GameObject>> _children;
+	std::vector<std::unique_ptr<Component>> _components;
+
+    GameObject* _parent = nullptr;
+    Transform* _transform = nullptr;
 
 	bool _active = true;
 	std::string _name;

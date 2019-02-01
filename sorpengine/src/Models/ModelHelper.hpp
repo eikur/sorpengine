@@ -27,14 +27,14 @@ class ModelHelper
     bool loadModel(const std::string& asset);
     void loadAnimationsForModel(const std::string& model, const std::string& animationPath);
 
-    GameObject* getGameObjectFromModel(const std::string& asset);
+    std::unique_ptr<GameObject> getGameObjectFromModel(const std::string& asset);
 
     void finalize();
 
 private:
     Node loadNode(const std::string& assetPath, const aiScene* scene, const aiNode* node, Node* parent);
     void loadMaterial(const std::string& assetPath, const aiScene* scene, const aiMesh* mesh, Node& targetNode);
-    GameObject* getGameObjectFromNode(const Node& node, GameObject* parent);
+    std::unique_ptr<GameObject> getGameObjectFromNode(const Node& node, GameObject* parent);
 
 
 	TextureHelper& _textureHelper;

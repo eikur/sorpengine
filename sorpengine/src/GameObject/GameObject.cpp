@@ -1,6 +1,6 @@
 #include "GameObject.hpp"
-#include "Component.hpp"
-#include "TransformBuilder.hpp"
+
+#include "Transform.hpp"
 #include "SDL_opengl.h"
 
 GameObject::GameObject(const std::string& name, GameObject* parent, bool active)
@@ -34,49 +34,52 @@ GameObject* GameObject::getParent() const
 
 bool GameObject::removeFromParentAndCleanup()
 {
-	if (_parent != nullptr)
+    cleanUp();
+	
+    if (_parent != nullptr)
 	{
 		_parent->removeChild(this);
 	}
-	return cleanUp();
+
+    return true;
 }
 
-void GameObject::addChild(GameObject* child)
+void GameObject::addChild(std::unique_ptr<GameObject>&& child)
 {
 	child->setParent(this);
-	_children.push_back(child);
+	_children.push_back(std::move(child));
 }
 
 void GameObject::removeChild(GameObject* child)
 {
-	std::remove_if(_children.begin(), _children.end(), [child](const GameObject* obj) { return obj == child; });
+	std::remove_if(_children.begin(), _children.end(), [child](const std::unique_ptr<GameObject>& obj) { return obj.get() == child; });
 }
 
-void GameObject::addTransform(std::shared_ptr<Transform>&& transform)
+void GameObject::addComponent(std::unique_ptr<Component>&& component)
 {
-	_transform = transform;
-	addComponent(std::move(transform));
-}
+    Transform* t = dynamic_cast<Transform*>(component.get());
+    if (t != nullptr)
+    {
+        _transform = t;
+    }
 
-void GameObject::addComponent(std::shared_ptr<Component>&& component)
-{
 	component->setParent(*this);
 	_components.push_back(std::move(component));
 }
 
 GameObject* GameObject::findChild(GameObject* child) const
 {
-	return *std::find_if(_children.begin(), _children.end(), [child](const GameObject* obj) { return obj == child; });
+	return std::find_if(_children.begin(), _children.end(), [child](const std::unique_ptr<GameObject>& obj) { return obj.get() == child;})->get();
 }
 
 GameObject* GameObject::findChildRecursivelyByName(const std::string& name) const
 {
     GameObject* found = nullptr;
 
-    auto it = std::find_if(_children.begin(), _children.end(), [name](const GameObject* obj) { return obj->getName() == name; });
+    auto it = std::find_if(_children.begin(), _children.end(), [name](const std::unique_ptr<GameObject>& obj) { return obj->getName() == name; });
     if (it != _children.end())
     {
-        found = *it;
+        found = (*it).get();
     }
 
     auto childrenIt = _children.begin();
@@ -177,12 +180,12 @@ bool GameObject::start()
 
 bool GameObject::cleanUp()
 {
-	for (GameObject* child : _children)
+	for (std::unique_ptr<GameObject>& child : _children)
 	{
 		child->cleanUp();
-		delete child;
+        child.reset();
 	}
-	for (auto&& component : _components)
+	for (auto& component : _components)
 	{
 		component->cleanUp();
 		component.reset();
@@ -214,7 +217,7 @@ void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObjec
     
     if (isSceneRootNode)
     {
-        for (GameObject* child : _children)
+        for (std::unique_ptr<GameObject>& child : _children)
         {
             child->onHierarchy(++index, nodeFlags, selectedGameObject);
         }
@@ -240,7 +243,7 @@ void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObjec
 
 	if (node_open)
 	{
-		for (GameObject* child : _children)
+		for (std::unique_ptr<GameObject>& child : _children)
 		{
 			child->onHierarchy(++index, nodeFlags, selectedGameObject);
 		}
@@ -271,15 +274,14 @@ float4x4 GameObject::GetModelSpaceTransformMatrix() const
 
 float4x4 GameObject::GetLocalTransformMatrix() const
 {
-    return _transform.lock()->getTransformMatrix();
+    return _transform->getTransformMatrix();
 }
 
 
 void GameObject::updateTransform(const float3& position, const Quat& rotation)
 {
-    Transform& t = *_transform.lock();
-    t.setPosition(position);
-    t.setRotation(rotation);
+    _transform->setPosition(position);
+    _transform->setRotation(rotation);
 }
 
 void GameObject::markAsModelRoot()

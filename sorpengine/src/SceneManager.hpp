@@ -42,7 +42,7 @@ public:
 	void swapScene(SceneId sceneId, float duration = 0.0f);
 
 	std::string getCurrentSceneName() const;
-	GameObject* getCurrentSceneRoot() const;
+	GameObject& getCurrentSceneRoot() const;
 
     GameObject* addNewGameObject(GameObject* parent = nullptr);
     void addComponentToGameObject(GameObject* target, ComponentType type);

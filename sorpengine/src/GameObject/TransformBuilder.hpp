@@ -18,9 +18,9 @@ class TransformBuilder
 
 	TransformBuilder() : _pos(kDefaultPos), _rot(kDefaultRot), _scale(kDefaultScale)	{}
 
-	std::shared_ptr<Transform> build() const
+	std::unique_ptr<Transform> build() const
 	{
-		return std::make_shared<Transform>(_pos, _rot, _scale);
+		return std::make_unique<Transform>(_pos, _rot, _scale);
 	}
 	const TransformBuilder& operator() ()
 	{ 

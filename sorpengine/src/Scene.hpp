@@ -18,12 +18,12 @@ public:
 	virtual UpdateStatus postUpdate();
 	virtual bool cleanUp();
 
-	void addGameObject(GameObject* gameObject);
+    void addGameObject(std::unique_ptr<GameObject>&& gameObject);
 	void removeGameObject(GameObject* gameObject);
 
-	GameObject* getSceneRoot() const;
+	GameObject& getSceneRoot() const;
 
 private:
-	MEMBER_REF_GET(SceneManager, _sceneManager, getSceneManager)
-	GameObject* _sceneRoot = nullptr;
+    MEMBER_REF_GET(SceneManager, _sceneManager, getSceneManager)
+    std::unique_ptr<GameObject> _sceneRoot;
 };
