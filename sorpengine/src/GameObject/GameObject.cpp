@@ -32,16 +32,9 @@ GameObject* GameObject::getParent() const
     return _parent;
 }
 
-bool GameObject::removeFromParentAndCleanup()
+void GameObject::markChildToDelete(GameObject* child)
 {
-    cleanUp();
-	
-    if (_parent != nullptr)
-	{
-		_parent->removeChild(this);
-	}
-
-    return true;
+    _childrenToDelete.push_back(child);
 }
 
 void GameObject::addChild(std::unique_ptr<GameObject>&& child)
@@ -52,7 +45,13 @@ void GameObject::addChild(std::unique_ptr<GameObject>&& child)
 
 void GameObject::removeChild(GameObject* child)
 {
-	std::remove_if(_children.begin(), _children.end(), [child](const std::unique_ptr<GameObject>& obj) { return obj.get() == child; });
+	auto it = std::find_if(_children.begin(), _children.end(), [child](const std::unique_ptr<GameObject>& obj) { return obj.get() == child; });
+    if (it != _children.end())
+    {
+        it->reset();
+        _children.erase(it);
+        child = nullptr;
+    }
 }
 
 void GameObject::addComponent(std::unique_ptr<Component>&& component)
@@ -142,14 +141,24 @@ UpdateStatus GameObject::postUpdate()
 	}
 
 	UpdateStatus status = UpdateStatus::Continue;
-	for (std::size_t i = 0; i < _components.size() && status == UpdateStatus::Continue; ++i)
+	
+    for (std::size_t i = 0; i < _components.size() && status == UpdateStatus::Continue; ++i)
 	{
 		status = _components.at(i)->postUpdate();
 	}
+
 	for (std::size_t i = 0; i < _children.size() && status == UpdateStatus::Continue; ++i)
 	{
 		status = _children.at(i)->postUpdate();
 	}
+
+    for (GameObject* child : _childrenToDelete)
+    {
+        child->cleanUp();
+        removeChild(child);
+    }
+    _childrenToDelete.clear();
+
 
 	return status;
 }
@@ -194,7 +203,7 @@ bool GameObject::cleanUp()
 	return true;
 }
 
-void GameObject::onEditor()
+void GameObject::onEditor(std::function<void()> removeCallback)
 {
 	if (_parent == nullptr)
 	{
@@ -203,7 +212,17 @@ void GameObject::onEditor()
 
 	ImGui::Checkbox(_name.c_str(), &_active);
     ImGui::SameLine();
-    ImGui::Checkbox("Model Root", &_modelRoot);
+
+    if(ImGui::SmallButton("X"))
+    {
+        _parent->markChildToDelete(this);
+        if (removeCallback)
+        {
+            removeCallback();
+        }
+    }
+
+    //ImGui::Checkbox("Model Root", &_modelRoot);
 
 	for (auto& component : _components)
 	{
@@ -211,10 +230,9 @@ void GameObject::onEditor()
 	}
 }
 
-void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject *& selectedGameObject) 
+void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject *&selectedGameObject) 
 {
     const bool isSceneRootNode = _parent == nullptr;
-    
     if (isSceneRootNode)
     {
         for (std::unique_ptr<GameObject>& child : _children)
@@ -224,6 +242,12 @@ void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObjec
         return;
     }
 
+    ImGuiTreeNodeFlags notSelectedFlags = 1 ^ ImGuiTreeNodeFlags_Selected;
+    nodeFlags &= notSelectedFlags;
+    if (selectedGameObject == this)
+    {
+        nodeFlags |= ImGuiTreeNodeFlags_Selected;
+    }
 
     if (_children.empty())
 	{
@@ -235,10 +259,10 @@ void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObjec
 		return;
 	}
 
-	const bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)index, 0, "%s", _name.c_str(), index);
+	const bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)index, nodeFlags, "%s", _name.c_str(), index);
 	if (ImGui::IsItemClicked())
 	{
-		selectedGameObject = this;
+    	selectedGameObject = this;
 	}
 
 	if (node_open)
@@ -249,7 +273,6 @@ void GameObject::onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObjec
 		}
 		ImGui::TreePop(); 
 	}
-
 }
 
 float4x4 GameObject::GetWorldTransformMatrix() const

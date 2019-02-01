@@ -128,7 +128,7 @@ void ModuleGUI::showHierarchy()
 	}
     ImGui::TextColored(ImVec4(0.f, 1.f, 0.5f, 1.f), "Scene");
 
-	ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+    ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
 
 	int index = 0;
 	GameObject& sceneRoot = _sceneManager.getCurrentSceneRoot();
@@ -157,7 +157,9 @@ void ModuleGUI::showInspector()
 		return;
 	}
 
-	_data.selectedGameObject->onEditor();
+    const auto cbDeleteSelectedGameObject = [this]() { _data.selectedGameObject = nullptr; };
+    _data.selectedGameObject->onEditor(cbDeleteSelectedGameObject);
+
 	ImGui::End();
 }
 
@@ -196,8 +198,8 @@ void ModuleGUI::initStyle()
 	style.Colors[ImGuiCol_PopupBg] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
 	style.Colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
 	style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
-	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.42f, 0.32f, 0.46f, 1.00f);
 	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
 	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(1.00f, 0.98f, 0.95f, 0.75f);
@@ -214,7 +216,7 @@ void ModuleGUI::initStyle()
 	style.Colors[ImGuiCol_Button] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
 	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
 	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-	style.Colors[ImGuiCol_Header] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+	style.Colors[ImGuiCol_Header] = ImVec4(0.06f, 0.09f, 0.42f, 1.00f);
 	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
 	style.Colors[ImGuiCol_Column] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
