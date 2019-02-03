@@ -11,11 +11,6 @@ Transform::Transform(const float3& position, const Quat& rotation, const float3&
 {
 }
 
-void Transform::setActive(const bool value)
-{
-	assert(false, "Transform component's setActive() should never be called");
-}
-
 // -- update methods
 UpdateStatus Transform::update(float dt) 
 {

@@ -12,8 +12,8 @@ public:
     bool init() override; // override from Component
     void Init(const float aspectRatio);
 
-	const float4x4& getProjectionMatrix() const;
-	const float4x4& GetViewMatrix() const;
+	float4x4 getProjectionMatrix() const;
+	float4x4 getViewMatrix() const;
     void switchType();
 
 	void setFOV(float verticalFOV);

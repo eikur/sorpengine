@@ -72,6 +72,7 @@ Application* App = nullptr;
 int main(int argc, char *argv[])
 {
 	ReportMemoryLeaks();
+	//_CrtSetBreakAlloc(<id>);
 
 	int main_return = EXIT_FAILURE;
 	MainState mainState = MainState::Creation;

@@ -63,7 +63,7 @@ bool SceneManager::cleanUp()
 	return true;
 }
 
-void SceneManager::swapScene(SceneId sceneId, float duration)
+void SceneManager::swapScene(SceneId sceneId, float /*duration*/)
 {
 	if (_inTransition)
 	{

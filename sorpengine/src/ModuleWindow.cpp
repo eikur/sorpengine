@@ -208,7 +208,7 @@ void ModuleWindow::updateCameraWindow()
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(_currentCamera->getProjectionMatrix().ptr());
     glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(_currentCamera->GetViewMatrix().ptr());
+    glLoadMatrixf(_currentCamera->getViewMatrix().ptr());
 }
 
 SDL_Window* ModuleWindow::getSDLWindow() const

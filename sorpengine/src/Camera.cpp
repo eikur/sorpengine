@@ -42,13 +42,13 @@ void Camera::switchType()
 	}
 }
 
-const float4x4& Camera::getProjectionMatrix() const
+float4x4 Camera::getProjectionMatrix() const
 {
 	float4x4 rowMajorProjectionMatrix = _frustum.ProjectionMatrix();
 	return rowMajorProjectionMatrix.Transposed();
 }
 
-const float4x4& Camera::GetViewMatrix() const
+float4x4 Camera::getViewMatrix() const
 {
 	float4x4 rowMajorViewMatrix = _frustum.ViewMatrix();
 	return rowMajorViewMatrix.Transposed();

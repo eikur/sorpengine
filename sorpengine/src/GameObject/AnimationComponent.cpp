@@ -4,9 +4,10 @@
 #include "ModelHelper.fwd.hpp"
 #include "ImGui/imgui.h"
 
-AnimationComponent::AnimationComponent(Animation* animation) 
+AnimationComponent::AnimationComponent(const Animation* animation) 
     : Component(ComponentType::Animation, animation != nullptr)
     , _currentAnimation(animation)
+	, _nextAnimation(nullptr)
 {
 }
 
@@ -27,7 +28,7 @@ bool AnimationComponent::init()
             continue;
         }
 
-        _channelGameObjects[channelId] = go;
+		_channelGameObjects.emplace_back(std::pair<int, GameObject*>(channelId, go));
     }
 
     return true;
@@ -77,6 +78,13 @@ UpdateStatus AnimationComponent::update(float dt)
 
     return UpdateStatus::Continue;
 }
+
+bool AnimationComponent::cleanUp()
+{
+	_channelGameObjects.clear();
+	return true;
+}
+
 
 void AnimationComponent::updateChannelGameObject(const AnimationChannel& channel, GameObject& gameObject)
 {
@@ -135,7 +143,7 @@ void AnimationComponent::updateChannelGameObject(const AnimationChannel& channel
     gameObject.updateTransform(newPosition, newRotation);
 }
 
-float3 AnimationComponent::interpolateFloat3(float3 start, float3 finish, float lambda)
+float3 AnimationComponent::interpolateFloat3(float3 start, float3 finish, const float lambda)
 {
     return start * (1.f - lambda) + finish * lambda;
 }

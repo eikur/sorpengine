@@ -72,6 +72,12 @@ public:
 
 	// MaterialComponent
 	template<>
+	std::unique_ptr<MaterialComponent> createComponent()
+	{
+		return std::make_unique<MaterialComponent>(nullptr);
+	}
+
+	template<>
 	std::unique_ptr<MaterialComponent> createComponent(Material* material)
 	{
 		return std::make_unique<MaterialComponent>(material);

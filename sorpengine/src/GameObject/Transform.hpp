@@ -30,7 +30,6 @@ public:
 	void onEditor() override;
 
 protected:
-	void setActive(const bool value) override;
 	void showPosGizmo() const;
 
 private:

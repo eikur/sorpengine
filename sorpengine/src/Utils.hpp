@@ -26,6 +26,4 @@ namespace Utils
 	{
 		_log(__FILE__, __LINE__, format, args... );
 	}
-
-	
 }

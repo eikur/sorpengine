@@ -125,7 +125,7 @@ void ModelHelper::loadAnimationsForModel(const std::string& model, const std::st
         //const float ticksPerSecond = animation->mTicksPerSecond <= 0 ? 16.6f : animation->mTicksPerSecond;
         // restore this
         const float ticksPerSecond = 16.6f;
-        createdAnimation.duration = animation->mDuration * ticksPerSecond;
+        createdAnimation.duration = (float) animation->mDuration * ticksPerSecond;
         
         const size_t channelCount = animation->mNumChannels;
         for (size_t channelIdx = 0; channelIdx < channelCount; ++channelIdx)
@@ -236,7 +236,7 @@ std::unique_ptr<GameObject> ModelHelper::getGameObjectFromNode(const Node& node,
         if (!node.animationIds.empty())
         {
             // load by default the first one
-            size_t animationId = node.animationIds.front();
+            const size_t& animationId = node.animationIds.front();
             gameObject->addComponent(ComponentFactory().createComponent<AnimationComponent>(&_animations.at(animationId)));
         }
     }
