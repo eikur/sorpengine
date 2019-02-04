@@ -33,6 +33,8 @@ public:
     const float3& front() const;
     const float3& right() const;
 
+    const float4& getClearColor() const;
+
     void onEditor() override;
 
 private:
@@ -44,4 +46,6 @@ private:
 	float _aspectRatio = 1.78f;
 	float _orthoHeight = 0.0f;
 	float _orthoWidth = 0.0f;
+
+    float4 _clearColor = float4(0.1f, 0.1f, 0.1f, 1.f);
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Application.hpp"
 #include "Camera.hpp"
 #include "Macros.hpp"
 #include "ModuleInput.hpp"
@@ -31,7 +32,7 @@ public:
 	};
 
 public:
-	SceneManager(const ModuleInput& input, bool active = true);
+	SceneManager(const Application& application, const ModuleInput& input, bool active = true);
 	~SceneManager() override;
 
 	bool init() override;
@@ -50,18 +51,19 @@ public:
     void addComponentToGameObject(GameObject* target, ComponentType type);
 
     void initEditorCamera(const float aspectRatio);
-    void showCameraProperties();
+    void showEditorCameraProperties();
 
     const Camera& getCurrentSceneCamera() const;
 
 private:
     void handleEditorCamera();
-    void translateCamera(const float3& translation);
+    void translateEditorCamera(const float3& translation);
 
 	bool isInTransition() const;
 	void updateTransition(float dt);
 
 private:
+    const Application& _application;
     const ModuleInput& _input;
     Camera _editorCamera;
 

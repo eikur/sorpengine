@@ -8,11 +8,11 @@
 #include "ImGui/imgui_impl_sdl_gl3.h"
 #include "ImGui/imgui_internal.h"
 
-ModuleGUI::ModuleGUI(SceneManager& sceneManager, ModuleWindow& moduleWindow, TimeManager& timeManager, bool active) 
+ModuleGUI::ModuleGUI(Application& application, SceneManager& sceneManager, ModuleWindow& moduleWindow, bool active) 
     : Module(active)
+    , _application(application)
     , _sceneManager(sceneManager)
     , _moduleWindow(moduleWindow)
-    , _timeManager(timeManager)
 {}
 
 bool ModuleGUI::init()
@@ -108,7 +108,7 @@ bool ModuleGUI::showMainMenu()
 			ImGui::EndMenu();
 		}
 
-        ImGui::Text("FPS %.1f", _timeManager.getAppFrameRate());
+        ImGui::Text("FPS %.1f", _application.getFrameRate());
 
         ImGui::EndMainMenuBar();
 	}
@@ -263,7 +263,7 @@ void ModuleGUI::showEditorCameraProperties()
         return;
     }
     
-    _sceneManager.showCameraProperties();
+    _sceneManager.showEditorCameraProperties();
 
     ImGui::End();
 }
@@ -290,21 +290,21 @@ void ModuleGUI::showEditorPlaybackControls()
     ImGui::Columns(2, 0, useBorder); 
     ImVec2 buttonSize(60, 20);
 
-    const bool gameRunning = _timeManager.isGameRunning();
-    const bool gamePaused = _timeManager.isGamePaused();
+    const bool gameRunning = _application.isInGameMode();
+    const bool gamePaused = _application.isGameModePaused();
 
     if (gameRunning || gamePaused)
     {
         if (ImGui::Button("Stop", buttonSize))
         {
-            _timeManager.stopGame();
+            _application.exitGameMode();
         }
     }
     else 
     {
         if (ImGui::Button("Play", buttonSize))
         {
-            _timeManager.startGame();
+            _application.enterGameMode();
         }
     }
 
@@ -314,7 +314,7 @@ void ModuleGUI::showEditorPlaybackControls()
 
     if (ImGui::Button(pauseLabel.c_str(), buttonSize))
     {
-        _timeManager.togglePauseGame();
+        _application.togglePauseGameMode();
     }
 
     ImGui::End();

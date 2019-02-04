@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Application.hpp"
 #include "Module.hpp"
 #include "SceneManager.hpp"
 #include "ModuleWindow.hpp"
@@ -23,7 +24,7 @@ class ModuleGUI : public Module
 
 
 public: 
-	ModuleGUI(SceneManager& sceneManager, ModuleWindow& moduleWindow, TimeManager& timeManager, bool active = true);
+	ModuleGUI(Application& application, SceneManager& sceneManager, ModuleWindow& moduleWindow, bool active = true);
 
 	bool init() override;
 	UpdateStatus update(float dt) override;
@@ -46,7 +47,7 @@ private:
 
 private:
 	Data _data;
+    Application& _application;
 	SceneManager& _sceneManager;
     ModuleWindow& _moduleWindow;
-    TimeManager& _timeManager;
 };

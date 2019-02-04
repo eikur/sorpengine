@@ -4,10 +4,7 @@
 #include "ImGui/imgui.h"
 #include "ModuleWindow.hpp"
 
-Camera::Camera(const bool active) : Component(ComponentType::Camera, active)
-{
-
-}
+Camera::Camera(const bool active) : Component(ComponentType::Camera, active){}
 
 bool Camera::init()
 {
@@ -134,6 +131,11 @@ const float3& Camera::right() const
     return _frustum.WorldRight();
 }
 
+const float4& Camera::getClearColor() const
+{
+    return _clearColor;
+}
+
 void Camera::onEditor()
 {
     if (ImGui::CollapsingHeader("Camera"))
@@ -166,6 +168,11 @@ void Camera::onEditor()
             }
         }
 
+        if (ImGui::DragFloat("Aspect Ratio", &_aspectRatio, 0.1f, 0.5f, 3.f))
+        {
+            setAspectRatio(_aspectRatio);
+        }
+
         bool planeDistancesChanged = false;
         if (ImGui::DragFloat("near", &_nearPlaneDistance, 0.1f, 0.1f, 10.f)) 
         {
@@ -179,5 +186,8 @@ void Camera::onEditor()
         {
             setPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
         }
+
+        const bool kShowAlpha = false;
+        ImGui::ColorEdit4("Clear color", (float*)&_clearColor, kShowAlpha);
     }
 }

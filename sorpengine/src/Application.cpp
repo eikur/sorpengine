@@ -34,10 +34,10 @@ Application::Application()
     _timeManager = std::make_unique<TimeManager>();
 
 	_input = std::make_unique<ModuleInput>();
-	_sceneManager = std::make_unique<SceneManager>(*_input);
+	_sceneManager = std::make_unique<SceneManager>(*this, *_input);
 	_window = std::make_unique<ModuleWindow>(*_sceneManager);
     _audio = std::make_unique<ModuleAudio>();
-	_gui = std::make_unique<ModuleGUI>(*_sceneManager, *_window, *_timeManager);
+	_gui = std::make_unique<ModuleGUI>(*this, *_sceneManager, *_window);
 
 	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get(), _gui.get()};
 	_shaderManager = std::make_unique<ShaderManager>();
@@ -126,4 +126,45 @@ bool Application::CleanUp()
     _modelHelper->finalize();
 
 	return ret;
+}
+
+
+void Application::enterGameMode()
+{
+    _mode = Mode::Game;
+    _timeManager->startGame();
+}
+void Application::exitGameMode()
+{
+    _mode = Mode::Edit;
+    _timeManager->stopGame();
+}
+
+void Application::togglePauseGameMode()
+{
+    if (_mode == Mode::Edit)
+    {
+        return;
+    }
+    _timeManager->togglePauseGame();
+}
+
+bool Application::isInEditMode() const
+{
+    return _mode == Mode::Edit;
+}
+
+bool Application::isInGameMode() const
+{
+    return _mode == Mode::Game;
+}
+
+bool Application::isGameModePaused() const
+{
+    return isInGameMode() && _timeManager->isGamePaused();
+}
+
+float Application::getFrameRate() const
+{
+    return _timeManager->getAppFrameRate();
 }

@@ -27,7 +27,7 @@ class ModuleWindow : public Module
 		SDL_Window* getSDLWindow() const;
 
 	private:
-		void updateCameraWindow();
+		void updateCameraFrame();
 
 		SDL_Window* _sdlWindow = nullptr;
 		SDL_Surface* _sdlSurface = nullptr;

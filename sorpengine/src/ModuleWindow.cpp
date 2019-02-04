@@ -96,7 +96,7 @@ bool ModuleWindow::init()
 
 UpdateStatus ModuleWindow::preUpdate()
 {
-     updateCameraWindow();
+    updateCameraFrame();
     
     glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -105,8 +105,8 @@ UpdateStatus ModuleWindow::preUpdate()
 
     glEnable(GL_SCISSOR_TEST);
     glScissor(_sceneViewMargin.x, _sceneViewMargin.y, _sceneViewSize.x, _sceneViewSize.y);
-    glClearColor(0.1f, 0.1f, 0.1f, 1.f);
-    // glClearColor(_sceneManager.getCamera().getClearColor()); // TODO move clear color to camera
+    const float4& clearColor = _sceneManager.getCurrentSceneCamera().getClearColor();
+    glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_SCISSOR_TEST);
 
@@ -142,7 +142,7 @@ const iPoint& ModuleWindow::getWindowSize() const
 	return _windowSize;
 }
 
-void ModuleWindow::updateCameraWindow()
+void ModuleWindow::updateCameraFrame()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(_sceneManager.getCurrentSceneCamera().getProjectionMatrix().ptr());

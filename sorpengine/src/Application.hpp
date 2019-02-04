@@ -19,6 +19,12 @@ class TimeManager;
 
 class Application
 {
+    enum class Mode
+    {
+        Edit,
+        Game
+    };
+
 public:
 	Application();
 	~Application();
@@ -27,7 +33,20 @@ public:
 	UpdateStatus Update();
 	bool CleanUp();
 
+    void enterGameMode();
+    void togglePauseGameMode();
+    void exitGameMode();
+    
+    bool isInGameMode() const;
+    bool isInEditMode() const;
+
+    bool isGameModePaused() const;
+
+    float getFrameRate() const;
+
 private:
+    Mode _mode = Mode::Edit;
+
 	std::vector<Module*> _modules;
 	MEMBER_DECL(ModuleWindow, _window, getWindow)
 	MEMBER_DECL(ModuleInput, _input, getInput)
