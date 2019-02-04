@@ -82,6 +82,15 @@ void Camera::setPlaneDistances(float nearPlane, float farPlane)
 	_frustum.SetViewPlaneDistances(_nearPlaneDistance, _farPlaneDistance);
 }
 
+void Camera::updateFrustumTransform(const float4x4& worldTransformMatrix)
+{
+    float3 pos, scl;
+    Quat rot;
+    worldTransformMatrix.Decompose(pos, rot, scl);
+    _frustum.SetPos(pos);
+    orientate(rot.Mul(-float3::unitZ).Normalized(), rot.Mul(float3::unitY).Normalized());
+}
+
 const float3& Camera::getPosition() const
 {
 	return _frustum.Pos();

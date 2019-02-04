@@ -39,5 +39,9 @@ private:
 
 	float3 _eulerRotation = float3::zero;
 
+    float3 _cachedPosition = float3::zero;
+    Quat _cachedRotation = Quat::identity;
+    float3 _cachedScale = float3::one;
+
 	bool _showPosGizmo = false;
 };

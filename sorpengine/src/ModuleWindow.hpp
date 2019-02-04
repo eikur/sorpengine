@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Camera.hpp"
 #include "Module.hpp"
 #include "Point.hpp"
+#include "SceneManager.hpp"
 #include "SDL.h"
 #include <memory>
 
@@ -15,42 +15,32 @@ class ModuleWindow : public Module
 	public:
 		using iPoint = Point<int>;
 
-		ModuleWindow(bool active = true);
+		ModuleWindow(SceneManager& sceneManager, bool active = true);
 		virtual ~ModuleWindow() {}
 
 		bool init() override;
 		UpdateStatus preUpdate() override;
-		UpdateStatus update(float dt = 0.0f) override;
 		UpdateStatus postUpdate() override;
 		bool cleanUp() override;
 
-		void setWindowSize(const iPoint& newSize);
 		const iPoint& getWindowSize() const;
 		SDL_Window* getSDLWindow() const;
-		
-        void showCameraProperties();
 
 	private:
 		void updateCameraWindow();
-        void translateCamera(const float3& translation);
-		void toggleCameraMode();
 
 		SDL_Window* _sdlWindow = nullptr;
 		SDL_Surface* _sdlSurface = nullptr;
 		SDL_Renderer* _sdlRenderer = nullptr;
 		SDL_GLContext _glContext;
 
-        Camera _editorCamera;
-        Camera* _currentCamera = nullptr;
-
+        SceneManager& _sceneManager;
 
 		bool _fullScreen = false;
 		bool _resizable = false; // disabled for now
 		bool _vsync = true;
-		bool _isDirty = false;
 
         iPoint _windowSize = { 1800, 900 };
-        
         iPoint _sceneViewMargin = { 280, 0 };
         iPoint _sceneViewSize;
 };

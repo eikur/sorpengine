@@ -8,7 +8,7 @@
 #include "MathGeoLib.h"
 #include "ImGui/imgui.h"
 
-
+class Camera;
 class Transform;
 
 class GameObject
@@ -33,13 +33,19 @@ public:
     void addChild(std::unique_ptr<GameObject>&& child);
 	void addComponent(std::unique_ptr<Component>&& component);
 
-    void removeChild(GameObject* child);
-    void markChildToDelete(GameObject* child);
-
-    void updateTransform(const float3& position, const Quat& rotation);
+    void updateTransform(const float3& position, const Quat& rotation, const float3& scale = float3::one);
+    void transformWasUpdated();
     float4x4 GetWorldTransformMatrix() const;
     float4x4 GetModelSpaceTransformMatrix() const;
     float4x4 GetLocalTransformMatrix() const;
+
+    const GameObject* findFirstChildWithCameraComponent() const;
+    bool hasCameraComponent() const;
+    const Camera* getCameraComponent() const;
+
+
+    void removeChild(GameObject* child);
+    void markChildToDelete(GameObject* child);
     
     const GameObject* findModelRoot() const;
     void markAsModelRoot();
@@ -49,6 +55,7 @@ public:
 	void onHierarchy(int& index, ImGuiTreeNodeFlags nodeFlags, GameObject *&selectedGameObject);
 
 private:
+    void tryUpdateCameraTransform();
 	GameObject* findChild(GameObject* child) const;
 
 private:
@@ -58,7 +65,7 @@ private:
 
     GameObject* _parent = nullptr;
     Transform* _transform = nullptr;
-    
+    Camera* _camera = nullptr;
 
 	bool _active = true;
 	std::string _name;

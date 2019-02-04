@@ -33,10 +33,10 @@ Application::Application()
 {
     _timeManager = std::make_unique<TimeManager>();
 
-	_window = std::make_unique<ModuleWindow>();
 	_input = std::make_unique<ModuleInput>();
-	_audio = std::make_unique<ModuleAudio>();
-	_sceneManager = std::make_unique<SceneManager>();
+	_sceneManager = std::make_unique<SceneManager>(*_input);
+	_window = std::make_unique<ModuleWindow>(*_sceneManager);
+    _audio = std::make_unique<ModuleAudio>();
 	_gui = std::make_unique<ModuleGUI>(*_sceneManager, *_window, *_timeManager);
 
 	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get(), _gui.get()};

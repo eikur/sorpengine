@@ -1,9 +1,10 @@
 #include "SceneManager.hpp"
+
 #include "TestScene1.hpp"
 #include "GameObject\GameObject.hpp"
 #include "GameObject/ComponentFactory.hpp"
 
-SceneManager::SceneManager(bool active) : Module(active) 
+SceneManager::SceneManager(const ModuleInput& input, bool active) : Module(active), _input(input)
 {
 	_testScene1 = std::make_shared<TestScene1>(*this);
 }
@@ -27,6 +28,8 @@ bool SceneManager::start()
 
 UpdateStatus SceneManager::preUpdate()
 {
+    handleEditorCamera();
+
 	if (_currentScene)
 	{
 		return _currentScene->preUpdate();
@@ -163,5 +166,67 @@ void SceneManager::addComponentToGameObject(GameObject* target, ComponentType ty
     {
         componentToAdd->init();
         target->addComponent(std::move(componentToAdd));
+    }
+}
+
+void SceneManager::initEditorCamera(const float aspectRatio)
+{
+    _editorCamera.Init(aspectRatio);
+}
+
+void SceneManager::translateCamera(const float3& translation)
+{
+    _editorCamera.translate(translation);
+}
+
+void SceneManager::showCameraProperties()
+{
+    _editorCamera.onEditor();
+}
+
+const Camera& SceneManager::getCurrentSceneCamera() const
+{
+    // TODO this is not correct, should only switch to scene camera when in Game mode!
+    if (_currentScene)
+    {
+        const Camera* activeCamera = _currentScene->getActiveCamera();
+        return activeCamera != nullptr ? *activeCamera : _editorCamera;
+    }
+    
+    return _editorCamera;
+}
+
+void SceneManager::handleEditorCamera()
+{
+    if (_input.getKey(SDL_SCANCODE_C) == ModuleInput::KeyState::Down)
+    {
+        _editorCamera.switchType();
+    }
+
+    if (_input.getKey(SDL_SCANCODE_W) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(_editorCamera.front() * _editorCameraSpeed * _editorCameraDelta);
+    }
+    else if (_input.getKey(SDL_SCANCODE_S) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(-_editorCamera.front() * _editorCameraSpeed * _editorCameraDelta);
+    }
+
+    if (_input.getKey(SDL_SCANCODE_Q) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(-_editorCamera.up() * _editorCameraSpeed * _editorCameraDelta);
+    }
+    else if (_input.getKey(SDL_SCANCODE_E) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(_editorCamera.up() * _editorCameraSpeed * _editorCameraDelta);
+    }
+
+    if (_input.getKey(SDL_SCANCODE_A) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(-_editorCamera.right() * _editorCameraSpeed * _editorCameraDelta);
+    }
+    else if (_input.getKey(SDL_SCANCODE_D) == ModuleInput::KeyState::Repeat)
+    {
+        translateCamera(_editorCamera.right() * _editorCameraSpeed * _editorCameraDelta);
     }
 }

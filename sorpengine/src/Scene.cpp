@@ -58,3 +58,10 @@ GameObject& Scene::getSceneRoot() const
 {
     return *_sceneRoot.get();
 }
+
+const Camera* Scene::getActiveCamera() const
+{
+    const GameObject* cameraGo = _sceneRoot->findFirstChildWithCameraComponent();
+
+    return cameraGo? cameraGo->getCameraComponent() : nullptr;
+}

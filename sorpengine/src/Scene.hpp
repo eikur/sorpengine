@@ -23,6 +23,8 @@ public:
 
 	GameObject& getSceneRoot() const;
 
+    const Camera* getActiveCamera() const;
+
 private:
     MEMBER_REF_GET(SceneManager, _sceneManager, getSceneManager)
     std::unique_ptr<GameObject> _sceneRoot;

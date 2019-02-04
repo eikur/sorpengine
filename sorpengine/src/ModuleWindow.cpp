@@ -1,13 +1,11 @@
 #include "ModuleWindow.hpp"
 
+#include "Camera.hpp"
 #include "Globals.hpp"
 #include "Utils.hpp"
 #include "GL/glew.h"
-// remove me
-#include "ModuleInput.hpp"
-#include "Application.hpp"
 
-ModuleWindow::ModuleWindow(bool active): Module(active) 
+ModuleWindow::ModuleWindow(SceneManager& sceneManager, bool active): Module(active), _sceneManager(sceneManager)
 {
 }
 
@@ -89,9 +87,8 @@ bool ModuleWindow::init()
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 
     _sceneViewSize = { _windowSize.x - 2 * _sceneViewMargin.x, _windowSize.y - _sceneViewMargin.y };
-    _editorCamera.Init(_sceneViewSize.x / (float)_sceneViewSize.y);
-    _currentCamera = &_editorCamera;
-	_isDirty = true;
+
+    _sceneManager.initEditorCamera(_sceneViewSize.x / (float)_sceneViewSize.y);
 
     return true;
 }
@@ -99,11 +96,7 @@ bool ModuleWindow::init()
 
 UpdateStatus ModuleWindow::preUpdate()
 {
-    if (_isDirty)
-    {
-        updateCameraWindow();
-        _isDirty = false;
-    }
+     updateCameraWindow();
     
     glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -113,53 +106,10 @@ UpdateStatus ModuleWindow::preUpdate()
     glEnable(GL_SCISSOR_TEST);
     glScissor(_sceneViewMargin.x, _sceneViewMargin.y, _sceneViewSize.x, _sceneViewSize.y);
     glClearColor(0.1f, 0.1f, 0.1f, 1.f);
-    // glClearColor(_currentCamera->getClearColor()); // move clear color to camera
+    // glClearColor(_sceneManager.getCamera().getClearColor()); // TODO move clear color to camera
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_SCISSOR_TEST);
 
-	return UpdateStatus::Continue;
-}
-
-UpdateStatus ModuleWindow::update(float /*dt*/)
-{
-    // These are camera controls. Consider moving them when the camera is converted to a component
-    // Editor camera controls
-
-	if (App->getInput().getKey(SDL_SCANCODE_C) == ModuleInput::KeyState::Down)
-	{
-        toggleCameraMode();
-	}
-
-    const float kCamMoveSpeed = 3.0f;
-    const float dt = 0.02f;
-
-    if (App->getInput().getKey(SDL_SCANCODE_W) == ModuleInput::KeyState::Repeat)
-    {
-        translateCamera(_editorCamera.front() * kCamMoveSpeed * dt );
-    }
-    else if (App->getInput().getKey(SDL_SCANCODE_S) == ModuleInput::KeyState::Repeat)
-    {
-        translateCamera(-_editorCamera.front() * kCamMoveSpeed * dt);
-    }
-
-    if (App->getInput().getKey(SDL_SCANCODE_Q) == ModuleInput::KeyState::Repeat)
-    {
-        translateCamera(-_editorCamera.up() * kCamMoveSpeed * dt);
-    }
-    else if (App->getInput().getKey(SDL_SCANCODE_E) == ModuleInput::KeyState::Repeat)
-    {
-        translateCamera(_editorCamera.up() * kCamMoveSpeed * dt);
-    }
-
-    if (App->getInput().getKey(SDL_SCANCODE_A) == ModuleInput::KeyState::Repeat)
-    {
-        translateCamera(-_editorCamera.right() * kCamMoveSpeed * dt);
-    }
-    else if (App->getInput().getKey(SDL_SCANCODE_D) == ModuleInput::KeyState::Repeat)
-    {
-        translateCamera(_editorCamera.right() * kCamMoveSpeed * dt);
-    }
-    
 	return UpdateStatus::Continue;
 }
 
@@ -187,17 +137,6 @@ bool ModuleWindow::cleanUp()
 	return true;
 }
 
-void ModuleWindow::setWindowSize(const iPoint& newSize)
-{
-	if (_windowSize == newSize)
-	{
-		return;
-	}
-	_windowSize = newSize;
-    _editorCamera.setAspectRatio(_windowSize.x / (float)_windowSize.y);
-	_isDirty = true;
-}
-
 const iPoint& ModuleWindow::getWindowSize() const
 {
 	return _windowSize;
@@ -206,30 +145,12 @@ const iPoint& ModuleWindow::getWindowSize() const
 void ModuleWindow::updateCameraWindow()
 {
     glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(_currentCamera->getProjectionMatrix().ptr());
+    glLoadMatrixf(_sceneManager.getCurrentSceneCamera().getProjectionMatrix().ptr());
     glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(_currentCamera->getViewMatrix().ptr());
+    glLoadMatrixf(_sceneManager.getCurrentSceneCamera().getViewMatrix().ptr());
 }
 
 SDL_Window* ModuleWindow::getSDLWindow() const
 {
 	return _sdlWindow;
-}
-
-void ModuleWindow::toggleCameraMode()
-{
-	_editorCamera.switchType();
-	_isDirty = true;
-}
-
-void ModuleWindow::translateCamera(const float3& translation)
-{
-    _editorCamera.translate(translation);
-    _isDirty = true;
-}
-
-void ModuleWindow::showCameraProperties()
-{
-    _editorCamera.onEditor();
-    _isDirty = true;
 }

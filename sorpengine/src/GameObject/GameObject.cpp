@@ -1,5 +1,6 @@
 #include "GameObject.hpp"
 
+#include "Camera.hpp"
 #include "Transform.hpp"
 #include "SDL_opengl.h"
 
@@ -61,6 +62,14 @@ void GameObject::addComponent(std::unique_ptr<Component>&& component)
     {
         _transform = t;
     }
+    else
+    {
+        Camera* c = dynamic_cast<Camera*>(component.get());
+        if (c != nullptr)
+        {
+            _camera = c;
+        }
+    }
 
 	component->setParent(*this);
 	_components.push_back(std::move(component));
@@ -90,6 +99,60 @@ GameObject* GameObject::findChildRecursivelyByName(const std::string& name) cons
 
     return found;
 }
+
+const GameObject* GameObject::findFirstChildWithCameraComponent() const
+{
+    if (!_active)
+    {
+        return nullptr;
+    }
+
+    if (hasCameraComponent())
+    {
+        return this;
+    }
+
+    for (const auto& go : _children)
+    {
+        const GameObject* res = go->findFirstChildWithCameraComponent();
+        if (res != nullptr)
+        {
+            return res;
+        }
+    }
+
+    return nullptr;
+}
+
+bool GameObject::hasCameraComponent() const
+{
+    return _camera != nullptr;
+}
+
+const Camera* GameObject::getCameraComponent() const
+{
+    const bool availableCamera = hasCameraComponent() && _camera->isActive();
+    return availableCamera ? _camera : nullptr;
+}
+
+void GameObject::tryUpdateCameraTransform()
+{
+    if (!_active)
+    {
+        return;
+    }
+
+    if (hasCameraComponent())
+    {
+        _camera->updateFrustumTransform(GetWorldTransformMatrix());
+    }
+
+    for (auto& child : _children)
+    {
+        child->tryUpdateCameraTransform();
+    }
+}
+
 
 UpdateStatus GameObject::preUpdate()
 {
@@ -297,14 +360,24 @@ float4x4 GameObject::GetModelSpaceTransformMatrix() const
 
 float4x4 GameObject::GetLocalTransformMatrix() const
 {
+    if (!_parent && !_transform)
+    {
+        return float4x4::identity;
+    }
     return _transform->getTransformMatrix();
 }
 
 
-void GameObject::updateTransform(const float3& position, const Quat& rotation)
+void GameObject::updateTransform(const float3& position, const Quat& rotation, const float3& scale)
 {
     _transform->setPosition(position);
     _transform->setRotation(rotation);
+    _transform->setScale(scale);
+}
+
+void GameObject::transformWasUpdated()
+{
+    tryUpdateCameraTransform();
 }
 
 void GameObject::markAsModelRoot()

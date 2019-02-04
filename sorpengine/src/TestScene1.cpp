@@ -18,7 +18,7 @@ bool TestScene1::init()
 {
     // Consider creating a gameobject builder
     std::unique_ptr<GameObject> cameraGO = std::make_unique<GameObject>("MainCamera");
-    cameraGO->addComponent(ComponentFactory().createComponent<Transform>());
+    cameraGO->addComponent(ComponentFactory().createComponent<Transform>(float3(0.f, 1.f, 5.f), Quat::identity, float3::one));
     cameraGO->addComponent(ComponentFactory().createComponent<Camera>());
     addGameObject(std::move(cameraGO));
 

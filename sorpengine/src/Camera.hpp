@@ -20,6 +20,8 @@ public:
 	void setAspectRatio(float aspectRatio);
 	void setPlaneDistances(float nearPlane, float farPlane);
 
+    void updateFrustumTransform(const float4x4& worldTransformMatrix);
+
 	const float3& getPosition() const;
 	void setPosition(const float3& pos);
     void translate(const float3& translation);

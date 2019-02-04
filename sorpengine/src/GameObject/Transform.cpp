@@ -1,4 +1,6 @@
 #include "Transform.hpp"
+
+#include "GameObject.hpp"
 #include "ImGui/imgui.h"
 #include "GL/glew.h"
 
@@ -14,6 +16,17 @@ Transform::Transform(const float3& position, const Quat& rotation, const float3&
 // -- update methods
 UpdateStatus Transform::update(float dt) 
 {
+    if (!_cachedPosition.Equals(_position) || !_cachedRotation.Equals(_rotation) || !_cachedScale.Equals(_scale))
+    {
+        _cachedPosition = _position;
+        _cachedRotation = _rotation;
+        _cachedScale = _scale;
+
+        _eulerRotation = _rotation.ToEulerXYZ() * 180.f / pi;
+
+        _parent->transformWasUpdated();
+    }
+
 	glTranslatef(_position.x, _position.y, _position.z);
 	
 	glRotatef(_eulerRotation.x, 1.f, 0.f, 0.f);

@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Camera.hpp"
 #include "Macros.hpp"
+#include "ModuleInput.hpp"
 #include "Module.hpp"
 #include "Globals.hpp"
 
@@ -29,7 +31,7 @@ public:
 	};
 
 public:
-	SceneManager(bool active = true);
+	SceneManager(const ModuleInput& input, bool active = true);
 	~SceneManager() override;
 
 	bool init() override;
@@ -47,20 +49,31 @@ public:
     GameObject* addNewGameObject(GameObject* parent = nullptr);
     void addComponentToGameObject(GameObject* target, ComponentType type);
 
+    void initEditorCamera(const float aspectRatio);
+    void showCameraProperties();
+
+    const Camera& getCurrentSceneCamera() const;
 
 private:
+    void handleEditorCamera();
+    void translateCamera(const float3& translation);
+
 	bool isInTransition() const;
 	void updateTransition(float dt);
 
 private:
+    const ModuleInput& _input;
+    Camera _editorCamera;
+
 	Scene* _currentScene = nullptr;
 	Scene* _nextScene = nullptr;
 
 	SCENE_DECL(TestScene1, _testScene1, getTestScene1)
 
-
 	bool _inTransition = false;
 	float _transitionTime = 0.0f;
 	float _transitionDuration = 0.0f;
 
+    const float _editorCameraSpeed = 3.0f;
+    const float _editorCameraDelta = 0.02f;
 };

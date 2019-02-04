@@ -31,6 +31,7 @@ class Component
     virtual void onEditor() = 0;
 
 	void setParent(GameObject& parent) { _parent = &parent; }
+    bool isActive() const { return _active; }
 
 protected:
 	void setActive(const bool value) { _active = value; };

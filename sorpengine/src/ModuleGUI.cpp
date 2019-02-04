@@ -17,7 +17,7 @@ ModuleGUI::ModuleGUI(SceneManager& sceneManager, ModuleWindow& moduleWindow, Tim
 
 bool ModuleGUI::init()
 {
-	ImGui_ImplSdlGL3_Init(App->getWindow().getSDLWindow());
+	ImGui_ImplSdlGL3_Init(_moduleWindow.getSDLWindow());
 	initStyle();
 
     // default open windows
@@ -31,7 +31,7 @@ UpdateStatus ModuleGUI::update(float)
 {
 	ImVec4 clear_color = ImColor(0, 0, 0);
 
-	ImGui_ImplSdlGL3_NewFrame(App->getWindow().getSDLWindow());
+	ImGui_ImplSdlGL3_NewFrame(_moduleWindow.getSDLWindow());
 
 	if (_data.showAbout) 
 	{ 
@@ -263,7 +263,7 @@ void ModuleGUI::showEditorCameraProperties()
         return;
     }
     
-    _moduleWindow.showCameraProperties();
+    _sceneManager.showCameraProperties();
 
     ImGui::End();
 }
