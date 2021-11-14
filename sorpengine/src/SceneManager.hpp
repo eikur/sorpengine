@@ -32,7 +32,7 @@ public:
 	};
 
 public:
-	SceneManager(const Application& application, const ModuleInput& input, bool active = true);
+	SceneManager(const Application& application, const ModuleInput& input);
 	~SceneManager() override;
 
 	bool init() override;

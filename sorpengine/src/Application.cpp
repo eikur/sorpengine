@@ -1,5 +1,3 @@
-/* Application.cpp */
-
 #include "Application.hpp"
 #include "ModelHelper.hpp"
 #include "ModuleWindow.hpp"
@@ -12,69 +10,40 @@
 #include "ShaderManager.hpp"
 #include <algorithm>
 
-namespace 
-{
-	const std::vector<Module*> getActiveModules(const std::vector<Module*>& allModules)
-	{
-		std::vector<Module*> activeModules;
-
-		for (auto&& module : allModules)
-		{
-			if (module->isActive())
-			{
-				activeModules.push_back(&*module);
-			}
-		}
-		return std::move(activeModules);
-	}
-}
-
 Application::Application()
 {
-    _timeManager = std::make_unique<TimeManager>();
+	std::unique_ptr<ModuleInput> moduleInput = std::make_unique<ModuleInput>();
+	std::unique_ptr<SceneManager> sceneManager = std::make_unique<SceneManager>(*this, *moduleInput);
+	std::unique_ptr<ModuleWindow> moduleWindow = std::make_unique<ModuleWindow>(*sceneManager);
+	std::unique_ptr<ModuleAudio> moduleAudio = std::make_unique<ModuleAudio>();
+	std::unique_ptr<ModuleGUI> moduleGUI = std::make_unique<ModuleGUI>(*this, *sceneManager, *moduleWindow);
 
-	_input = std::make_unique<ModuleInput>();
-	_sceneManager = std::make_unique<SceneManager>(*this, *_input);
-	_window = std::make_unique<ModuleWindow>(*_sceneManager);
-    _audio = std::make_unique<ModuleAudio>();
-	_gui = std::make_unique<ModuleGUI>(*this, *_sceneManager, *_window);
+	_modules.push_back(std::move(moduleWindow));
+	_modules.push_back(std::move(moduleInput));
+	_modules.push_back(std::move(moduleAudio));
+	_modules.push_back(std::move(sceneManager));
+	_modules.push_back(std::move(moduleGUI));
 
-	_modules = { _window.get(), _input.get(), _audio.get(), _sceneManager.get(), _gui.get()};
+	_timeManager = std::make_unique<TimeManager>();
 	_shaderManager = std::make_unique<ShaderManager>();
 	_textureHelper = std::make_unique<TextureHelper>();
     _modelHelper = std::make_unique<ModelHelper>(*_textureHelper.get());
 }
 
-Application::~Application()
-{
-	_window.reset();
-	_input.reset();
-	_audio.reset();
-	_gui.reset();
-	_sceneManager.reset();
-
-	_shaderManager.reset();
-	_textureHelper.reset();
-    _modelHelper.reset();
-
-    _timeManager.reset();
-}
+Application::~Application() {}
 
 bool Application::Init()
 {
 	bool ret = true;
 
-	for (auto&& module : _modules)
+	for (auto& module : _modules)
 	{
 		ret = ret && module->init();
 	}
 	
-	for (auto&& module : getActiveModules(_modules))
+	for (auto& module : _modules)
 	{
-		if (module->isActive())
-		{
-			ret = ret && module->start();
-		}
+		ret = ret && module->start();
 	}
 
 	_shaderManager->init();
@@ -90,19 +59,17 @@ UpdateStatus Application::Update()
 
 	UpdateStatus ret = UpdateStatus::Continue;
 
-	const std::vector<Module*>& activeModules = getActiveModules(_modules);
-
-	for (auto&& module : activeModules)
+	for (auto& module : _modules)
 	{
 		ret = (ret == UpdateStatus::Continue) ? module->preUpdate() : ret;
 	}
 
-	for (auto&& module : activeModules)
+	for (auto& module : _modules)
 	{
 		ret = (ret == UpdateStatus::Continue) ? module->update(_timeManager->getGameDelta()) : ret;
 	}
 
-	for (auto&& module : activeModules)
+	for (auto& module : _modules)
 	{
 		ret = (ret == UpdateStatus::Continue )? module->postUpdate() : ret;
 	}
@@ -114,9 +81,7 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	const std::vector<Module*>& activeModules = getActiveModules(_modules);
-
-	for (auto it = activeModules.rbegin(); it != activeModules.rend() && ret; ++it)
+	for (auto it = _modules.rbegin(); it != _modules.rend() && ret; ++it)
 	{
 		ret = (*it)->cleanUp();
 	}

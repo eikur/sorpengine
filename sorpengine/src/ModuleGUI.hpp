@@ -24,7 +24,7 @@ class ModuleGUI : public Module
 
 
 public: 
-	ModuleGUI(Application& application, SceneManager& sceneManager, ModuleWindow& moduleWindow, bool active = true);
+	ModuleGUI(Application& application, SceneManager& sceneManager, ModuleWindow& moduleWindow);
 
 	bool init() override;
 	UpdateStatus update(float dt) override;

@@ -4,7 +4,7 @@
 #include "GameObject\GameObject.hpp"
 #include "GameObject/ComponentFactory.hpp"
 
-SceneManager::SceneManager(const Application& application, const ModuleInput& input, bool active) : Module(active), _application(application), _input(input)
+SceneManager::SceneManager(const Application& application, const ModuleInput& input) : _application(application), _input(input)
 {
 	_testScene1 = std::make_shared<TestScene1>(*this);
 }

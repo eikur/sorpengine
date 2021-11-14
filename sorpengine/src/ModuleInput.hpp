@@ -22,7 +22,7 @@ private:
 	const int numKeys = 300;
 
 public:
-	ModuleInput(bool active = true);
+	ModuleInput();
 	~ModuleInput() override;
 
 	bool init() override;

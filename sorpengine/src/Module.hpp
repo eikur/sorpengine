@@ -9,11 +9,7 @@
 class Module
 {
 	public:
-		Module(bool active = true) : _active(active){}
 		virtual ~Module() = default;
-
-		bool isActive() const;
-		bool setActive(bool active);
 
 		virtual bool init();
 		virtual bool start();
@@ -21,7 +17,4 @@ class Module
 		virtual UpdateStatus update( float dt = 0.0f);
 		virtual UpdateStatus postUpdate();
 		virtual bool cleanUp();
-
-	private:
-		bool _active = true;
 };

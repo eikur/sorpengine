@@ -1,5 +1,3 @@
-/* Application.h */
-
 #pragma once
 #include <memory>
 #include <vector>
@@ -16,6 +14,7 @@ class ShaderManager;
 class TextureHelper;
 class ModelHelper;
 class TimeManager;
+
 
 class Application
 {
@@ -47,12 +46,7 @@ public:
 private:
     Mode _mode = Mode::Edit;
 
-	std::vector<Module*> _modules;
-	MEMBER_DECL(ModuleWindow, _window, getWindow)
-	MEMBER_DECL(ModuleInput, _input, getInput)
-	MEMBER_DECL(ModuleAudio, _audio, getAudio)
-	MEMBER_DECL(SceneManager, _sceneManager, getSceneManager)
-	MEMBER_DECL(ModuleGUI, _gui, getGUI)
+	std::vector<std::unique_ptr<Module>> _modules;
 
 	MEMBER_DECL(ShaderManager, _shaderManager, getShaderManager)
 	MEMBER_DECL(TextureHelper, _textureHelper, getTextureHelper)

@@ -7,8 +7,7 @@
 #include "ImGui/imgui_impl_sdl_gl3.h"
 
 
-ModuleInput::ModuleInput(bool active) 
-	: Module(active)
+ModuleInput::ModuleInput()
 {
 	_keyboard = new KeyState[numKeys];
 	_mouseButtons = new KeyState[numMouseButttons];

@@ -35,20 +35,10 @@
 				return _NAME_;	\
 			} 
 
-// Defines a member, its const getter 
+// Defines a member, its getter 
 #define MEMBER_GET( _CLASS_, _NAME_, _GETTER_)	\
 		private:								\
 			_CLASS_ _NAME_;	\
-		public:									\
-			_CLASS_& _GETTER_()	\
-			{							\
-				return _NAME_;	\
-			} 
-
-// Defines a member reference, and its const getter 
-#define MEMBER_REF_GET( _CLASS_, _NAME_, _GETTER_)	\
-		private:								\
-			_CLASS_& _NAME_;	\
 		public:									\
 			_CLASS_& _GETTER_()	\
 			{							\

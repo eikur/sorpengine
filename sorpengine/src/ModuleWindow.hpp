@@ -15,10 +15,9 @@ class ModuleWindow : public Module
 	public:
 		using iPoint = Point<int>;
 
-		ModuleWindow(SceneManager& sceneManager, bool active = true);
-		virtual ~ModuleWindow() {}
+		ModuleWindow(SceneManager& sceneManager);
 
-		bool init() override;
+		virtual bool init() override;
 		UpdateStatus preUpdate() override;
 		UpdateStatus postUpdate() override;
 		bool cleanUp() override;
@@ -37,7 +36,7 @@ class ModuleWindow : public Module
         SceneManager& _sceneManager;
 
 		bool _fullScreen = false;
-		bool _resizable = false; // disabled for now
+		bool _resizable = false;
 		bool _vsync = true;
 
         iPoint _windowSize = { 1800, 900 };

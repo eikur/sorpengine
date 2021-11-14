@@ -8,9 +8,8 @@
 #include "ImGui/imgui_impl_sdl_gl3.h"
 #include "ImGui/imgui_internal.h"
 
-ModuleGUI::ModuleGUI(Application& application, SceneManager& sceneManager, ModuleWindow& moduleWindow, bool active) 
-    : Module(active)
-    , _application(application)
+ModuleGUI::ModuleGUI(Application& application, SceneManager& sceneManager, ModuleWindow& moduleWindow) 
+	: _application(application)
     , _sceneManager(sceneManager)
     , _moduleWindow(moduleWindow)
 {}

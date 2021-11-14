@@ -11,9 +11,6 @@ class ModuleAudio : public Module
 	static float kFadeTimeDefault;
 
 public:
-	ModuleAudio(bool active = true);
-	virtual ~ModuleAudio() {}
-
 	bool init() override;
 	bool cleanUp() override;
 

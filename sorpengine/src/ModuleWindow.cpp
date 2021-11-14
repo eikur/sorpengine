@@ -5,11 +5,11 @@
 #include "Utils.hpp"
 #include "GL/glew.h"
 
-ModuleWindow::ModuleWindow(SceneManager& sceneManager, bool active): Module(active), _sceneManager(sceneManager)
+ModuleWindow::ModuleWindow(SceneManager& sceneManager): _sceneManager(sceneManager)
 {
 }
 
-bool ModuleWindow::init()
+bool ModuleWindow::init() 
 {
 	Utils::log("Init SDL window & surface");
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)

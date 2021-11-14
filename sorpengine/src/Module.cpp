@@ -1,19 +1,5 @@
 #include "Module.hpp"
 
-bool Module::setActive(bool active)
-{
-	if (_active != active)
-	{
-		_active = active ? start() : !cleanUp();
-	}
-	return _active;
-}
-
-bool Module::isActive() const
-{
-	return _active;
-}
-
 bool Module::init() 
 { 
 	return true; 
